@@ -1,0 +1,15 @@
+@use './variables.scss' as *;
+
+@mixin mobile {
+    @media only screen and (max-width: $mobile_width) {
+        // Mobile styles
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media only screen and (max-width: $tablet_width) {
+        // tablet styles
+        @content;
+    }
+}
