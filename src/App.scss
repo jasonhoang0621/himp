@@ -6,6 +6,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    user-select: none;
 }
 
 html {
@@ -29,7 +30,7 @@ body {
     color: $text_color;
 
     @include mobile {
-        margin-bottom: 3rem;
+        margin-bottom: $header_shrink_height;
     }
 }
 
@@ -41,12 +42,17 @@ a {
 
 @media (hover: hover) {
     a:hover {
-        color: $main_color;
+        color: $active_color;
+    }
+
+    button:hover {
+        cursor: pointer;
     }
 }
 
 button, input {
     outline: 0;
+    border: 0;
 }
 
 ul {
@@ -54,7 +60,9 @@ ul {
 }
 
 img {
-    max-width: 100%;
+    width: 100%;
+//     height: 100%;
+//     object-fit: cover;
 }
 
 iframe {
@@ -80,4 +88,19 @@ iframe {
 
 .section-header {
     @include flex(center, space-between);
+}
+
+
+//scroll bar
+::-webkit-scrollbar {
+    width: 2px;
+  }
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $main_color;
 }

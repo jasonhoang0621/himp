@@ -18,6 +18,7 @@ function App() {
           <Route path=":id" element={<Detail />} />
         </Route>
 
+        <Route path='*' element={<Home />} />
       </Route>
     </Routes>
   );

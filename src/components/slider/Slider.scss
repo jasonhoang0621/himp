@@ -1,0 +1,117 @@
+@use '../../scss/' as *;
+
+.slider_item {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    height: 30rem;
+
+    @include mobile {
+        height: 25rem;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        @include overlay();
+    }
+
+    &_warper {
+        padding: 2rem;
+        @include flex(unset, unset);
+        position: relative;
+
+        .slider_item_poster {
+            flex: 4;
+            padding-right: 2rem;
+
+            @include tablet {
+                padding: 2rem;
+                flex: 2;
+            }
+
+            @include mobile {
+                flex: 4;
+            }
+        }
+
+        .slider_item_info {
+            flex: 6;
+
+            .title {
+                overflow: hidden;
+                display: block;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+            }
+
+            .rate {
+                @include flex(unset, unset);
+
+                .vote {
+                    &_icon {
+                        color: yellow;
+                        margin: -20px 2rem 0 0.5rem;
+                    }
+                }
+            }
+            
+            .overview {
+                margin-top: 1rem;
+                font-size: 1rem;
+                height: 16rem;
+                overflow-y: auto;
+
+                @include mobile {
+                    height: 12rem;
+                }
+            }
+
+            button {
+                float: right;
+                margin-top: 1rem;
+                margin-right: 1rem;
+                position: relative;
+                padding: 0.7rem 2em;
+                border-radius: 30px;
+                color: white;
+                font-weight: 700;
+                transition: background-color 0.5s ease, box-shadow 0.5s ease;     
+                
+                @include tablet {
+                    margin-top: 1rem;
+                    padding: 0.7rem 1.5em;
+                }
+
+                @include mobile {
+                    padding: 0.5rem 1em;
+                }
+            }
+
+            .trailer_button {
+                background-color: $main_color;
+                
+
+                &:hover {
+                    box-shadow: $main_color 0px 0px 20px 0px;
+                }
+            }
+
+            .view_detail_button {
+                background-color: rgba(255, 255, 255, 0);
+                border: 1px solid white;
+
+                &:hover {
+                    box-shadow: $active_color 0px 0px 20px 0px;
+                    background-color: $active_color;
+                }
+            }
+        }
+    }
+}
