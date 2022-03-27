@@ -1,11 +1,36 @@
 @use '../../scss/' as *;
 
+.slider {
+    margin-top: $header_height;
+}
+
 .slider_item {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
     height: 30rem;
+
+    &.active {
+        .slider_item_warper {
+            .slider_item_poster {
+                img {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            .slider_item_info {
+                transform: translateY(0);
+                opacity: 1;
+
+                .button_group {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
 
     @include mobile {
         height: 25rem;
@@ -29,6 +54,12 @@
         .slider_item_poster {
             flex: 4;
             padding-right: 2rem;
+            
+            img {
+                opacity: 0;
+                transform: scale(0);
+                transition: transform 0.5s ease, opacity 0.5s ease;
+            }
 
             @include tablet {
                 padding: 2rem;
@@ -36,12 +67,15 @@
             }
 
             @include mobile {
-                flex: 4;
+                flex: 3;
             }
         }
 
         .slider_item_info {
             flex: 6;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
 
             .title {
                 overflow: hidden;
@@ -78,39 +112,13 @@
                 margin-top: 1rem;
                 margin-right: 1rem;
                 position: relative;
-                padding: 0.7rem 2em;
-                border-radius: 30px;
-                color: white;
-                font-weight: 700;
-                transition: background-color 0.5s ease, box-shadow 0.5s ease;     
-                
-                @include tablet {
-                    margin-top: 1rem;
-                    padding: 0.7rem 1.5em;
-                }
-
-                @include mobile {
-                    padding: 0.5rem 1em;
-                }
             }
 
-            .trailer_button {
-                background-color: $main_color;
-                
-
-                &:hover {
-                    box-shadow: $main_color 0px 0px 20px 0px;
-                }
-            }
-
-            .view_detail_button {
-                background-color: rgba(255, 255, 255, 0);
-                border: 1px solid white;
-
-                &:hover {
-                    box-shadow: $active_color 0px 0px 20px 0px;
-                    background-color: $active_color;
-                }
+            .button_group {
+                transform: translateY(-50%);
+                opacity: 0;
+                transition: transform 0.5s ease, opacity 0.5s ease;
+                transition-delay: 0.3s;
             }
         }
     }

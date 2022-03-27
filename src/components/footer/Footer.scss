@@ -1,0 +1,20 @@
+@use '../../scss/' as *;
+
+.footer {
+    @include flex(center, center);
+    
+    &_warper {
+        padding: 2rem;
+        width: 100%;
+        @include overlay();
+        @include flex(unset, space-evenly);
+
+        .footer_col {            
+            li {
+                font-weight: 600;
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}

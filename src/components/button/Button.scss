@@ -1,0 +1,34 @@
+@use '../../scss/' as *;
+
+.btn {
+    padding: 0.6rem 1.8em;
+    background-color: $main_color;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    @media (hover: hover) {
+        &:hover {
+            box-shadow: $main_color 0px 0px 20px 0px;
+        }
+    }
+}
+
+.outline_btn {
+    padding: 0.6rem 1.8em;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid white;
+    transition: all 0.3s ease;
+
+    @media (hover: hover) {
+        &:hover {
+            box-shadow: white 0px 0px 20px 0px;
+            background-color: white;
+            color: black;
+        }
+    }
+}

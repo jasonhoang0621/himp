@@ -11,34 +11,16 @@
 
     &.shrink {
         height: $header_shrink_height;
-        background-color: $body_background;
+        background-color: $header_background;
     }
 
     &_wrap {
         @include flex(center, space-between);
         height: 100%;
-        padding: 0 2rem;
 
         .header_logo {
             font-size: 3rem;
             font-weight: 700;
-        }
-
-        .header_login {
-            button {
-                padding: 0.7rem 2em;
-                background-color: $body_background;
-                border: 1px solid $active_color;
-                border-radius: 30px;
-                color: white;
-                font-weight: 700;
-                transition: background-color 0.5s ease, box-shadow 0.5s ease;
-
-                &:hover {
-                    box-shadow: $active_color 0px 0px 20px 0px;
-                    background-color: $active_color;
-                }
-            }
         }
 
         .header_list {
@@ -65,14 +47,14 @@
                     transform: translateX(-50%);
                     width: 0;
                     height: 2px;
-                    background-color: $active_color;
+                    background-color: $main_color;
                     transition: width 0.3s ease-in-out;
                 }
                 
                 &.active::after {
                     width: 100%;
-                    background-color: $active_color;
-                    box-shadow: 0px -7px 15px 5px rgba(66,183,105,0.3);
+                    background-color: $main_color;
+                    box-shadow: 0px -7px 30px 5px $main_color;
                 }
 
                 &:hover::after {
@@ -86,6 +68,7 @@
                 left: 0;
                 right: 0;
                 height: $header_shrink_height;
+                background-color: $header_background;
                 padding: 0 2rem;
                 box-shadow: $box_shadow;
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import SwiperCore, { Autoplay, EffectCoverflow, Pagination } from 'swiper';
 //swiper style
@@ -6,10 +7,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import tmdbApi, { movieType } from '../../api/tmdbApi';
+import Button, { OutlineButton } from '../button/Button';
 // import "swiper/css/navigation";
 import './Slider.scss';
 
-import { FaStar } from 'react-icons/fa';
 
 
 const Slider = () => {
@@ -23,7 +24,6 @@ const Slider = () => {
             try {
                 const response = await tmdbApi.getMoviesList(movieType.popular, { params })
                 setMovieList(response.results.slice(0, 6))
-                console.log(response)
             } catch (err) {
                 console.log(err)
             }
@@ -33,10 +33,10 @@ const Slider = () => {
     }, [])
 
     return (
-        <div className="slider" style={{ marginTop: '8rem' }}>
+        <div className="slider">
             <Swiper
                 effect={"coverflow"}
-                centeredSlides={true}
+
                 breakpoints={{
                     // when window width is >= 0px
                     0: {
@@ -45,6 +45,7 @@ const Slider = () => {
                     },
                     // when window width is >= 1024px
                     1024: {
+                        centeredSlides: true,
                         slidesPerView: 2,
                         spaceBetween: 20
                     },
@@ -101,12 +102,14 @@ const SliderItem = (props) => {
                         <div className="popularity">{item.popularity}</div>
                     </div>
                     <div className="overview">{item.overview}</div>
-                    <button className="view_detail_button" onClick={() => navigate(`/movie/${item.id}`)}>
-                        View detail
-                    </button>
-                    <button className="trailer_button" onClick={() => console.log('trailer')}>
-                        Watch trailer
-                    </button>
+                    <div className="button_group">
+                        <Button onClick={() => console.log('navigato to watch screen')}>
+                            Watch now
+                        </Button>
+                        <OutlineButton onClick={() => navigate(`/movie/${item.id}`)}>
+                            View detail
+                        </OutlineButton>
+                    </div>
                 </div>
 
             </div>

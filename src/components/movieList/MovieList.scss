@@ -1,0 +1,8 @@
+@use '../../scss/' as *;
+
+.movie_list {
+    .swiper-slide{
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+}

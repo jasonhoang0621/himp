@@ -8,13 +8,13 @@ export const movieCategory = {
 export const movieType = {
     upcoming: 'upcoming',
     popular: 'popular',
-    topRated: 'topRated',
+    top_rated: 'top_rated',
 }
 
 export const tvType = {
-    upcoming: 'upcoming',
+    on_the_air: 'on_the_air',
     popular: 'popular',
-    onTheAir: 'on_the_air',
+    top_rated: 'top_rated',
 }
 
 const tmdbAPI = {
@@ -22,7 +22,7 @@ const tmdbAPI = {
     w5Image: (imagePath) => `https://image.tmdb.org/t/p/w500/${imagePath}`,
     getMoviesList: (type, params) => {
         const url = 'movie/' + movieType[type]
-        return axiosClient.get(url, { params: {} })
+        return axiosClient.get(url, { params })
     },
     getTVList: (type, params) => {
         const url = 'tv/' + tvType[type]

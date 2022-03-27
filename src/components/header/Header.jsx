@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { OutlineButton } from '../button/Button'
 
 import './Header.scss'
 
@@ -25,7 +26,7 @@ const Header = () => {
 
     useEffect(() => {
         const shrinkHeader = () => {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
                 headerRef.current.classList.add('shrink')
             } else {
                 headerRef.current.classList.remove('shrink')
@@ -40,7 +41,7 @@ const Header = () => {
 
     return (
         <div ref={headerRef} className="header">
-            <div className="header_wrap container">
+            <div className="header_wrap container section">
                 <Link to='/' className="header_logo">HIMP</Link>
 
                 <ul className="header_list">
@@ -53,7 +54,7 @@ const Header = () => {
                 </ul>
 
                 <div className="header_login">
-                    <button>Sign in</button>
+                    <OutlineButton>Sign in</OutlineButton>
                 </div>
             </div>
         </div>
