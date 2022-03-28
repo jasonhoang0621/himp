@@ -6,25 +6,7 @@
 
     .movie_grid_header {
         @include flex(unset, center);
-    }
-
-    .movie_search {
-        margin: 1rem 0;
-
-        label {
-            cursor: pointer;
-            .movie_search_icon {
-                color: black;
-                margin: 0.5rem;
-                transform: translateY(30%) translateX(30%);
-            }
-        }
-
-        input {
-            padding: 0.5rem 1rem;
-            border-radius: $border_radius;
-            transform: translateY(-15%);
-        }
+        margin-bottom: 3rem;
     }
 
     &_list {
