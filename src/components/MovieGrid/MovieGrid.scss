@@ -1,0 +1,41 @@
+@use '../../scss/' as *;
+
+.movie_grid {
+    margin-top: $header_height;
+    margin: $header_height 0 2rem 0;
+
+    .movie_grid_header {
+        @include flex(unset, center);
+    }
+
+    .movie_search {
+        margin: 1rem 0;
+
+        label {
+            cursor: pointer;
+            .movie_search_icon {
+                color: black;
+                margin: 0.5rem;
+                transform: translateY(30%) translateX(30%);
+            }
+        }
+
+        input {
+            padding: 0.5rem 1rem;
+            border-radius: $border_radius;
+            transform: translateY(-15%);
+        }
+    }
+
+    &_list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+        gap: 2rem;
+    }
+    
+    .movid_grid_load_more {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+    }
+}
