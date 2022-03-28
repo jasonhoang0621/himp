@@ -50,13 +50,13 @@ a {
     }
 }
 
-button,input {
+button {
     @include tablet {
         font-size: 80%;
     }
 
     @include mobile {
-        font-size: 45%;
+        font-size: 60%;
     }
 }
 

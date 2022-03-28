@@ -79,23 +79,5 @@
                 }
             }
         }
-
-        .header_login {
-            @include flex(unset, unset);
-
-            .movie_search {
-                margin-right: 1rem;
-        
-                input {
-                    padding: 0.5rem 1rem;
-                    border-radius: $border_radius;
-                }
-
-                @include mobile {
-                    margin-right: 0.5rem;
-                }
-            } 
-        }
-
     }
 }
