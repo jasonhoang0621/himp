@@ -1,6 +1,6 @@
 import propType from 'prop-types'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import tmdbAPI, { movieCategory, movieType, tvType } from '../../api/tmdbApi'
 import { OutlineButton } from '../button/Button'
 import MovieCard from '../movieCard/MovieCard'
@@ -24,15 +24,23 @@ const MovieGrid = (props) => {
                 if (props.movieCategory === movieCategory.movie) {
                     response = await tmdbAPI.getMoviesList(movieType.popular, params)
                 } else response = await tmdbAPI.getTVList(tvType.popular, params)
+
+                setList(response.results)
+
             } else {
                 const params = {
                     query: keyword
                 }
 
-                response = await tmdbAPI.search(props.movieCategory, params)
+                const temp = []
+                response = await tmdbAPI.search(movieCategory.movie, params)
+                temp.push(...response.results)
+                response = await tmdbAPI.search(movieCategory.tv, params)
+                temp.push(...response.results)
+                setList(temp)
             }
 
-            setList(response.results)
+
             setTotalPage(response.total_pages)
         }
 
@@ -49,26 +57,31 @@ const MovieGrid = (props) => {
             if (props.movieCategory === movieCategory.movie) {
                 response = await tmdbAPI.getMoviesList(movieType.popular, params)
             } else response = await tmdbAPI.getTVList(tvType.popular, params)
+
+            setList([...list, ...response.results])
         } else {
             const params = {
                 page: page + 1,
                 query: keyword
             }
 
-            response = await tmdbAPI.search(props.movieCategory, params)
+            const temp = []
+            response = await tmdbAPI.search(movieCategory.movie, params)
+            temp.push(...response.results)
+            response = await tmdbAPI.search(movieCategory.tv, params)
+            temp.push(...response.results)
+
+            setList([...list, ...temp])
         }
 
-        setList([...list, ...response.results])
         setPage(page + 1)
     }
 
     return (
         <div className="movie_grid">
             <div className="movie_grid_header">
-                <h1>{props.movieCategory === movieCategory.movie ? 'MOVIE' : 'TV SERIES'}</h1>
+                <h1>{props.movieCategory === movieCategory.movie ? 'MOVIE' : props.movieCategory === movieCategory.tv ? 'TV SERIES' : 'RESULTS'}</h1>
             </div>
-
-            <SearchBar movieCategory={props.movieCategory} />
 
             <div className="movie_grid_list">
                 {
@@ -91,26 +104,6 @@ MovieGrid.propType = {
     movieCategory: propType.string
 }
 
-const SearchBar = (props) => {
 
-    const [keyword, setKeyWord] = useState('')
-    const navigate = useNavigate()
-
-    const searchForMovie = (e) => {
-        if (e.key === 'Enter' && keyword !== '') {
-            navigate(`/${movieCategory[props.movieCategory]}/search/${keyword}`)
-        }
-    }
-
-    return (
-        <div className="movie_search">
-            <input type="text" placeholder='Search' id="movie_search_bar" value={keyword} onKeyDown={searchForMovie} onChange={(e) => setKeyWord(e.target.value)} />
-        </div>
-    )
-}
-
-SearchBar.propType = {
-    movieCategory: propType.string
-}
 
 export default MovieGrid

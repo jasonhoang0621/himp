@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import propType from 'prop-types'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { movieCategory } from '../../api/tmdbApi'
 import { OutlineButton } from '../button/Button'
 import './Header.scss'
-
 
 const headerNavItem = [
     {
@@ -54,11 +55,34 @@ const Header = () => {
                 </ul>
 
                 <div className="header_login">
+                    <SearchBar />
                     <OutlineButton>Sign in</OutlineButton>
                 </div>
             </div>
         </div>
     )
+}
+
+const SearchBar = (props) => {
+
+    const [keyword, setKeyWord] = useState('')
+    const navigate = useNavigate()
+
+    const searchForMovie = (e) => {
+        if (e.key === 'Enter' && keyword !== '') {
+            navigate(`/${movieCategory[props.movieCategory]}/search/${keyword}`)
+        }
+    }
+
+    return (
+        <div className="movie_search">
+            <input type="text" placeholder='Search' id="movie_search_bar" value={keyword} onKeyDown={searchForMovie} onChange={(e) => setKeyWord(e.target.value)} />
+        </div>
+    )
+}
+
+SearchBar.propType = {
+    movieCategory: propType.string
 }
 
 export default Header
