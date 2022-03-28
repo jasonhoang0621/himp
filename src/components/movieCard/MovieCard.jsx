@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaPlay, FaHeart } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import tmdbAPI, { movieCategory } from '../../api/tmdbApi'
 import Button, { OutlineButton } from '../button/Button'
 import './MovieCard.scss'
@@ -14,15 +14,11 @@ const MovieCard = (props) => {
 
     const poster = tmdbAPI.w5Image(item.poster_path || item.backdrop_path)
 
-    const nav = () => {
-        navigate(link)
-    }
-
     return (
-        <>
-            <div className="movie_card" style={{ backgroundImage: `url(${poster})` }}>
+        <div className='movie_card'>
+            <div className="movie_card_background" style={{ backgroundImage: `url(${poster})` }}>
                 <div className="button_group">
-                    <Button onClick={nav}>
+                    <Button onClick={() => navigate(link)}>
                         <FaPlay className='movie_card_icon' />
                     </Button>
 
@@ -32,8 +28,8 @@ const MovieCard = (props) => {
                     </OutlineButton>
                 </div>
             </div>
-            <h4>{item.title || item.name}</h4>
-        </>
+            <Link to={link}><h4>{item.title || item.name}</h4></Link>
+        </div>
     )
 }
 

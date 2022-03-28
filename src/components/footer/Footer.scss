@@ -4,7 +4,7 @@
     @include flex(center, center);
     
     &_warper {
-        padding: 2rem;
+        padding: 5rem 0;
         width: 100%;
         @include overlay();
         @include flex(unset, space-evenly);
