@@ -6,6 +6,8 @@ import Category from './pages/category/Category';
 import Detail from './pages/detail/Detail';
 import Layout from './components/layout/Layout';
 
+
+
 function App() {
   return (
     <Routes>
@@ -20,6 +22,7 @@ function App() {
 
         <Route path='*' element={<Home />} />
       </Route>
+      
     </Routes>
   );
 }
