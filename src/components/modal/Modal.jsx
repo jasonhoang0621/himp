@@ -8,6 +8,7 @@ import { Signin, Login } from '../../firebase/firebase-authentication'
 const LoginModal = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmpassword, setConfirmPassword] = useState('')
     return (
 
         <div className="modalBackground">
@@ -37,8 +38,8 @@ const LoginModal = (props) => {
                         <input id='password' type="password" value={password} required
                             onChange={e => setPassword(e.target.value)} />
                         <br />
-                        <label className='confirmpassword' style={{display:'none'}}  htmlFor="confirmpassword" >Password: </label>
-                        <input className='confirmpassword' style={{display:'none'}} type="password" value={password} required
+                        <label className='confirmpassword' style={{display:'none'}}  htmlFor="confirmpassword" >Confirm Password: </label>
+                        <input className='confirmpassword' style={{display:'none'}} type="password" value={confirmpassword} required
                             onChange={e => setPassword(e.target.value)} />
 
                     </div>
