@@ -8,23 +8,27 @@ export const Login = async (email, password)=>{
     try{
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
-        return (
-            <Link to ="/"></Link>
-        )
+        return user
     }catch (error){
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        console.log(error)
+        return null
     }
     
 }
 
-export const Signin = async (email, password)=>{
+export const SignUp = async (email, password)=>{
     try{
+        console.log("DANG SIGN UP")
+        console.log(email)
+        console.log(password)
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
+        console.log(user)
+        return user
     }catch (error){
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        console.log("FAILED")
+        console.log(error)
+        return null
     }
     
 }
@@ -50,3 +54,4 @@ export const SignOut = async()=>{
 export const UpdateProfile = async()=>{
     
 }
+export default auth
