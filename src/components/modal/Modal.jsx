@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './Modal.scss'
 import propsTypes from 'prop-types'
 import Button , {OutlineButton}from '../button/Button'
-import { SignUp, Login } from '../../firebase/firebase-authentication'
+import { SignUp, Login, UpdateProfile } from '../../firebase/firebase-authentication'
 import { FaTimes } from 'react-icons/fa'
 
 const buttonState={
@@ -14,9 +14,11 @@ const buttonState={
     },
     false:{
         name:'SignUp',
-        async function(email,password){
-            return await SignUp(email,password)
-        }
+        async function(email,password,name){
+            await SignUp(email,password)
+            return await UpdateProfile(name)
+        },
+        
     },
 }
 
@@ -25,25 +27,26 @@ const LoginModal = (props) => {
     const [password, setPassword] = useState('')
     const [confirmpassword, setConfirmPassword] = useState('')
     const [state,setState] = useState(true)
+    const [name,setName]=useState('')
     var title=""
     var confirmButton
     var otherButton
-    if(state == true){
+    if(state === true){
         title = buttonState.true.name.split(" ").join("")
         confirmButton= buttonState.true
         otherButton = buttonState.false
     }
     else{
-        var title = buttonState.false.name.split(" ").join("")
+        title = buttonState.false.name.split(" ").join("")
         confirmButton= buttonState.false
         otherButton = buttonState.true
     }
     const handleClick=()=>{
-        if(otherButton.name =="SignUp"){
+        if(otherButton.name === "SignUp"){
             const height = document.getElementById('Container')
-            console.log(height)
-            height.style.height='470px'
-            const test=document.getElementsByClassName('confirmpassword')
+            
+            height.style.height='500px'
+            const test=document.getElementsByClassName('hiddeninfo')
             for(let ele of test){
                 ele.style.display='block'
             }
@@ -55,9 +58,9 @@ const LoginModal = (props) => {
         }
         else{
             const height = document.getElementById('Container')
-            console.log(height)
+            
             height.style.height='420px'
-            const inputConfirm=document.getElementsByClassName('confirmpassword')
+            const inputConfirm=document.getElementsByClassName('hiddeninfo')
             for(let ele of inputConfirm){
                 ele.style.display='none'
             }
@@ -66,17 +69,17 @@ const LoginModal = (props) => {
         }
         
     }
-    const handleFunction= async (email,password,confirmpassword)=>{
+    const handleFunction= async (email,password,hiddeninfo)=>{
         var user = null
-        if(confirmButton.name=="SignUp"){
-            if(password!==confirmpassword){
+        if(confirmButton.name==="SignUp"){
+            if(password!==hiddeninfo){
                 document.getElementById('error').style.display='block'
                 setTimeout(() => {
                     document.getElementById('error').style.display='none'
                 }, 2000);
             }
             else{
-                user = await confirmButton.function(email, password)
+                user = await confirmButton.function(email, password,name)
             }
         }
         else{
@@ -86,7 +89,7 @@ const LoginModal = (props) => {
             document.getElementById('error').style.display='none'
             props.closeModal(false) 
         }else{
-            console.log(user)
+            
             document.getElementById('error').style.display='block'
             setTimeout(() => {
                 document.getElementById('error').style.display='none'
@@ -109,6 +112,9 @@ const LoginModal = (props) => {
                 </div>
                 <div className="body ">
                     <div className='form'>
+                        <label className='hiddeninfo' style={{display:'none'}}  htmlFor="name" >Name: </label>
+                        <input className='hiddeninfo' style={{display:'none'}} type="text" value={name} required
+                            onChange={e => setName(e.target.value)} id ="name"/>
                         <label htmlFor="email">Email: </label>
                         <br />
                         <input id='email' value={email} type="email"
@@ -121,13 +127,14 @@ const LoginModal = (props) => {
                             onChange={e => setPassword(e.target.value)} />
                         <br />
                         
-                        <label className='confirmpassword' style={{display:'none'}}  htmlFor="confirmpassword" >Confirm Password: </label>
-                        <input className='confirmpassword' style={{display:'none'}} type="password" value={confirmpassword} required
-                            onChange={e => setConfirmPassword(e.target.value)} />
+                        <label className='hiddeninfo' style={{display:'none'}}  htmlFor="confirmpassword" >Confirm Password: </label>
+                        <input className='hiddeninfo' style={{display:'none'}} type="password" value={confirmpassword} required
+                            onChange={e => setConfirmPassword(e.target.value)} id ="confirmpassword" />
+                        
 
                     </div>
                     <div className="form-forgot">
-                        <a>Forgot password?</a>
+                        {/* <a>Forgot password?</a> */}
                     </div>
                     
                 </div>
@@ -154,6 +161,21 @@ const LoginModal = (props) => {
         </div>
     )
 }
+
+
+const ForgotModal =(props)=>{
+    return (
+        <div>
+            
+        </div>
+    )
+}
+
+ForgotModal.propsTypes ={
+    className:propsTypes.string,
+    onClick:propsTypes.func
+}
+
 LoginModal.propsTypes = {
     className: propsTypes.string,
     onClick: propsTypes.func,

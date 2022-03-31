@@ -5,8 +5,8 @@ import './Category.scss'
 
 
 const Category = () => {
+    
     const params = useParams()
-
     const movieCategory = params.category
 
     return (
