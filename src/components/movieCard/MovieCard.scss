@@ -36,7 +36,8 @@
                 margin-right: 0.4rem;
             }
 
-            .outline_btn {
+            .outline_btn,
+            .btn {
                 @include mobile {
                     padding: 0.6rem 1.5rem;
                 }
@@ -53,7 +54,6 @@
 
         .movie_card_icon {
             font-size: 1rem;
-            transform: translateY(-10%);
         }
     }
 }

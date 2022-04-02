@@ -1,0 +1,99 @@
+@use '../../scss/'as *;
+
+.detail {
+    &_background {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: relative;
+        height: 30rem;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            @include overlay();
+        }
+    }
+
+    .detail_content {
+        @include flex(unset, unset);
+        margin-top: -15rem;
+        padding: 0 10rem;
+        position: relative;
+
+        @include mobile {
+            padding: 0 2rem;
+            margin-top: calc($header_height - 30rem);
+        }
+
+        .detail_content_poster {
+            flex: 1;
+
+            @include mobile {
+                display: none;
+            }
+
+            img {
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                border-radius: $border_radius;
+            }
+        }
+
+        .detail_content_info {
+            width: 70%;
+            padding-left: 2rem;
+
+            @include mobile {
+                width: 100%;
+                padding-left: 0;
+            }
+
+            .genres {
+                margin-top: 1rem;
+
+                .genres_item {
+                    border: 1px solid white;
+                    border-radius: $border_radius;
+                    padding: 0.2rem 0.5rem;
+                    font-weight: 600;
+                }
+
+                &>*~* {
+                    margin-left: 0.5rem;
+                }
+            }
+
+            .overview {
+                margin-top: 1rem;
+            }
+
+            .cast {
+                margin-top: 1rem;
+            }
+        }
+    }
+}
+
+.cast_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+    gap: 1rem;
+
+    .cast_item {
+        .cast_item_img {
+            img {
+                border-radius: $border_radius;
+            }
+        }
+
+        .cast_item_name {
+            font-size: 0.8rem;
+        }
+    }
+}
