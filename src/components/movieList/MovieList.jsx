@@ -31,7 +31,7 @@ const MovieList = (props) => {
                 breakpoints={{
                     // when window width is >= 0px
                     0: {
-                        slidesPerView: 3,
+                        slidesPerView: 2,
                         spaceBetween: 10
                     },
                     // when window width is >= 1024px

@@ -1,4 +1,4 @@
-@use '../../scss/' as *;
+@use '../../scss/'as *;
 
 .movie_card {
     .movie_card_background {
@@ -9,7 +9,7 @@
         padding-top: 130%;
         border-radius: $border_radius;
         margin-bottom: 1rem;
-    
+
         &::before {
             content: '';
             position: absolute;
@@ -22,7 +22,7 @@
             transition: opacity 0.3s ease;
             border-radius: $border_radius;
         }
-    
+
         .button_group {
             width: 100%;
             @include flex(unset, center);
@@ -31,32 +31,29 @@
             left: 0;
             transform: translateY(-50%) scale(0);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-            & > * {
+
+            &>* {
                 margin-right: 0.4rem;
             }
-    
-            button {
-                @include tablet {
-                    padding: 0.6rem 1.75em;
-                }
-    
+
+            .outline_btn {
                 @include mobile {
-                    padding: 0.6rem 1.5em;
+                    padding: 0.6rem 1.5rem;
                 }
             }
         }
-    
+
         &:hover::before {
             opacity: 0.8;
         }
-    
+
         &:hover .button_group {
             transform: translateY(-50%) scale(1);
         }
-    
+
         .movie_card_icon {
-            transform: translateY(10%);
+            font-size: 1rem;
+            transform: translateY(-10%);
         }
     }
 }

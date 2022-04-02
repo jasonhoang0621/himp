@@ -5,8 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { movieCategory } from '../../api/tmdbApi'
 import { OutlineButton } from '../button/Button'
 import './Header.scss'
-import LoginModal from '../../components/modal/Modal'
-
+import LoginModal from '../LoginModal/LoginModal'
 
 const headerNavItem = [
     {
@@ -25,10 +24,10 @@ const headerNavItem = [
 const Header = () => {
     const { pathname } = useLocation()
     const headerRef = useRef()
-    const [open,setOpen]=useState(false)
+    const [isModal, setIsModal] = useState(false)
 
     const active = headerNavItem.findIndex(item => item.path === pathname)
-    
+
     useEffect(() => {
         const shrinkHeader = () => {
             if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
@@ -46,7 +45,7 @@ const Header = () => {
 
     return (
         <div ref={headerRef} className="header">
-            
+
             <div className="header_wrap container section">
                 <Link to='/' className="header_logo">HIMP</Link>
 
@@ -58,17 +57,15 @@ const Header = () => {
                             </li>))
                     }
                 </ul>
-                
+
                 <div className="header_login">
 
                     <SearchBar />
-                    <OutlineButton onClick={()=>{
-                    setOpen(true)
-                    }}>Sign in</OutlineButton>
+                    <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton>
 
                 </div>
             </div>
-            {open && <LoginModal closeModal={setOpen}/>}
+            {isModal && <LoginModal closeModal={setIsModal} />}
         </div>
     )
 }

@@ -1,0 +1,133 @@
+@use '../../scss/'as *;
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .modal_container {
+        @include flex(center, center);
+        height: 100vh;
+
+        .modal_warper {
+            min-width: 30rem;
+            padding: 5rem 5rem 0 5rem;
+            position: relative;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            box-shadow: $box_shadow;
+            animation: swipeDown 0.3s ease;
+            overflow: hidden;
+
+            @include mobile {
+                min-width: 25rem;
+                padding: 3rem 3rem 0 3rem;
+            }
+
+            .modal_close {
+                position: absolute;
+                top: 1rem;
+                right: 2rem;
+                font-size: 1.2rem;
+                cursor: pointer;
+
+                &:hover {
+                    color: $main_color;
+                }
+            }
+
+            .modal_header {
+                text-align: center;
+            }
+
+            .modal_body {
+                margin-top: 2rem;
+
+                .modal_form {
+                    &_group {
+                        margin-top: 2rem;
+                        background-color: white;
+                        box-shadow: $box_shadow;
+                        padding: 0.5rem 1rem;
+                        border-radius: $border_radius;
+                        display: flex;
+
+                        .modal_form_group_icon {
+                            transform: translateY(15%);
+                            color: #cdcdcd;
+                        }
+
+                        input {
+                            flex: 1;
+                            margin-left: 1rem;
+                        }
+                    }
+
+                    .modal_form_forget {
+                        margin-top: 1rem;
+                        text-align: right;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: $main_color;
+                        }
+                    }
+                }
+            }
+
+            .modal_form_submit {
+                margin-top: 1rem;
+                text-align: center;
+
+                button {
+                    padding: 0.6rem 4rem;
+                }
+            }
+
+
+            .modal_footer {
+                @include flex(unset, unset);
+                margin-top: 3rem;
+                margin-left: -5rem;
+                margin-right: -5rem;
+
+                .modal_footer_section {
+                    flex: 1;
+                    text-align: center;
+                    padding: 0.5rem 0;
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                .modal_footer_ {
+                    background-color: #cdcdcd;
+                }
+
+                .modal_footer_register {
+                    background-color: $body_background;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+@keyframes swipeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,4 +1,4 @@
-@use './scss/' as *;
+@use './scss/'as *;
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap');
 
@@ -42,6 +42,7 @@ a {
 
 @media (hover: hover) {
     a:hover {
+        text-decoration: none;
         color: $main_color;
     }
 
@@ -50,7 +51,8 @@ a {
     }
 }
 
-button,input {
+button,
+input {
     @include tablet {
         font-size: 80%;
     }
@@ -60,7 +62,8 @@ button,input {
     }
 }
 
-button, input {
+button,
+input {
     font-family: $font_family;
     outline: 0;
     border: 0;
@@ -94,7 +97,7 @@ iframe {
 //scroll bar
 ::-webkit-scrollbar {
     width: 2px;
-  }
+}
 
 /* Track */
 ::-webkit-scrollbar-track {

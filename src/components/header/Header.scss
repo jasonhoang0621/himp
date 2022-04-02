@@ -1,4 +1,4 @@
-@use '../../scss/' as *;
+@use '../../scss/'as *;
 
 .header {
     height: $header_height;
@@ -8,7 +8,7 @@
     right: 0;
     width: 100%;
     z-index: 9999;
-    
+
     &.shrink {
         height: $header_shrink_height;
         background-color: $header_background;
@@ -26,11 +26,11 @@
         .header_list {
             @include flex(center, unset);
 
-            & > * {
+            &>* {
                 margin-left: 2rem;
             }
 
-            & > *:first-child {
+            &>*:first-child {
                 margin-left: 0;
             }
 
@@ -50,7 +50,7 @@
                     background-color: $main_color;
                     transition: width 0.3s ease-in-out;
                 }
-                
+
                 &.active::after {
                     width: 100%;
                     background-color: $main_color;
@@ -71,10 +71,11 @@
                 background-color: $header_background;
                 padding: 0 2rem;
                 box-shadow: $box_shadow;
+                margin-bottom: 0;
 
                 @include flex(center, space-between);
 
-                & > * {
+                &>* {
                     margin-left: 0;
                 }
             }
@@ -85,7 +86,7 @@
 
             .movie_search {
                 margin-right: 1rem;
-        
+
                 input {
                     padding: 0.5rem 1rem;
                     border-radius: $border_radius;
@@ -94,7 +95,7 @@
                 @include mobile {
                     margin-right: 0.5rem;
                 }
-            } 
+            }
         }
 
     }
