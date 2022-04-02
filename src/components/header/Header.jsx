@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { movieCategory } from '../../api/tmdbApi'
 import { OutlineButton } from '../button/Button'
 import './Header.scss'
-import LoginModal from '../LoginModal/LoginModal'
+import Modal from '../Modal/Modal'
 
 const headerNavItem = [
     {
@@ -65,7 +65,7 @@ const Header = () => {
 
                 </div>
             </div>
-            {isModal && <LoginModal closeModal={setIsModal} />}
+            {isModal && <Modal closeModal={setIsModal} />}
         </div>
     )
 }
