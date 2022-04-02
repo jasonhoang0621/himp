@@ -1,6 +1,8 @@
 import {app} from './firebase-config'
-import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateEmail,updatePassword,signOut 
+import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateEmail,updatePassword,signOut
+    ,sendPasswordResetEmail 
 ,updateProfile   } from "firebase/auth";
+import { async } from '@firebase/util';
 
 
 
@@ -20,14 +22,13 @@ export const Login = async (email, password)=>{
 
 export const SignUp = async (email, password)=>{
     try{
-        console.log("DANG SIGN UP")
         
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
         
         return user
     }catch (error){
-        console.log("FAILED")
+        
         console.log(error)
         return null
     }
@@ -62,5 +63,13 @@ export const UpdateProfile = async(name,phone)=>{
         return null
     }
 }
-
+export const Forgot = async(email)=>{
+    try{
+        await sendPasswordResetEmail(auth, email)
+        return null;
+        
+    }catch(error){
+        return null
+    }
+}
 export default auth
