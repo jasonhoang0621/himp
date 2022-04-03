@@ -1,11 +1,9 @@
 
-import propType from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { movieCategory } from '../../api/tmdbApi'
 import { OutlineButton } from '../button/Button'
-import './Header.scss'
 import Modal from '../Modal/Modal'
+import './Header.scss'
 
 const headerNavItem = [
     {
@@ -77,7 +75,7 @@ const SearchBar = (props) => {
 
     const searchForMovie = (e) => {
         if (e.key === 'Enter' && keyword !== '') {
-            navigate(`/${movieCategory[props.movieCategory]}/search/${keyword}`)
+            navigate(`/search/${keyword}`)
         }
     }
 
@@ -86,10 +84,6 @@ const SearchBar = (props) => {
             <input type="text" placeholder='Search' id="movie_search_bar" value={keyword} onKeyDown={searchForMovie} onChange={(e) => setKeyWord(e.target.value)} />
         </div>
     )
-}
-
-SearchBar.propType = {
-    movieCategory: propType.string
 }
 
 export default Header

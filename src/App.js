@@ -16,13 +16,14 @@ function App() {
 
         <Route path=':category'>
           <Route index element={<Category />} />
-          <Route path="search/:keyword" element={<Category />} />
           <Route path=":id" element={<Detail />} />
         </Route>
 
+        <Route path="search/:keyword" element={<Category />} />
+
         <Route path='*' element={<Home />} />
       </Route>
-      
+
     </Routes>
   );
 }

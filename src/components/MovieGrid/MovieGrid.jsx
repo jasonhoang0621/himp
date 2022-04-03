@@ -39,8 +39,6 @@ const MovieGrid = (props) => {
                 temp.push(...response.results)
                 setList(temp)
             }
-
-
             setTotalPage(response.total_pages)
         }
 
@@ -86,7 +84,11 @@ const MovieGrid = (props) => {
             <div className="movie_grid_list">
                 {
                     list.map((item, index) => (
-                        <MovieCard movieCategory={props.movieCategory} item={item} key={index} />
+                        <MovieCard
+                            movieCategory={props.movieCategory ? props.movieCategory :
+                                item.first_air_date ? movieCategory.tv : movieCategory.movie}
+                            item={item}
+                            key={index} />
                     ))
                 }
             </div>

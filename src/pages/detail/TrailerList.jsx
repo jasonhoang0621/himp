@@ -37,9 +37,6 @@ const TrailerVideo = (props) => {
 
     return (
         <div className="trailer_item">
-            <div className="title">
-                <h2>{props.trailer.name}</h2>
-            </div>
             <iframe
                 src={`https://www.youtube.com/embed/${props.trailer.key}`}
                 width='100%'
@@ -47,6 +44,9 @@ const TrailerVideo = (props) => {
                 title='trailer'
                 ref={trailerRef}
             ></iframe>
+            <div className="title">
+                <h3>{props.trailer.name}</h3>
+            </div>
         </div>
     )
 }
