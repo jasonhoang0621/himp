@@ -1,10 +1,9 @@
 
 import propType from 'prop-types'
 import React, { useState } from 'react'
-import { FaEnvelope, FaLock, FaTimes, FaUser, FaAngleLeft } from 'react-icons/fa'
+import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
+import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
 import './Modal.scss'
-import { SignUp, Login, Forgot } from '../../firebase/firebase-authentication'
-
 
 const form = {
     login: 1,
@@ -101,9 +100,9 @@ const RegisterModal = (props) => {
     const [confirmPass, setConfirm] = useState('')
     const handleEnter = async (keyCode, email, password, name, confirmPass) => {
         if (keyCode === 13) {
-            
+
             if (confirmPass === password) {
-                
+
                 const user = await SignUp(email, password, name)
                 if (user === null) {
 
@@ -124,19 +123,19 @@ const RegisterModal = (props) => {
                 <div className="modal_form">
                     <div className="modal_form_group">
                         <FaEnvelope className='modal_form_group_icon' />
-                        <input type="email" placeholder='Email' onKeyUp={e => { handleEnter(e.keyCode, email, password, name,confirmPass) }} value={email} onChange={e => setEmail(e.target.value)} required />
+                        <input type="email" placeholder='Email' onKeyUp={e => { handleEnter(e.keyCode, email, password, name, confirmPass) }} value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
                     <div className="modal_form_group">
                         <FaLock className='modal_form_group_icon' />
-                        <input type="password" placeholder='Password' value={password} onKeyUp={e => { handleEnter(e.keyCode, email, password, name,confirmPass) }} onChange={e => setPassword(e.target.value)} required />
+                        <input type="password" placeholder='Password' value={password} onKeyUp={e => { handleEnter(e.keyCode, email, password, name, confirmPass) }} onChange={e => setPassword(e.target.value)} required />
                     </div>
                     <div className="modal_form_group">
                         <FaLock className='modal_form_group_icon' />
-                        <input type="password" placeholder='Confirm your password' value={confirmPass} onKeyUp={e => { handleEnter(e.keyCode, email, password, name,confirmPass) }} onChange={e => setConfirm(e.target.value)} required />
+                        <input type="password" placeholder='Confirm your password' value={confirmPass} onKeyUp={e => { handleEnter(e.keyCode, email, password, name, confirmPass) }} onChange={e => setConfirm(e.target.value)} required />
                     </div>
                     <div className="modal_form_group">
                         <FaUser className='modal_form_group_icon' />
-                        <input type="text" placeholder='Name' value={name} onKeyUp={e => { handleEnter(e.keyCode, email, password, name,confirmPass) }} onChange={e => setName(e.target.value)} required />
+                        <input type="text" placeholder='Name' value={name} onKeyUp={e => { handleEnter(e.keyCode, email, password, name, confirmPass) }} onChange={e => setName(e.target.value)} required />
                     </div>
 
                 </div >

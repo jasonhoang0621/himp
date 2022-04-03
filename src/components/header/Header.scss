@@ -84,6 +84,55 @@
         .header_login {
             @include flex(unset, unset);
 
+            .header_logged_in {
+                position: relative;
+
+                &_icon {
+                    font-size: 2rem;
+                    cursor: pointer;
+                    position: relative;
+                }
+
+                &:hover {
+                    color: $main_color;
+
+                    .header_logged_in_list {
+                        display: block;
+                    }
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    height: 5px;
+                    width: 100%;
+                    bottom: 0;
+                    left: 0;
+                }
+
+                .header_logged_in_list {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    background-color: white;
+                    color: black;
+                    border-radius: 5px;
+                    overflow: hidden;
+
+                    &>* {
+                        padding: 1rem;
+                        transition: background-color 0.2s ease-in-out;
+                        border-bottom: 1px solid #cdcdcd;
+
+                        &:hover {
+                            color: $main_color;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+
             .movie_search {
                 margin-right: 1rem;
 

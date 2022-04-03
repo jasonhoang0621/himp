@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { OutlineButton } from '../button/Button'
 import Modal from '../modal/Modal'
 import './Header.scss'
+import { FaUser } from 'react-icons/fa'
 
 const headerNavItem = [
     {
@@ -59,8 +60,19 @@ const Header = () => {
                 <div className="header_login">
 
                     <SearchBar />
-                    <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton>
 
+
+                    {/* <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton> */}
+
+                    <div className="header_logged_in">
+                        <FaUser className='header_logged_in_icon' />
+                        <ul className="header_logged_in_list">
+                            <li className="header_logged_in_item">Information</li>
+                            <li className="header_logged_in_item">Password</li>
+                            <li className="header_logged_in_item">Favorite list</li>
+                            <li className="header_logged_in_item">Log out</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             {isModal && <Modal closeModal={setIsModal} />}
