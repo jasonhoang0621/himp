@@ -52,7 +52,8 @@ a {
 }
 
 button,
-input {
+input,
+textarea {
     @include tablet {
         font-size: 80%;
     }
@@ -63,7 +64,8 @@ input {
 }
 
 button,
-input {
+input,
+textarea {
     font-family: $font_family;
     outline: 0;
     border: 0;
