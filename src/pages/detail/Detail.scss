@@ -1,6 +1,8 @@
 @use '../../scss/'as *;
 
 .detail {
+    user-select: auto;
+
     &_background {
         background-position: center;
         background-size: cover;
@@ -75,6 +77,24 @@
 
             .cast {
                 margin-top: 1rem;
+            }
+        }
+
+    }
+
+    .detail_trailer {
+        margin-top: 2rem;
+        padding: 0 10rem;
+
+        @include mobile {
+            padding: 0 2rem;
+        }
+
+        .trailer_item {
+            margin-top: 5rem;
+
+            .title {
+                text-align: center;
             }
         }
     }

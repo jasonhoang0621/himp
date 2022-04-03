@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import tmdbAPI from '../../api/tmdbApi'
-import propType from 'prop-types'
-
+import CastList from './CastList'
 import './Detail.scss'
+import TrailerList from './TrailerList'
+
 
 const Detail = () => {
     const { category, id } = useParams()
@@ -51,43 +52,14 @@ const Detail = () => {
                             </div>
                         </div>
                     </div>
+
+                    <div className="detail_trailer section">
+                        <TrailerList category={category} id={id} />
+                    </div>
                 </div>
             }
         </>
     )
-}
-
-const CastList = (props) => {
-    const [casts, setCasts] = useState([])
-
-    useEffect(() => {
-        const getCasts = async () => {
-            const response = await tmdbAPI.credits(props.category, props.id)
-            setCasts(response.cast.slice(0, 5))
-        }
-
-        getCasts()
-    }, [props.category, props.id])
-
-    return (
-        <div className="cast_list">
-            {
-                casts.map((cast, index) => (
-                    <div key={index} className="cast_item">
-                        <div className="cast_item_img">
-                            <img src={tmdbAPI.w5Image(cast.profile_path)} alt="" />
-                        </div>
-                        <div className="cast_item_name">{cast.name}</div>
-                    </div>
-                ))
-            }
-        </div>
-    )
-}
-
-CastList.propType = {
-    category: propType.string.isRequired,
-    id: propType.number.isRequired
 }
 
 export default Detail

@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import tmdbApi, { movieType } from '../../api/tmdbApi';
-import Button, { OutlineButton } from '../button/Button';
+import Button from '../button/Button';
 // import "swiper/css/navigation";
 import './Slider.scss';
 
@@ -103,12 +103,9 @@ const SliderItem = (props) => {
                     </div>
                     <div className="overview">{item.overview}</div>
                     <div className="button_group">
-                        <Button onClick={() => console.log('navigato to watch screen')}>
+                        <Button onClick={() => navigate(`/movie/${item.id}`)}>
                             Watch now
                         </Button>
-                        <OutlineButton onClick={() => navigate(`/movie/${item.id}`)}>
-                            View detail
-                        </OutlineButton>
                     </div>
                 </div>
 
