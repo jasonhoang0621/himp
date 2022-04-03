@@ -23,7 +23,7 @@
 
     .detail_content {
         @include flex(unset, unset);
-        margin-top: -15rem;
+        margin-top: -20rem;
         padding: 0 10rem;
         position: relative;
 
@@ -34,6 +34,7 @@
 
         .detail_content_poster {
             flex: 1;
+            position: relative;
 
             @include mobile {
                 display: none;
@@ -47,6 +48,7 @@
             }
         }
 
+
         .detail_content_info {
             width: 70%;
             padding-left: 2rem;
@@ -56,8 +58,42 @@
                 padding-left: 0;
             }
 
-            .genres {
+            .detail_btn {
+
+                .outline_btn,
+                .btn {
+                    font-size: 1.2rem
+                }
+
+                .detail_btn_watch {
+                    margin-left: 1rem;
+                }
+            }
+
+            .title {
                 margin-top: 1rem;
+            }
+
+            .general_info {
+                @include flex(unset, unset);
+
+                .vote_average {
+                    margin-left: 2rem;
+                    position: relative;
+
+                    .vote_average_icon {
+                        position: absolute;
+                        top: 0.1rem;
+                        right: 0;
+                        transform: translateX(150%);
+                        margin-left: 0.3rem;
+                        color: yellow;
+                    }
+                }
+            }
+
+            .genres {
+                margin-top: 2rem;
 
                 .genres_item {
                     border: 1px solid white;
@@ -72,14 +108,23 @@
             }
 
             .overview {
-                margin-top: 1rem;
-            }
-
-            .cast {
-                margin-top: 1rem;
+                margin-top: 2rem;
             }
         }
+    }
 
+    .detail_cast {
+        position: relative;
+        margin-top: 2rem;
+        padding: 0 10rem;
+
+        @include mobile {
+            padding: 0 2rem;
+        }
+
+        .cast_content {
+            margin-top: 1rem;
+        }
     }
 
     .detail_trailer {
@@ -90,13 +135,33 @@
             padding: 0 2rem;
         }
 
+
         .trailer_item {
-            margin-top: 5rem;
-            margin-bottom: 2rem;
+            &>*~* {
+                margin-top: 5rem;
+            }
 
             .title {
                 text-align: center;
             }
+        }
+    }
+
+    .detail_comment {
+        margin-top: 3rem;
+        padding: 0 10rem;
+
+        @include mobile {
+            padding: 0 2rem;
+        }
+    }
+
+    .detail_similar {
+        margin-top: 3rem;
+        padding: 0 10rem;
+
+        @include mobile {
+            padding: 0 2rem;
         }
     }
 }
@@ -105,6 +170,17 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
     gap: 1rem;
+
+    @include mobile {
+        grid-template-columns: unset;
+        grid-auto-flow: column;
+        grid-auto-columns: 20%;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
 
     .cast_item {
         .cast_item_img {

@@ -32,6 +32,10 @@ const Modal = (props) => {
                         {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} />}
                         {formDisplay === 3 && <ForgetPasswordModal />}
 
+                        <div className="modal_error_message">
+                            Incorrect password or email
+                        </div>
+
                         {(formDisplay === 1 || formDisplay === 2) &&
                             <div className="modal_footer">
                                 <div className="modal_footer_section modal_footer_login" onClick={() => setFormDisplay(1)}>

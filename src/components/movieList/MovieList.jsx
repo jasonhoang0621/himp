@@ -59,7 +59,8 @@ const MovieList = (props) => {
 MovieList.propTypes = {
     id: propType.string,
     movieCategory: propType.string.isRequired,
-    movieType: propType.string.isRequired
+    movieType: propType.string,
+    type: propType.string
 }
 
 export default MovieList
