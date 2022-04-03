@@ -12,8 +12,13 @@ const form = {
 
 const Modal = (props) => {
     const [formDisplay, setFormDisplay] = useState(form.login)
+<<<<<<< Updated upstream
     const [warn, setWarn] = useState(true)
     const [message, setMessage] = useState(true)
+=======
+
+    const messageRef = useRef()
+>>>>>>> Stashed changes
 
     return (
         <>
@@ -28,15 +33,18 @@ const Modal = (props) => {
                                 <FaAngleLeft />
                             </div>}
 
+<<<<<<< Updated upstream
                         {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} warn={setWarn} />}
                         {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} warn={setWarn} />}
                         {formDisplay === 3 && <ForgetPasswordModal warn={setWarn} setFormDisplay={setFormDisplay} mess={setMessage} />}
+=======
+                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal}  messageRef={messageRef}/>}
+                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal}  messageRef={messageRef}/>}
+                        {formDisplay === 3 && <ForgetPasswordModal  setFormDisplay={setFormDisplay} messageRef={messageRef}/>}
+>>>>>>> Stashed changes
 
-                        <div className="modal_error_message" hidden={warn}>
+                        <div ref={messageRef} className="modal_error_message" style={{display:"none"}}>
                             Incorrect password or email
-                        </div>
-                        <div className="modal_message" hidden={message}>
-                            Please check your email
                         </div>
 
                         {(formDisplay === 1 || formDisplay === 2) &&
@@ -56,10 +64,12 @@ const Modal = (props) => {
 }
 
 const LoginModal = (props) => {
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const handleEnter = async (keyCode, email, password) => {
         if (keyCode === 13) {
+<<<<<<< Updated upstream
             const user = await Login(email, password)
             if (user === null) {
                 props.warn(false)
@@ -69,7 +79,45 @@ const LoginModal = (props) => {
 
             } else {
                 props.closeModal(false);
+=======
+            if(email===""||password===""){
+                props.messageRef.current.classList.remove('modal_message')
+                props.messageRef.current.classList.add('modal_error_message')
+                props.messageRef.current.innerText="Please fill all the fields"
+                props.messageRef.current.style.display="block"
+                setTimeout(()=>{
+                    props.messageRef.current.style.display="none"
+                },1500)
+>>>>>>> Stashed changes
             }
+            else {
+                if (password.length<6)
+                {
+                    props.messageRef.current.classList.remove('modal_message')
+                    props.messageRef.current.classList.add('modal_error_message')
+                    props.messageRef.current.innerText="Your password is too short"
+                    props.messageRef.current.style.display="block"
+                    setTimeout(()=>{
+                        props.messageRef.current.style.display="none"
+                    },1500)
+                }
+                else{
+                    const user = await Login(email, password)
+                    if (user === null) {
+                        props.messageRef.current.classList.remove('modal_message')
+                        props.messageRef.current.classList.add('modal_error_message')
+                        props.messageRef.current.innerText="Incorrect email or password"
+                        props.messageRef.current.style.display="block"
+                        setTimeout(()=>{
+                            props.messageRef.current.style.display="none"
+                        },1500)
+                        
+                    } else {
+                        props.closeModal(false);
+                    }
+                }
+            }
+           
         }
 
     }
@@ -108,6 +156,7 @@ const RegisterModal = (props) => {
     const [confirmPass, setConfirm] = useState('')
     const handleEnter = async (keyCode, email, password, name, confirmPass) => {
         if (keyCode === 13) {
+<<<<<<< Updated upstream
 
             if (confirmPass === password) {
 
@@ -119,8 +168,57 @@ const RegisterModal = (props) => {
                     }, 1500)
                 } else {
                     props.closeModal(false);
+=======
+            if(email===""||password===""){
+                props.messageRef.current.classList.remove('modal_message')
+                props.messageRef.current.classList.add('modal_error_message')
+                props.messageRef.current.innerText="Please fill all the fields"
+                props.messageRef.current.style.display="block"
+                setTimeout(()=>{
+                    props.messageRef.current.style.display="none"
+                },1500)
+            }
+            else {
+                if (password.length<6)
+                {
+                    props.messageRef.current.classList.remove('modal_message')
+                    props.messageRef.current.classList.add('modal_error_message')
+                    props.messageRef.current.innerText="Your password is too short"
+                    props.messageRef.current.style.display="block"
+                    setTimeout(()=>{
+                        props.messageRef.current.style.display="none"
+                    },1500)
+                }
+                else{
+                    if (confirmPass === password) {
+                
+                        const user = await SignUp(email, password, name)
+                        if (user === null) {
+                            props.messageRef.current.classList.remove('modal_message')
+                            props.messageRef.current.classList.add('modal_error_message')
+                            props.messageRef.current.innerText="Incorrect email or password"
+                            props.messageRef.current.style.display="block"
+                            setTimeout(()=>{
+                                props.messageRef.current.style.display="none"
+                            },1500)
+                        } else {
+                            props.closeModal(false);
+                        }
+                    }
+                    else{
+                        props.messageRef.current.classList.remove('modal_message')
+                        props.messageRef.current.classList.add('modal_error_message')
+                        props.messageRef.current.innerText="Wrong confirm password"
+                        props.messageRef.current.style.display="block"
+                        setTimeout(()=>{
+                            props.messageRef.current.style.display="none"
+                        },1500)
+                        }  
+>>>>>>> Stashed changes
                 }
             }
+           
+            
         }
 
     }
@@ -159,6 +257,7 @@ const ForgetPasswordModal = (props) => {
     const [email, setEmail] = useState('')
     const handleEnter = async (keyCode, email) => {
         if (keyCode === 13) {
+<<<<<<< Updated upstream
             const user = await Forgot(email)
             console.log()
             if (user === null) {
@@ -173,6 +272,39 @@ const ForgetPasswordModal = (props) => {
                 setTimeout(() => {
                     props.mess(true)
                 }, 2500)
+=======
+            if(email===""){
+                    props.messageRef.current.classList.remove('modal_message')
+                    props.messageRef.current.classList.add('modal_error_message')
+                    props.messageRef.current.innerText="Please fill all fields"
+                    props.messageRef.current.style.display="block"
+                    setTimeout(()=>{
+                        props.messageRef.current.style.display="none"
+                    },1500)
+            }
+            else{
+                const user = await Forgot(email)
+            
+                if(user===null){
+                    props.messageRef.current.classList.remove('modal_message')
+                    props.messageRef.current.classList.add('modal_error_message')
+                    props.messageRef.current.innerText="This email doesn't exist"
+                    props.messageRef.current.style.display="block"
+                    setTimeout(()=>{
+                        props.messageRef.current.style.display="none"
+                    },1500)
+                }
+                else{
+                    props.setFormDisplay(1)
+                    props.messageRef.current.classList.remove('modal_error_message')
+                    props.messageRef.current.classList.add('modal_message')
+                    props.messageRef.current.innerText="Please check your email"
+                    props.messageRef.current.style.display="block"
+                    setTimeout(()=>{
+                        props.messageRef.current.style.display="none"
+                    },1500)
+                }
+>>>>>>> Stashed changes
             }
         }
 
@@ -203,16 +335,21 @@ Modal.propType = {
 LoginModal.propType = {
     setFormDisplay: propType.func,
     closeModal: propType.func,
-    warn: propType.func
+    warn: propType.func,
+    messageRef:propType.object
 }
 RegisterModal.propType = {
     closeModal: propType.func,
-    warn: propType.func
+    messageRef:propType.object
 }
 ForgetPasswordModal.propType = {
     setFormDisplay: propType.func,
+<<<<<<< Updated upstream
     warn: propType.func,
     mess: propType.func,
+=======
+    messageRef:propType.object
+>>>>>>> Stashed changes
 }
 
 export default Modal
