@@ -35,6 +35,11 @@ const Detail = () => {
                         </div>
 
                         <div className="detail_content_info">
+                            <div className="detail_btn">
+                                <OutlineButton>Favorite</OutlineButton>
+                                <Button className='detail_btn_watch'>Watch</Button>
+                            </div>
+
                             <div className="title">
                                 <h1>{movie.title || movie.name}</h1>
                             </div>
@@ -59,10 +64,7 @@ const Detail = () => {
 
                             <div className="overview">{movie.overview}</div>
 
-                            <div className="detail_btn">
-                                <OutlineButton>Favorite</OutlineButton>
-                                <Button className='detail_btn_watch'>Watch</Button>
-                            </div>
+
                         </div>
                     </div>
 

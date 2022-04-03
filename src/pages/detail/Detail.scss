@@ -48,6 +48,7 @@
             }
         }
 
+
         .detail_content_info {
             width: 70%;
             padding-left: 2rem;
@@ -55,6 +56,22 @@
             @include mobile {
                 width: 100%;
                 padding-left: 0;
+            }
+
+            .detail_btn {
+
+                .outline_btn,
+                .btn {
+                    font-size: 1.2rem
+                }
+
+                .detail_btn_watch {
+                    margin-left: 1rem;
+                }
+            }
+
+            .title {
+                margin-top: 1rem;
             }
 
             .general_info {
@@ -76,7 +93,7 @@
             }
 
             .genres {
-                margin-top: 1rem;
+                margin-top: 2rem;
 
                 .genres_item {
                     border: 1px solid white;
@@ -91,20 +108,7 @@
             }
 
             .overview {
-                margin-top: 1rem;
-            }
-
-            .detail_btn {
                 margin-top: 2rem;
-
-                .outline_btn,
-                .btn {
-                    font-size: 1.2rem
-                }
-
-                .detail_btn_watch {
-                    margin-left: 1rem;
-                }
             }
         }
     }

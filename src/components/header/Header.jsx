@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { OutlineButton } from '../button/Button'
-import Modal from '../Modal/Modal'
+import Modal from '../modal/Modal'
 import './Header.scss'
 
 const headerNavItem = [
