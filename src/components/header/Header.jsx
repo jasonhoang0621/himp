@@ -22,6 +22,7 @@ const headerNavItem = [
 ]
 
 const Header = () => {
+    const navigation = useNavigate()
     const { pathname } = useLocation()
     const headerRef = useRef()
     const [isModal, setIsModal] = useState(false)
@@ -72,7 +73,7 @@ const Header = () => {
                         <ul className="header_logged_in_list">
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
-                            <li className="header_logged_in_item">Favorite list</li>
+                            <li className="header_logged_in_item" onClick={() => navigation(`/favorite/123`)}>Favorite list</li>
                             <li className="header_logged_in_item">Log out</li>
                         </ul>
                     </div>

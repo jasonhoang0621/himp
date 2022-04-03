@@ -41,6 +41,11 @@ const Comment = (props) => {
         <div className="comment">
             <div className="comment_item_icon">
                 <FaEllipsisH />
+
+                <ul className="comment_item_option_list">
+                    <li className="comment_item_option_item">Reply</li>
+                    <li className="comment_item_option_item">Delete</li>
+                </ul>
             </div>
             <div className="comment_item_name">
                 <h3>John Doe <span>Mar 04 at 4:03 pm</span></h3>

@@ -5,6 +5,7 @@ import Home from './pages/home/Home';
 import Category from './pages/category/Category';
 import Detail from './pages/detail/Detail';
 import Layout from './components/layout/Layout';
+import Favorite from './pages/favorite/Favorite';
 
 
 
@@ -21,9 +22,10 @@ function App() {
 
         <Route path="search/:keyword" element={<Category />} />
 
+        <Route path="favorite/:userID" element={<Favorite />} />
+
         <Route path='*' element={<Home />} />
       </Route>
-
     </Routes>
   );
 }
