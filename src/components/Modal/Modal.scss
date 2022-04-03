@@ -24,6 +24,7 @@
             animation: swipeDown 0.3s ease;
             overflow: hidden;
 
+            
             @include mobile {
                 min-width: 25rem;
                 padding: 3rem 3rem 0 3rem;
@@ -101,6 +102,10 @@
                 text-align: right;
                 color: red;
             }
+            .modal_message{
+                text-align: right;
+                color: blue
+            }
 
             .forget_modal_body {
                 padding-bottom: 3rem;
@@ -149,6 +154,7 @@
                 }
             }
         }
+        
     }
 }
 

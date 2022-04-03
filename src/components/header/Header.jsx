@@ -5,6 +5,7 @@ import { OutlineButton } from '../button/Button'
 import Modal from '../modal/Modal'
 import './Header.scss'
 import { FaUser } from 'react-icons/fa'
+import LoggedInModal from '../loggedInModal/LoggedInModal'
 
 const headerNavItem = [
     {
@@ -24,6 +25,7 @@ const Header = () => {
     const { pathname } = useLocation()
     const headerRef = useRef()
     const [isModal, setIsModal] = useState(false)
+    const [isLoggedInModal, setIsLoggedInModal] = useState(false)
 
     const active = headerNavItem.findIndex(item => item.path === pathname)
 
@@ -65,7 +67,7 @@ const Header = () => {
                     {/* <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton> */}
 
                     <div className="header_logged_in">
-                        <FaUser className='header_logged_in_icon' />
+                        <FaUser className='header_logged_in_icon' onClick={() => setIsLoggedInModal(true)} />
                         <ul className="header_logged_in_list">
                             <li className="header_logged_in_item">Information</li>
                             <li className="header_logged_in_item">Password</li>
@@ -75,7 +77,9 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+
             {isModal && <Modal closeModal={setIsModal} />}
+            {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} />}
         </div>
     )
 }

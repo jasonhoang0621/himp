@@ -1,4 +1,3 @@
-
 import propType from 'prop-types'
 import React, { useState } from 'react'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
@@ -13,6 +12,8 @@ const form = {
 
 const Modal = (props) => {
     const [formDisplay, setFormDisplay] = useState(form.login)
+    const [warn, setWarn] = useState(true)
+    const [message, setMessage] = useState(true)
 
     return (
         <>
@@ -27,17 +28,20 @@ const Modal = (props) => {
                                 <FaAngleLeft />
                             </div>}
 
-                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} />}
-                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} />}
-                        {formDisplay === 3 && <ForgetPasswordModal />}
+                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} warn={setWarn} />}
+                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} warn={setWarn} />}
+                        {formDisplay === 3 && <ForgetPasswordModal warn={setWarn} setFormDisplay={setFormDisplay} mess={setMessage} />}
 
-                        <div className="modal_error_message">
+                        <div className="modal_error_message" hidden={warn}>
                             Incorrect password or email
+                        </div>
+                        <div className="modal_message" hidden={message}>
+                            Please check your email
                         </div>
 
                         {(formDisplay === 1 || formDisplay === 2) &&
                             <div className="modal_footer">
-                                <div className="modal_footer_section modal_footer_login" onClick={() => setFormDisplay(1)}>
+                                <div className="modal_footer_section modal_footer_login" onClick={() => setFormDisplay(1)} >
                                     <div className="">Login</div>
                                 </div>
                                 <div className="modal_footer_section modal_footer_register" onClick={() => setFormDisplay(2)}>
@@ -58,6 +62,10 @@ const LoginModal = (props) => {
         if (keyCode === 13) {
             const user = await Login(email, password)
             if (user === null) {
+                props.warn(false)
+                setTimeout(() => {
+                    props.warn(true)
+                }, 1500)
 
             } else {
                 props.closeModal(false);
@@ -105,7 +113,10 @@ const RegisterModal = (props) => {
 
                 const user = await SignUp(email, password, name)
                 if (user === null) {
-
+                    props.warn(false)
+                    setTimeout(() => {
+                        props.warn(true)
+                    }, 1500)
                 } else {
                     props.closeModal(false);
                 }
@@ -144,15 +155,24 @@ const RegisterModal = (props) => {
     )
 }
 
-const ForgetPasswordModal = () => {
+const ForgetPasswordModal = (props) => {
     const [email, setEmail] = useState('')
     const handleEnter = async (keyCode, email) => {
         if (keyCode === 13) {
             const user = await Forgot(email)
+            console.log()
             if (user === null) {
-
-            } else {
-
+                props.warn(false)
+                setTimeout(() => {
+                    props.warn(true)
+                }, 1500)
+            }
+            else {
+                props.setFormDisplay(1)
+                props.mess(false)
+                setTimeout(() => {
+                    props.mess(true)
+                }, 2500)
             }
         }
 
@@ -182,10 +202,17 @@ Modal.propType = {
 
 LoginModal.propType = {
     setFormDisplay: propType.func,
-    closeModal: propType.func
+    closeModal: propType.func,
+    warn: propType.func
 }
 RegisterModal.propType = {
-    closeModal: propType.func
+    closeModal: propType.func,
+    warn: propType.func
+}
+ForgetPasswordModal.propType = {
+    setFormDisplay: propType.func,
+    warn: propType.func,
+    mess: propType.func,
 }
 
 export default Modal

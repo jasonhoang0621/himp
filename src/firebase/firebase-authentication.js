@@ -66,7 +66,7 @@ export const UpdateProfile = async (name, phone) => {
 export const Forgot = async (email) => {
     try {
         await sendPasswordResetEmail(auth, email)
-        return null;
+        return 1;
 
     } catch (error) {
         return null
