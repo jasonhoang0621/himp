@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaEnvelope, FaLock, FaUser, FaTimes } from 'react-icons/fa'
+import { FaLock, FaUser, FaTimes } from 'react-icons/fa'
 import './LoggedInModal.scss'
 
 
