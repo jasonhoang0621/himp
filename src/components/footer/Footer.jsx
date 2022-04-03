@@ -6,7 +6,7 @@ import './Footer.scss'
 const Footer = () => {
     return (
         <div className="footer" style={{ backgroundImage: `url(./asset/image/footer.jpg)` }}>
-            <div className="footer_warper section">
+            <div className="footer_wrapper section">
                 <ul className="footer_col">
                     <li><Link to='/'>Home</Link></li>
                     <li><Link to='/about'>About us</Link></li>

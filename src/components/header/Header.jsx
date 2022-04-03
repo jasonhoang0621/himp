@@ -26,6 +26,7 @@ const Header = () => {
     const headerRef = useRef()
     const [isModal, setIsModal] = useState(false)
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
+    const [formStatus, setFormStatus] = useState(1)
 
     const active = headerNavItem.findIndex(item => item.path === pathname)
 
@@ -67,10 +68,10 @@ const Header = () => {
                     {/* <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton> */}
 
                     <div className="header_logged_in">
-                        <FaUser className='header_logged_in_icon' onClick={() => setIsLoggedInModal(true)} />
+                        <FaUser className='header_logged_in_icon' />
                         <ul className="header_logged_in_list">
-                            <li className="header_logged_in_item">Information</li>
-                            <li className="header_logged_in_item">Password</li>
+                            <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
+                            <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
                             <li className="header_logged_in_item">Favorite list</li>
                             <li className="header_logged_in_item">Log out</li>
                         </ul>
@@ -79,7 +80,7 @@ const Header = () => {
             </div>
 
             {isModal && <Modal closeModal={setIsModal} />}
-            {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} />}
+            {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} />}
         </div>
     )
 }

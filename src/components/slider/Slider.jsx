@@ -87,7 +87,7 @@ const SliderItem = (props) => {
             style={{ backgroundImage: `url(${backgroundImage})` }}
         >
 
-            <div className="slider_item_warper container">
+            <div className="slider_item_wrapper container">
                 <div className="slider_item_poster">
                     <img src={tmdbApi.w5Image(item.poster_path)} alt="" style={{ flexShrink: '0' }} />
                 </div>

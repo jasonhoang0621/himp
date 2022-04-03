@@ -19,7 +19,7 @@ const Modal = (props) => {
         <>
             <div className="modal" onClick={() => { props.closeModal(false); }}>
                 <div className="modal_container">
-                    <div className="modal_warper" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal_wrapper" onClick={(e) => e.stopPropagation()}>
                         <div className="modal_close" onClick={() => { props.closeModal(false); }}>
                             <FaTimes />
                         </div>

@@ -3,7 +3,7 @@
 .footer {
     @include flex(center, center);
 
-    &_warper {
+    &_wrapper {
         padding: 5rem 0;
         width: 100%;
         @include overlay();

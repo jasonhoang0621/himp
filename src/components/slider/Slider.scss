@@ -12,7 +12,7 @@
     height: 30rem;
 
     &.active {
-        .slider_item_warper {
+        .slider_item_wrapper {
             .slider_item_poster {
                 img {
                     transform: scale(1);
@@ -46,7 +46,7 @@
         @include overlay();
     }
 
-    &_warper {
+    &_wrapper {
         padding: 2rem;
         @include flex(unset, unset);
         position: relative;
