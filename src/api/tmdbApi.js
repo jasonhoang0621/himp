@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient"
+import { axiosTMDB } from "./axiosClient"
 
 export const movieCategory = {
     movie: 'movie',
@@ -22,31 +22,31 @@ const tmdbAPI = {
     w5Image: (imagePath) => `https://image.tmdb.org/t/p/w500/${imagePath}`,
     getMoviesList: (type, params) => {
         const url = 'movie/' + movieType[type]
-        return axiosClient.get(url, { params })
+        return axiosTMDB.get(url, { params })
     },
     getTVList: (type, params) => {
         const url = 'tv/' + tvType[type]
-        return axiosClient.get(url, { params })
+        return axiosTMDB.get(url, { params })
     },
     getVideo: (category, id) => {
         const url = `${movieCategory[category]}/${id}/videos`
-        return axiosClient.get(url, { params: {} })
+        return axiosTMDB.get(url, { params: {} })
     },
     search: (category, params) => {
         const url = `search/${movieCategory[category]}`
-        return axiosClient.get(url, { params })
+        return axiosTMDB.get(url, { params })
     },
     details: (category, id, params) => {
         const url = `${movieCategory[category]}/${id}`
-        return axiosClient.get(url, params)
+        return axiosTMDB.get(url, params)
     },
     credits: (category, id) => {
         const url = `${movieCategory[category]}/${id}/credits`
-        return axiosClient.get(url, { params: {} })
+        return axiosTMDB.get(url, { params: {} })
     },
     similar: (category, id) => {
         const url = `${movieCategory[category]}/${id}/similar`
-        return axiosClient.get(url, { params: {} })
+        return axiosTMDB.get(url, { params: {} })
     },
 }
 

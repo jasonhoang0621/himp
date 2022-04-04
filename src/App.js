@@ -6,6 +6,7 @@ import Category from './pages/category/Category';
 import Detail from './pages/detail/Detail';
 import Layout from './components/layout/Layout';
 import Favorite from './pages/favorite/Favorite';
+import Stream from './pages/stream/Stream';
 
 
 
@@ -20,9 +21,11 @@ function App() {
           <Route path=":id" element={<Detail />} />
         </Route>
 
+        <Route path="stream/:category/:id" element={<Stream />} />
         <Route path="search/:keyword" element={<Category />} />
 
         <Route path="favorite/:userID" element={<Favorite />} />
+
 
         <Route path='*' element={<Home />} />
       </Route>

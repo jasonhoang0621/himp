@@ -42,6 +42,7 @@ const TrailerVideo = (props) => {
                 width='100%'
                 frameBorder="0"
                 title='trailer'
+                allowFullScreen='allowFullScreen'
                 ref={trailerRef}
             ></iframe>
             <div className="title">

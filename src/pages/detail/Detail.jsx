@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import tmdbAPI from '../../api/tmdbApi'
 import Button, { OutlineButton } from '../../components/button/Button'
 import CommentList from '../../components/commentList/CommnentList'
-import MovieList from '../../components/movieList/MovieList'
 import CastList from './CastList'
 import './Detail.scss'
 import TrailerList from './TrailerList'
 import { FaStar } from 'react-icons/fa'
+import Similar from '../../components/similar/Similar'
 
 const Detail = () => {
+    const navigation = useNavigate()
     const { category, id } = useParams()
     const [movie, setMovie] = useState(null)
 
@@ -37,7 +38,7 @@ const Detail = () => {
                         <div className="detail_content_info">
                             <div className="detail_btn">
                                 <OutlineButton>Favorite</OutlineButton>
-                                <Button className='detail_btn_watch'>Watch</Button>
+                                <Button className='detail_btn_watch' onClick={() => navigation(`/stream/${category}/${movie.id}`)}>Watch</Button>
                             </div>
 
                             <div className="title">
@@ -90,8 +91,7 @@ const Detail = () => {
                     </div>
 
                     <div className="detail_similar section">
-                        <h2>Similar</h2>
-                        <MovieList type='similar' movieCategory={category} id={movie.id.toString()} />
+                        <Similar movieCategory={category} id={movie.id.toString()} />
                     </div>
                 </div>
             }
