@@ -2,4 +2,122 @@
 
 .stream {
     margin-top: $header_height;
+
+    .stream_comment {
+        margin-top: 2rem;
+        padding: 0 10rem;
+
+        @include mobile {
+            padding: 0 2rem;
+        }
+    }
+
+    .stream_similar {
+        margin-top: 2rem;
+        padding: 0 10rem;
+
+        @include mobile {
+            padding: 0 2rem;
+        }
+    }
+}
+
+.tv_chooser {
+    margin-top: 2rem;
+    margin: 2rem;
+    background-color: #cdcdcd;
+    padding: 2rem;
+    border-radius: $border_radius;
+
+    @include mobile {
+        padding: 0 2rem;
+    }
+
+    .tv_season {
+        position: relative;
+
+        .tv_season_main {
+            color: $body_background;
+            cursor: pointer;
+
+            .tv_season_first_icon {
+                margin-right: 0.5rem;
+                transform: translateY(10%);
+            }
+
+            .tv_season_last_icon {
+                margin-left: 0.5rem;
+                transform: translateY(10%);
+            }
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+
+        .tv_chooser_season_list {
+            position: absolute;
+            top: 120%;
+            left: 0;
+            background-color: white;
+            color: $body_background;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid $body_background;
+            box-shadow: $box_shadow;
+
+
+
+            .tv_chooser_season_item {
+                &:last-child {
+                    border: none;
+                }
+
+                cursor: pointer;
+                padding: 0.7rem 2rem 0.7rem 1rem;
+                border-bottom: 1px solid #cdcdcd;
+
+                &:hover {
+                    background-color: $lighter_background;
+                    color: white;
+                }
+            }
+        }
+
+    }
+
+    .tv_episode {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: 2rem;
+
+        .episode_item {
+            @include flex(unset, unset);
+            padding: 0.5rem;
+            background-color: $lighter_background;
+            color: white;
+            box-shadow: -3px 3px 10px 0 $body_background;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.7;
+            }
+
+            &.active {
+                color: $body_background;
+                background-color: white;
+                pointer-events: none;
+            }
+
+            .episode_number {
+                font-weight: 600;
+            }
+
+            .episode_name {
+                font-size: 0.95rem;
+            }
+        }
+    }
 }

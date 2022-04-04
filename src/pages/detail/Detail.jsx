@@ -7,7 +7,7 @@ import CastList from './CastList'
 import './Detail.scss'
 import TrailerList from './TrailerList'
 import { FaStar } from 'react-icons/fa'
-import Similar from '../../components/similar/Similar'
+import MovieList from '../../components/movieList/MovieList'
 
 const Detail = () => {
     const navigation = useNavigate()
@@ -46,13 +46,18 @@ const Detail = () => {
                             </div>
 
                             <div className="general_info">
+                                {movie.first_air_date && <div className="tv_info_item">{movie.number_of_seasons === 1 ? movie.number_of_seasons + ' Season' : movie.number_of_seasons + " Seasons"}</div>}
                                 <div className="runtime">
-                                    {movie.runtime} min
+                                    {category === 'movie' ? movie.runtime : movie.episode_run_time[0]} min
                                 </div>
                                 <div className="vote_average">
                                     {movie.vote_average}
                                     <span className="vote_average_icon"><FaStar /></span>
                                 </div>
+                            </div>
+
+                            <div className="release_date">
+                                Released: {movie.release_date || movie.first_air_date}
                             </div>
 
                             <div className="genres">
@@ -64,8 +69,6 @@ const Detail = () => {
                             </div>
 
                             <div className="overview">{movie.overview}</div>
-
-
                         </div>
                     </div>
 
@@ -80,18 +83,19 @@ const Detail = () => {
 
                     <div className="detail_trailer section">
                         <div className="cast_header">
-                            <h2>Trailer</h2>
+                            <h2>Trailers</h2>
                         </div>
                         <TrailerList category={category} id={id} />
                     </div>
 
                     <div className="detail_comment section">
-                        <h2>Comment</h2>
+                        <h2>Comments</h2>
                         <CommentList movieCategory={category} id={movie.id.toString()} />
                     </div>
 
                     <div className="detail_similar section">
-                        <Similar movieCategory={category} id={movie.id.toString()} />
+                        <h2>You may also like</h2>
+                        <MovieList movieCategory={category} id={movie.id.toString()} type='similar' />
                     </div>
                 </div>
             }

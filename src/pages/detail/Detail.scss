@@ -77,6 +77,10 @@
             .general_info {
                 @include flex(unset, unset);
 
+                .tv_info_item {
+                    margin-right: 1rem;
+                }
+
                 .vote_average {
                     margin-left: 2rem;
                     position: relative;
@@ -90,6 +94,10 @@
                         color: yellow;
                     }
                 }
+            }
+
+            .release_date {
+                margin-top: 0.5rem;
             }
 
             .genres {
@@ -137,11 +145,10 @@
 
 
         .trailer_item {
-            &>*~* {
-                margin-top: 5rem;
-            }
+            margin-top: 1rem;
 
             .title {
+                margin-bottom: 5rem;
                 text-align: center;
             }
         }

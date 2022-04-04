@@ -20,7 +20,11 @@ const CastList = (props) => {
                 casts.map((cast, index) => (
                     <div key={index} className="cast_item">
                         <div className="cast_item_img">
-                            <img src={tmdbAPI.w5Image(cast.profile_path)} alt="" />
+                            {cast.profile_path ?
+                                <img src={tmdbAPI.originalImage(cast.profile_path)} alt="" />
+                                :
+                                <img src='https://media.wired.com/photos/5a0201b14834c514857a7ed7/master/pass/1217-WI-APHIST-01.jpg' alt="" />
+                            }
                         </div>
                         <div className="cast_item_name">{cast.name}</div>
                     </div>

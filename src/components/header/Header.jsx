@@ -66,9 +66,9 @@ const Header = () => {
                     <SearchBar />
 
 
-                    {/* <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton> */}
+                    <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton>
 
-                    <div className="header_logged_in">
+                    {/* <div className="header_logged_in">
                         <FaUser className='header_logged_in_icon' />
                         <ul className="header_logged_in_list">
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
@@ -76,7 +76,7 @@ const Header = () => {
                             <li className="header_logged_in_item" onClick={() => navigation(`/favorite/123`)}>Favorite list</li>
                             <li className="header_logged_in_item">Log out</li>
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

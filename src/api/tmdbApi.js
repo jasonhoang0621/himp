@@ -48,6 +48,10 @@ const tmdbAPI = {
         const url = `${movieCategory[category]}/${id}/similar`
         return axiosTMDB.get(url, { params: {} })
     },
+    episode: (id, season) => {
+        const url = `/tv/${id}/season/${season}`
+        return axiosTMDB.get(url, { params: {} })
+    }
 }
 
 export default tmdbAPI;

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import tmdbAPI from '../../api/tmdbApi'
 import UseWindowSize from '../../customHook/UseWindowSize'
 
-
 const TrailerList = (props) => {
     const [trailers, setTrailers] = useState([])
 
