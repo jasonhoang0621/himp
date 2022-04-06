@@ -2,28 +2,44 @@ import { app } from './firebase-config'
 import {
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateEmail, updatePassword, signOut
     , sendPasswordResetEmail
-    , updateProfile
+    , updateProfile,
+    onAuthStateChanged,
+    setPersistence,
+    browserSessionPersistence,
 } from "firebase/auth";
 
 
 export const auth = getAuth(app)
 
+ onAuthStateChanged(auth, (user) => {
+    if (user) {
+      
+      const uid = user.uid;
+      user? localStorage.setItem('authUser', JSON.stringify(user)): localStorage.removeItem('authUser')
+    } else {
+      localStorage.removeItem('authUser')
+    }
+});
+
+
 export const Login = async (email, password) => {
     try {
+        setPersistence(auth, browserSessionPersistence)
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
         return user
     } catch (error) {
-        console.log(error)
+        
         return null
     }
 
 }
 
-export const SignUp = async (email, password) => {
+export const SignUp = async (email, password,name) => {
     try {
 
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        await createUserWithEmailAndPassword(auth, email, password)
+        const userCredential=await UpdateProfile(name);
         const user = userCredential.user
 
         return user
@@ -51,7 +67,8 @@ export const ChangePassword = async (newPass) => {
 export const SignOut = async () => {
     await signOut(auth)
 }
-export const UpdateProfile = async (name, phone) => {
+export const UpdateProfile = async (name) => {
+    console.log(auth.currentUser);
     try {
         await updateProfile(auth.currentUser, {
             displayName: name,
@@ -71,5 +88,16 @@ export const Forgot = async (email) => {
     } catch (error) {
         return null
     }
+}
+
+export const UpdatePassword= async (newPassword)=>{
+    try{
+        const user = await updatePassword(auth.currentUser, newPassword)
+        return user;
+    }catch(error){
+        console.log(error);
+        return null
+    }
+    
 }
 export default auth

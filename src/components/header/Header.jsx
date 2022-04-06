@@ -6,6 +6,7 @@ import Modal from '../modal/Modal'
 import './Header.scss'
 import { FaUser } from 'react-icons/fa'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
+import auth,{SignOut} from '../../firebase/firebase-authentication'
 
 const headerNavItem = [
     {
@@ -65,18 +66,18 @@ const Header = () => {
 
                     <SearchBar />
 
-
-                    <OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton>
-
-                    {/* <div className="header_logged_in">
+                    {auth.currentUser?<div className="header_logged_in">
                         <FaUser className='header_logged_in_icon' />
                         <ul className="header_logged_in_list">
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
                             <li className="header_logged_in_item" onClick={() => navigation(`/favorite/123`)}>Favorite list</li>
-                            <li className="header_logged_in_item">Log out</li>
+                            <li className="header_logged_in_item" onClick={()=>SignOut()}>Log out</li>
                         </ul>
-                    </div> */}
+                    </div>:<OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton>}
+                    
+
+                    
                 </div>
             </div>
 

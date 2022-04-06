@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { FaLock, FaUser, FaTimes } from 'react-icons/fa'
 import './LoggedInModal.scss'
+import auth,{UpdateProfile,UpdatePassword} from '../../firebase/firebase-authentication'
+
 
 
 const form = {
@@ -28,7 +30,7 @@ const LoggedInModal = (props) => {
                                 <div className="logged_modal_footer_section logged_modal_footer_information" onClick={() => setFormDisplay(1)}>
                                     <div className="">Information</div>
                                 </div>
-                                <div className="logged_modal_footer_section logged_modal_footer_password" onClick={() => setFormDisplay(2)}>
+                                <div className="logged_modal_footer_section logged_modal_footer_password" onClick={() => setFormDisplay(2) }>
                                     <div className="">Password</div>
                                 </div>
                             </div>}
@@ -41,7 +43,15 @@ const LoggedInModal = (props) => {
 
 const InformationModal = () => {
     const [change, setChange] = useState(false)
-
+    const [name,setName]=useState("");
+    
+    const saveChangeName=(code,name)=>{
+        if(code ===13){
+            UpdateProfile(name);
+            setChange(false);
+        }
+            
+    }
     return (
         <div className='logged_modal_content'>
             <div className="logged_modal_header">
@@ -54,7 +64,7 @@ const InformationModal = () => {
                         <div className="logged_modal_form_input">
                             <div className="logged_modal_form_group" style={{ margin: 0 }}>
                                 <FaUser className='logged_modal_form_group_icon' />
-                                <input type="text" placeholder='Name' />
+                                <input type="text" placeholder='Name' onKeyUp={e=>saveChangeName(e.keyCode,name)} value ={name} onChange={e=>setName(e.target.value)}/>
                             </div>
                             <div className="logged_modal_form_info_change" onClick={() => setChange(!change)}>
                                 {change ? 'save' : 'change'}
@@ -65,10 +75,10 @@ const InformationModal = () => {
                     {!change &&
                         <div className="logged_modal_form_info">
                             <div className="logged_modal_form_info_content">
-                                <span className='logged_modal_form_info_content_label'>Name:</span> Nhan Hoang
+                                <span className='logged_modal_form_info_content_label'>Name:</span> {auth.currentUser.displayName}
                             </div>
-                            <div className="logged_modal_form_info_change" onClick={() => setChange(!change)}>
-                                {change ? 'save' : 'change'}
+                            <div className="logged_modal_form_info_change" onClick={() => setChange(!change)} >
+                                {change ? 'save'  : 'change'}
                             </div>
                         </div>
                     }
@@ -79,6 +89,52 @@ const InformationModal = () => {
 }
 
 const RegisterModal = () => {
+    const [newPass,setNewPass]=useState("")
+    const [confirm,setConfirm]=useState("")
+    const messageRef = useRef()
+    const updatePassword=async (code,newPass,confirm)=>{
+        if(code===13){
+            if(newPass===""||confirm===""){
+                messageRef.current.classList.remove('logged_modal_message')
+                messageRef.current.classList.add('logged_modal_error_message')
+                messageRef.current.innerText="Please fill all the fields"
+                messageRef.current.style.display="block"
+                setTimeout(()=>{
+                    messageRef.current.style.display="none"
+                },1500)
+            }else{
+                if (newPass===confirm){
+                    const user = await UpdatePassword(newPass);
+                    if(user===null){
+                        messageRef.current.classList.remove('logged_modal_message')
+                        messageRef.current.classList.add('logged_modal_error_message')
+                        messageRef.current.innerText="Your password is too short"
+                        messageRef.current.style.display="block"
+                        setTimeout(()=>{
+                            messageRef.current.style.display="none"
+                        },1500)
+                    }else{
+                        
+                        messageRef.current.classList.remove('logged_modal_error_message')
+                        messageRef.current.classList.add('logged_modal_message')
+                        messageRef.current.innerText="UpdateSuccess"
+                        messageRef.current.style.display="block"
+                        setTimeout(()=>{
+                            messageRef.current.style.display="none"
+                        },1500)
+                    }
+                }else{
+                    messageRef.current.classList.remove('logged_modal_message')
+                    messageRef.current.classList.add('logged_modal_error_message')
+                    messageRef.current.innerText="Your confirm password is incorrect"
+                    messageRef.current.style.display="block"
+                    setTimeout(()=>{
+                        messageRef.current.style.display="none"
+                    },1500)
+                }
+            }
+        }
+    }
     return (
         <div className='logged_modal_content'>
             <div className="logged_modal_header">
@@ -87,21 +143,22 @@ const RegisterModal = () => {
 
             <div className="logged_modal_body">
                 <div className="logged_modal_form">
+    
                     <div className="logged_modal_form_group">
                         <FaLock className='logged_modal_form_group_icon' />
-                        <input type="password" placeholder='Current password' required />
+                        <input type="password" placeholder='New password' required value={newPass} onChange={(e)=>setNewPass(e.target.value)}onKeyUp={e=>updatePassword(e.keyCode,newPass,confirm)}/>
                     </div>
                     <div className="logged_modal_form_group">
                         <FaLock className='logged_modal_form_group_icon' />
-                        <input type="password" placeholder='New password' required />
+                        <input type="password" placeholder='Retype password' required onChange={(e)=>setConfirm(e.target.value)} onKeyUp={e=>updatePassword(e.keyCode,newPass,confirm)} />
                     </div>
-                    <div className="logged_modal_form_group">
-                        <FaLock className='logged_modal_form_group_icon' />
-                        <input type="password" placeholder='Retype password' required />
+                    <div ref={messageRef} className="logged_modal_error_message" style={{display:"none"}}>
+                        Incorrect password or email
                     </div>
-
                 </div >
+                
             </div >
+
         </div >
     )
 }
