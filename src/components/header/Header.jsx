@@ -27,13 +27,13 @@ const Header = () => {
     const [isModal, setIsModal] = useState(false)
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
     const [formStatus, setFormStatus] = useState(1)
-    const [user,setUserState] = useState(0)
+    const [user,setUserState] = useState(localStorage.getItem("authUser"))
 
     const handleSignOut =async()=>{
         await SignOut();
-        setUserState(user=>user+1)
+        setUserState(null)
     }
-    
+    console.log(user)
     const active = headerNavItem.findIndex(item => item.path === pathname)
     useEffect(() => {
         const shrinkHeader = () => {
@@ -49,7 +49,6 @@ const Header = () => {
             window.removeEventListener('scroll', shrinkHeader)
         }
     })
-
     return (
         <div ref={headerRef} className="header">
 
@@ -69,7 +68,7 @@ const Header = () => {
 
                     <SearchBar />
 
-                    {auth.currentUser ?
+                    {user!=null ?
                     <div className="header_logged_in">
                         <FaUser className='header_logged_in_icon' />
                         <ul className="header_logged_in_list">
@@ -80,12 +79,12 @@ const Header = () => {
                         </ul>
                     </div>
                     :
-                    <OutlineButton onClick={() => setIsModal(true)} >Sign in</OutlineButton>}
+                    <OutlineButton onClick={() => {setIsModal(true)}}  >Sign in</OutlineButton>}
                     
                 </div>
             </div>
 
-            {isModal && <Modal closeModal={setIsModal} />}
+            {isModal && <Modal closeModal={setIsModal} changeUser={setUserState}/>}
             {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} username={auth.currentUser.displayName} />}
         </div>
     )

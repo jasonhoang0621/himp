@@ -31,8 +31,8 @@ const Modal = (props) => {
                             </div>}
 
 
-                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal}  messageRef={messageRef}/>}
-                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal}  messageRef={messageRef}/>}
+                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal}  messageRef={messageRef} changeUser={props.changeUser}/>}
+                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal}  messageRef={messageRef} changeUser={props.changeUser}/>}
                         {formDisplay === 3 && <ForgetPasswordModal  setFormDisplay={setFormDisplay} messageRef={messageRef}/>}
 
 
@@ -95,6 +95,7 @@ const LoginModal = (props) => {
                         },1500)
                         
                     } else {
+                        props.changeUser(localStorage.getItem("authUser"))
                         props.closeModal(false);
                     }
                 }
@@ -172,7 +173,10 @@ const RegisterModal = (props) => {
                                 props.messageRef.current.style.display="none"
                             },1500)
                         } else {
+                            localStorage.setItem("authUser",user)
+                            props.changeUser(localStorage.getItem("authUser"))
                             props.closeModal(false);
+
                         }
                     }
                     else{
@@ -284,18 +288,21 @@ const ForgetPasswordModal = (props) => {
 }
 
 Modal.propType = {
-    closeModal: propType.func
+    closeModal: propType.func,
+    changeUser: propType.func
 }
 
 LoginModal.propType = {
     setFormDisplay: propType.func,
     closeModal: propType.func,
     warn: propType.func,
-    messageRef:propType.object
+    messageRef:propType.object,
+    changeUser: propType.func
 }
 RegisterModal.propType = {
     closeModal: propType.func,
-    messageRef:propType.object
+    messageRef:propType.object,
+    changeUser: propType.func
 }
 ForgetPasswordModal.propType = {
     setFormDisplay: propType.func,

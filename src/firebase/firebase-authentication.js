@@ -11,9 +11,8 @@ import {
 
 export const auth = getAuth(app)
 
- onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     if (user) {
-      
       const uid = user.uid;
       user? localStorage.setItem('authUser', JSON.stringify(user)): localStorage.removeItem('authUser')
     } else {
