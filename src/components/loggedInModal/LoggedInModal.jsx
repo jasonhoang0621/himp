@@ -12,7 +12,7 @@ const form = {
 
 const LoggedInModal = (props) => {
     const [formDisplay, setFormDisplay] = useState(props.form || form.information)
-
+    const [name,setName] = useState(props.username)
     return (
         <>
             <div className="logged_modal" onClick={() => { props.closeModal(false); }}>
@@ -22,7 +22,7 @@ const LoggedInModal = (props) => {
                             <FaTimes />
                         </div>
 
-                        {formDisplay === 1 && <InformationModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} />}
+                        {formDisplay === 1 && <InformationModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} username={props.username}/>}
                         {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} />}
 
                         {(formDisplay === 1 || formDisplay === 2) &&
@@ -41,9 +41,9 @@ const LoggedInModal = (props) => {
     )
 }
 
-const InformationModal = () => {
+const InformationModal = (props) => {
     const [change, setChange] = useState(false)
-    const [name,setName]=useState("");
+    const [name,setName]=useState(props.username);
     
     const saveChangeName=(code,name)=>{
         if(code ===13){
@@ -75,7 +75,7 @@ const InformationModal = () => {
                     {!change &&
                         <div className="logged_modal_form_info">
                             <div className="logged_modal_form_info_content">
-                                <span className='logged_modal_form_info_content_label'>Name:</span> {auth.currentUser.displayName}
+                                <span className='logged_modal_form_info_content_label'>Name:</span> {name}
                             </div>
                             <div className="logged_modal_form_info_change" onClick={() => setChange(!change)} >
                                 {change ? 'save'  : 'change'}

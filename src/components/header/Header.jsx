@@ -1,5 +1,4 @@
-
-import React, { useEffect, useRef, useState } from 'react'
+import React, {  useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { OutlineButton } from '../button/Button'
 import Modal from '../modal/Modal'
@@ -7,7 +6,6 @@ import './Header.scss'
 import { FaUser } from 'react-icons/fa'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
 import auth,{SignOut} from '../../firebase/firebase-authentication'
-
 const headerNavItem = [
     {
         display: 'Home',
@@ -29,9 +27,14 @@ const Header = () => {
     const [isModal, setIsModal] = useState(false)
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
     const [formStatus, setFormStatus] = useState(1)
+    const [user,setUserState] = useState(0)
 
+    const handleSignOut =async()=>{
+        await SignOut();
+        setUserState(user=>user+1)
+    }
+    
     const active = headerNavItem.findIndex(item => item.path === pathname)
-
     useEffect(() => {
         const shrinkHeader = () => {
             if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
@@ -66,23 +69,24 @@ const Header = () => {
 
                     <SearchBar />
 
-                    {auth.currentUser?<div className="header_logged_in">
+                    {auth.currentUser ?
+                    <div className="header_logged_in">
                         <FaUser className='header_logged_in_icon' />
                         <ul className="header_logged_in_list">
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
-                            <li className="header_logged_in_item" onClick={() => navigation(`/favorite/123`)}>Favorite list</li>
-                            <li className="header_logged_in_item" onClick={()=>SignOut()}>Log out</li>
+                            <li className="header_logged_in_item">Favorite list</li>
+                            <li className="header_logged_in_item" onClick={handleSignOut}>Log out</li>
                         </ul>
-                    </div>:<OutlineButton onClick={() => setIsModal(true)}>Sign in</OutlineButton>}
-                    
-
+                    </div>
+                    :
+                    <OutlineButton onClick={() => setIsModal(true)} >Sign in</OutlineButton>}
                     
                 </div>
             </div>
 
             {isModal && <Modal closeModal={setIsModal} />}
-            {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} />}
+            {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} username={auth.currentUser.displayName} />}
         </div>
     )
 }
