@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
 import { FaLock, FaUser, FaTimes } from 'react-icons/fa'
 import './LoggedInModal.scss'
-import auth,{UpdateProfile,UpdatePassword} from '../../firebase/firebase-authentication'
-
+import {UpdateProfile,UpdatePassword,auth} from '../../firebase/firebase-authentication'
+import {User} from '../../firebase/firestore'
 
 
 const form = {
@@ -12,7 +12,7 @@ const form = {
 
 const LoggedInModal = (props) => {
     const [formDisplay, setFormDisplay] = useState(props.form || form.information)
-    const [name,setName] = useState(props.username)
+    
     return (
         <>
             <div className="logged_modal" onClick={() => { props.closeModal(false); }}>
@@ -47,8 +47,12 @@ const InformationModal = (props) => {
     
     const saveChangeName=(code,name)=>{
         if(code ===13){
-            UpdateProfile(name);
-            setChange(false);
+            if(name!==""){
+                UpdateProfile(name);
+                User.updateName(auth.currentUser.email,name)
+                setChange(false);
+            }
+            
         }
             
     }

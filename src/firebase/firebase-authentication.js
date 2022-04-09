@@ -13,7 +13,6 @@ export const auth = getAuth(app)
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-      const uid = user.uid;
       user? localStorage.setItem('authUser', JSON.stringify(user)): localStorage.removeItem('authUser')
     } else {
       localStorage.removeItem('authUser')
@@ -38,9 +37,9 @@ export const SignUp = async (email, password,name) => {
     try {
 
         await createUserWithEmailAndPassword(auth, email, password)
-        const userCredential=await UpdateProfile(name);
-        const user = userCredential.user
-
+        await UpdateProfile(name);
+        const user=auth.currentUser
+    
         return user
     } catch (error) {
 
@@ -99,4 +98,3 @@ export const UpdatePassword= async (newPassword)=>{
     }
     
 }
-export default auth

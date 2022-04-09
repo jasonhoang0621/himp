@@ -2,6 +2,7 @@ import propType from 'prop-types'
 import React, { useState,useRef } from 'react'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
+import { User } from '../../firebase/firestore'
 import './Modal.scss'
 
 const form = {
@@ -84,20 +85,33 @@ const LoginModal = (props) => {
                     },1500)
                 }
                 else{
-                    const user = await Login(email, password)
-                    if (user === null) {
+                    const check = await User.getStateUser(email)
+                    if(check ===true){
+                        const user = await Login(email, password)
+                        if (user === null) {
+                            props.messageRef.current.classList.remove('modal_message')
+                            props.messageRef.current.classList.add('modal_error_message')
+                            props.messageRef.current.innerText="Incorrect email or password"
+                            props.messageRef.current.style.display="block"
+                            setTimeout(()=>{
+                                props.messageRef.current.style.display="none"
+                            },1500)
+                            
+                        } else {
+                            props.changeUser(localStorage.getItem("authUser"))
+                            
+                            props.closeModal(false);
+                        }
+                    }else{
                         props.messageRef.current.classList.remove('modal_message')
                         props.messageRef.current.classList.add('modal_error_message')
-                        props.messageRef.current.innerText="Incorrect email or password"
+                        props.messageRef.current.innerText="Your account have been banned by admin"
                         props.messageRef.current.style.display="block"
                         setTimeout(()=>{
                             props.messageRef.current.style.display="none"
                         },1500)
-                        
-                    } else {
-                        props.changeUser(localStorage.getItem("authUser"))
-                        props.closeModal(false);
                     }
+                    
                 }
             }
            
@@ -173,8 +187,14 @@ const RegisterModal = (props) => {
                                 props.messageRef.current.style.display="none"
                             },1500)
                         } else {
-                            localStorage.setItem("authUser",user)
                             props.changeUser(localStorage.getItem("authUser"))
+                            const info = {
+                                name:user.displayName,
+                                email: email,
+                                role: false,
+                                state: true
+                            }
+                            await User.addUser(info)
                             props.closeModal(false);
 
                         }

@@ -5,7 +5,7 @@ import Modal from '../modal/Modal'
 import './Header.scss'
 import { FaUser } from 'react-icons/fa'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
-import auth,{SignOut} from '../../firebase/firebase-authentication'
+import {SignOut,auth} from '../../firebase/firebase-authentication'
 const headerNavItem = [
     {
         display: 'Home',
@@ -33,7 +33,7 @@ const Header = () => {
         await SignOut();
         setUserState(null)
     }
-    console.log(user)
+
     const active = headerNavItem.findIndex(item => item.path === pathname)
     useEffect(() => {
         const shrinkHeader = () => {
