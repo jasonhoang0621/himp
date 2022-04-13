@@ -21,18 +21,25 @@ const headerNavItem = [
 ]
 
 const Header = () => {
-    const navigation = useNavigate()
     const { pathname } = useLocation()
     const headerRef = useRef()
     const [isModal, setIsModal] = useState(false)
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
     const [formStatus, setFormStatus] = useState(1)
     const [user,setUserState] = useState(localStorage.getItem("authUser"))
+    let role = localStorage.getItem("role")
+    const changeUser=(data)=>{
+        setUserState(data)
+        role = localStorage.getItem("role")
+    }
 
     const handleSignOut =async()=>{
         await SignOut();
+        role = null
+        localStorage.removeItem("role")
         setUserState(null)
     }
+    console.log(role)
 
     const active = headerNavItem.findIndex(item => item.path === pathname)
     useEffect(() => {
@@ -75,6 +82,10 @@ const Header = () => {
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
                             <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
                             <li className="header_logged_in_item">Favorite list</li>
+                            {role!=="false"?
+                            <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>User list</li>
+                            :<></>}
+                            
                             <li className="header_logged_in_item" onClick={handleSignOut}>Log out</li>
                         </ul>
                     </div>
@@ -84,7 +95,7 @@ const Header = () => {
                 </div>
             </div>
 
-            {isModal && <Modal closeModal={setIsModal} changeUser={setUserState}/>}
+            {isModal && <Modal closeModal={setIsModal} changeUser={changeUser}/>}
             {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} username={auth.currentUser.displayName} />}
         </div>
     )

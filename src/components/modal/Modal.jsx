@@ -86,7 +86,7 @@ const LoginModal = (props) => {
                 }
                 else{
                     const check = await User.getStateUser(email)
-                    if(check ===true){
+                    if(check.state ===true){
                         const user = await Login(email, password)
                         if (user === null) {
                             props.messageRef.current.classList.remove('modal_message')
@@ -98,8 +98,8 @@ const LoginModal = (props) => {
                             },1500)
                             
                         } else {
-                            props.changeUser(localStorage.getItem("authUser"))
-                            
+                            localStorage.setItem("role",check.role)
+                            props.changeUser(localStorage.getItem("authUser"))              
                             props.closeModal(false);
                         }
                     }else{

@@ -1,15 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaEllipsisH } from 'react-icons/fa'
 import { OutlineButton } from '../button/Button'
 import './CommentList.scss'
+import Modal from '../modal/Modal'
 
 const CommentList = (props) => {
+    const [isModal, setIsModal] = useState(false)
+    const [user,setUserState] = useState(localStorage.getItem("authUser"))
+    const handleClick=async()=>{
+        let user = localStorage.getItem("authUser")
+        if(user ===null){
+            console.log("ALO")
+            setIsModal(true)
+        }else{
+            
+        }
+    }
     return (
         <div className="comment_list">
             <div className="comment_list_container">
-                {/* just show when logged in */}
                 <div className="comment_input">
                     <textarea type="text" placeholder='write a comment' />
+                    <div className='button_input'>
+                    <OutlineButton onClick = {()=>handleClick()}>POST COMMENT</OutlineButton>
+                    </div>     
                 </div>
 
                 {/* làm cái useState list hiện 5 comment thôi, bấm load more thì callapi request r add thêm 5 cái nữa */}
@@ -32,6 +46,7 @@ const CommentList = (props) => {
             <div className="comment_load_more">
                 <OutlineButton>Load more</OutlineButton>
             </div>
+            {isModal && <Modal closeModal={setIsModal} changeUser={setUserState}/>}
         </div>
     )
 }

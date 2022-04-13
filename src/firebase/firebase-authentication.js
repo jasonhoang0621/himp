@@ -13,7 +13,7 @@ export const auth = getAuth(app)
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-      user? localStorage.setItem('authUser', JSON.stringify(user)): localStorage.removeItem('authUser')
+      user? localStorage.setItem('authUser', JSON.stringify({user})): localStorage.removeItem('authUser')
     } else {
       localStorage.removeItem('authUser')
     }

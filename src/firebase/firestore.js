@@ -13,7 +13,11 @@ export const User = {
             const querySnapshot = await getDocs(q)
             let result=null;
             querySnapshot.forEach((doc) => {        
-                result= doc.data().state;
+                result= {
+                    state:doc.data().state,
+                    role: doc.data().role
+                }
+
               });
               return result;
         }catch(error){
