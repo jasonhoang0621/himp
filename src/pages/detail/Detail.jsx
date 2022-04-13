@@ -18,6 +18,7 @@ const Detail = () => {
         const getDetail = async () => {
             const response = await tmdbAPI.details(category, id, { params: {} })
             setMovie(response)
+            console.log(response)
             window.scrollTo({ top: 0, behavior: 'smooth' })
         }
 

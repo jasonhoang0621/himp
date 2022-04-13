@@ -1,0 +1,112 @@
+@use '../../scss/'as *;
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .modal_container {
+        @include flex(center, center);
+        height: 100vh;
+
+        .modal_wrapper {
+            min-width: 30rem;
+            padding: 3rem 5rem 0 5rem;
+            position: relative;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            box-shadow: $box_shadow;
+            animation: swipeDown 0.3s ease;
+            overflow: hidden;
+
+
+            @include mobile {
+                min-width: 25rem;
+                padding: 3rem 3rem 0 3rem;
+            }
+
+            .modal_content {
+                animation: swipeFromRight 0.3s ease;
+            }
+
+            .modal_close {
+                position: absolute;
+                top: 1rem;
+                right: 2rem;
+                font-size: 1.2rem;
+                cursor: pointer;
+
+                &:hover {
+                    color: $body_background;
+                }
+            }
+
+            .modal_header {
+                text-align: center;
+            }
+
+            .modal_body {
+                margin-top: 2rem;
+
+
+            }
+
+            .modal_footer {
+                @include flex(unset, unset);
+                margin-top: 3rem;
+                margin-left: -5rem;
+                margin-right: -5rem;
+
+                .modal_footer_section {
+                    flex: 1;
+                    text-align: center;
+                    padding: 0.5rem 0;
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                .modal_footer_active {
+                    background-color: #cdcdcd;
+                }
+
+                .modal_footer_prohibited {
+                    background-color: $body_background;
+                    color: white;
+                }
+            }
+        }
+
+    }
+}
+
+@keyframes swipeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes swipeFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

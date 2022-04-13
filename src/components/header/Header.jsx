@@ -1,11 +1,12 @@
-import React, {  useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { OutlineButton } from '../button/Button'
-import Modal from '../modal/Modal'
-import './Header.scss'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaUser } from 'react-icons/fa'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { auth, SignOut } from '../../firebase/firebase-authentication'
+import { OutlineButton } from '../button/Button'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
-import {SignOut,auth} from '../../firebase/firebase-authentication'
+import Modal from '../modal/Modal'
+import UserList from '../userList/UserList'
+import './Header.scss'
 const headerNavItem = [
     {
         display: 'Home',
@@ -25,15 +26,16 @@ const Header = () => {
     const headerRef = useRef()
     const [isModal, setIsModal] = useState(false)
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
+    const [isUserListModal, setIsUserListModal] = useState(false)
     const [formStatus, setFormStatus] = useState(1)
-    const [user,setUserState] = useState(localStorage.getItem("authUser"))
+    const [user, setUserState] = useState(localStorage.getItem("authUser"))
     let role = localStorage.getItem("role")
-    const changeUser=(data)=>{
+    const changeUser = (data) => {
         setUserState(data)
         role = localStorage.getItem("role")
     }
 
-    const handleSignOut =async()=>{
+    const handleSignOut = async () => {
         await SignOut();
         role = null
         localStorage.removeItem("role")
@@ -75,28 +77,27 @@ const Header = () => {
 
                     <SearchBar />
 
-                    {user!=null ?
-                    <div className="header_logged_in">
-                        <FaUser className='header_logged_in_icon' />
-                        <ul className="header_logged_in_list">
-                            <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
-                            <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
-                            <li className="header_logged_in_item">Favorite list</li>
-                            {role!=="false"?
-                            <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>User list</li>
-                            :<></>}
-                            
-                            <li className="header_logged_in_item" onClick={handleSignOut}>Log out</li>
-                        </ul>
-                    </div>
-                    :
-                    <OutlineButton onClick={() => {setIsModal(true)}}  >Sign in</OutlineButton>}
-                    
+                    {user != null ?
+                        <div className="header_logged_in">
+                            <FaUser className='header_logged_in_icon' />
+                            <ul className="header_logged_in_list">
+                                <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
+                                <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
+                                <li className="header_logged_in_item">Favorite list</li>
+                                {role !== false &&
+                                    <li className="header_logged_in_item" onClick={() => { setIsUserListModal(true) }}>User list</li>}
+                                <li className="header_logged_in_item" onClick={handleSignOut}>Log out</li>
+                            </ul>
+                        </div>
+                        :
+                        <OutlineButton onClick={() => { setIsModal(true) }}  >Sign in</OutlineButton>}
+
                 </div>
             </div>
 
-            {isModal && <Modal closeModal={setIsModal} changeUser={changeUser}/>}
+            {isModal && <Modal closeModal={setIsModal} changeUser={changeUser} />}
             {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} username={auth.currentUser.displayName} />}
+            {isUserListModal && <UserList closeModal={setIsUserListModal} />}
         </div>
     )
 }

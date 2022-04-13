@@ -25,6 +25,7 @@ const MovieGrid = (props) => {
                     response = await tmdbAPI.getMoviesList(movieType.popular, params)
                 } else response = await tmdbAPI.getTVList(tvType.popular, params)
 
+                console.log(response.results)
                 setList(response.results)
 
             } else {
