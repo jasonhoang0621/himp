@@ -15,7 +15,7 @@
 
         .modal_wrapper {
             min-width: 30rem;
-            padding: 3rem 5rem 0 5rem;
+            padding: 3rem 3rem 0 3rem;
             position: relative;
             background-color: white;
             color: black;
@@ -28,10 +28,6 @@
             @include mobile {
                 min-width: 25rem;
                 padding: 3rem 3rem 0 3rem;
-            }
-
-            .modal_content {
-                animation: swipeFromRight 0.3s ease;
             }
 
             .modal_close {
@@ -51,9 +47,44 @@
             }
 
             .modal_body {
-                margin-top: 2rem;
+                margin-top: 1rem;
+
+                table {
+                    thead {
+                        padding: 1rem;
+
+                        th {
+                            align-items: right;
+                        }
+                    }
 
 
+                    tbody {
+                        tr {
+
+                            td {
+                                border-bottom: 1px solid #cdcdcd;
+                                padding: 1rem;
+
+                                .outline_btn {
+                                    border-color: black;
+                                    color: black;
+
+                                    &:hover {
+                                        background-color: black;
+                                        color: white;
+                                    }
+                                }
+                            }
+
+                            &:last-child {
+                                td {
+                                    border-bottom: none;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             .modal_footer {

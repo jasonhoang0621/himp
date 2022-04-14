@@ -40,39 +40,41 @@ const UserList = (props) => {
                             <FaTimes />
                         </div>
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    userList === tab.active ?
-                                        data.map((item, index) => (
-                                            <tr key={index}>
-                                                <td>{item.name}</td>
-                                                <td>{item.email}</td>
-                                                <td>
-                                                    <Button>BLock</Button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                        :
-                                        data.map((item, index) => (
-                                            <tr key={index}>
-                                                <td>{item.name}</td>
-                                                <td>{item.email}</td>
-                                                <td>
-                                                    <OutlineButton>Unblock</OutlineButton>
-                                                </td>
-                                            </tr>
-                                        ))
-                                }
-                            </tbody>
-                        </table>
+                        <div className="modal_body">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        userList === tab.active ?
+                                            data.map((item, index) => (
+                                                <tr key={index}>
+                                                    <td>{item.name}</td>
+                                                    <td>{item.email}</td>
+                                                    <td>
+                                                        <Button>BLock</Button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                            :
+                                            data.map((item, index) => (
+                                                <tr key={index}>
+                                                    <td>{item.name}</td>
+                                                    <td>{item.email}</td>
+                                                    <td>
+                                                        <OutlineButton>Unblock</OutlineButton>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
 
                         {(userList === 1 || userList === 2) &&
