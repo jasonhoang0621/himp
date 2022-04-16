@@ -1,10 +1,13 @@
 import React from 'react'
+import MovieGrid from '../../components/movieGrid/MovieGrid'
 
 import './Favorite.scss'
 
 const Favorite = () => {
     return (
-        <div>Favorite</div>
+        <div className='container section'>
+            <MovieGrid isFavorite={true} />
+        </div>
     )
 }
 

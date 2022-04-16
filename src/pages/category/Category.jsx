@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import MovieGrid from '../../components/movieGrid/MovieGrid'
-import './Category.scss'
 
 
 const Category = () => {

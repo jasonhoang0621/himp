@@ -83,14 +83,14 @@ const Header = () => {
                             <ul className="header_logged_in_list">
                                 <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
                                 <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
-                                <li className="header_logged_in_item">Favorite list</li>
+                                <li className="header_logged_in_item"><Link to='/favorite'>Favorite list</Link></li>
                                 {role !== "false" &&
                                     <li className="header_logged_in_item" onClick={() => { setIsUserListModal(true) }}>User list</li>}
                                 <li className="header_logged_in_item" onClick={handleSignOut}>Log out</li>
                             </ul>
                         </div>
                         :
-                        <OutlineButton onClick={() => { setIsModal(true) }}  >Sign in</OutlineButton>}
+                        <OutlineButton onClick={() => { setIsModal(true) }}>Sign in</OutlineButton>}
 
                 </div>
             </div>

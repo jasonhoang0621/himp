@@ -15,36 +15,48 @@ const MovieGrid = (props) => {
 
     useEffect(() => {
         setPage(1)
-
         const getList = async () => {
-            let response = null;
+            if (!props.isFavorite) {
+                let response = null;
 
-            if (keyword === undefined) {
-                const params = {}
-                if (props.movieCategory === movieCategory.movie) {
-                    response = await tmdbAPI.getMoviesList(movieType.popular, params)
-                } else response = await tmdbAPI.getTVList(tvType.popular, params)
+                if (keyword === undefined) {
+                    const params = {}
+                    if (props.movieCategory === movieCategory.movie) {
+                        response = await tmdbAPI.getMoviesList(movieType.popular, params)
+                    } else response = await tmdbAPI.getTVList(tvType.popular, params)
 
-                console.log(response.results)
-                setList(response.results)
+                    console.log(response.results)
+                    setList(response.results)
 
-            } else {
-                const params = {
-                    query: keyword
+                } else {
+                    const params = {
+                        query: keyword
+                    }
+
+                    const temp = []
+                    response = await tmdbAPI.search(movieCategory.movie, params)
+                    temp.push(...response.results)
+                    response = await tmdbAPI.search(movieCategory.tv, params)
+                    temp.push(...response.results)
+                    setList(temp)
                 }
+                setTotalPage(response.total_pages)
+            } else {
+                const favoList = [
+                    { category: 'movie', id: '1213' },
+                    { category: 'movie', id: '435' },
+                    { category: 'movie', id: '4375' },
+                ]
 
-                const temp = []
-                response = await tmdbAPI.search(movieCategory.movie, params)
-                temp.push(...response.results)
-                response = await tmdbAPI.search(movieCategory.tv, params)
-                temp.push(...response.results)
-                setList(temp)
+                favoList.map(async item => {
+                    const response = await tmdbAPI.details(item.category, item.id, { params: {} })
+                    setList(list => [...list, response])
+                })
             }
-            setTotalPage(response.total_pages)
         }
 
         getList();
-    }, [props.movieCategory, keyword])
+    }, [props.movieCategory, keyword, props.isFavorite])
 
     const loadMore = async () => {
         let response = null;
@@ -79,7 +91,7 @@ const MovieGrid = (props) => {
     return (
         <div className="movie_grid">
             <div className="movie_grid_header">
-                <h1>{props.movieCategory === movieCategory.movie ? 'MOVIE' : props.movieCategory === movieCategory.tv ? 'TV SERIES' : 'RESULTS'}</h1>
+                <h1>{props.movieCategory === movieCategory.movie ? 'MOVIE' : props.movieCategory === movieCategory.tv ? 'TV SERIES' : props.isFavorite ? 'FAVORITE' : 'RESULTS'}</h1>
             </div>
 
             <div className="movie_grid_list">
@@ -104,9 +116,8 @@ const MovieGrid = (props) => {
 }
 
 MovieGrid.propType = {
-    movieCategory: propType.string
+    movieCategory: propType.string,
+    isFavorite: propType.bool,
 }
-
-
 
 export default MovieGrid

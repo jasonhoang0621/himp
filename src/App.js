@@ -24,7 +24,7 @@ function App() {
         <Route path="stream/:category/:id" element={<Stream />} />
         <Route path="search/:keyword" element={<Category />} />
 
-        <Route path="favorite/:userID" element={<Favorite />} />
+        <Route path="favorite" element={<Favorite />} />
 
 
         <Route path='*' element={<Home />} />
