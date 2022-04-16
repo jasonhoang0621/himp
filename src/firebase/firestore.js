@@ -51,6 +51,7 @@ export const User = {
     getUser: async (email) => {
         try {
             const q = query(collection(db, "users"), where("email", "==", email))
+            console.log(email)
             const querySnapshot = await getDocs(q)
             let result = null;
             querySnapshot.forEach((doc) => {
@@ -123,9 +124,29 @@ export const User = {
     }
 }
 export const Favourite = {
-    postFavourite: async (email, id) => {
+    getFavourite:async(email)=>{
+        try{
+            const userID =await User.getUser(email)
+            console.log("123 "+userID)
+            const q = query(collection(db, "favourite"), where("idNguoiDung", "==", userID))
+            const querySnapshot = await getDocs(q)
+            let result = []
+            querySnapshot.forEach(doc=>{
+                result=doc.data().movies
+            })
+            console.log("RESULT "+result)
+            return result
+
+        }catch(error){
+            console.log(error)
+        }
+        
+    },
+    postFavourite: async (email, id,category) => {
         try {
+
             const userID = await User.getUser(email)
+
             const q = query(collection(db, "favourite"), where("idNguoiDung", "==", userID))
             const querySnapshot = await getDocs(q)
             let result = null;
@@ -134,12 +155,23 @@ export const Favourite = {
                 result = doc.data().movies
                 listID = doc.id
             });
-            console.log(id)
-            if (result.includes(id)) {
+            const phim = {
+                id:id,
+                category:category
+            }
+            let check = false 
+            for (let i=0;i<result.length;i++){
+                if(result[i].id==phim.id)
+                {
+                    check=true
+                }
+            }
+            if (check===true) {
                 return
             }
             else {
-                result.push(id)
+                result.push(phim)
+                console.log(result)
                 const favouriteDoc = doc(db, "favourite", listID)
                 await updateDoc(favouriteDoc, {
                     movies: result

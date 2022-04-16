@@ -2,20 +2,22 @@ import propType from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import tmdbAPI, { movieCategory, movieType, tvType } from '../../api/tmdbApi'
+import { Favourite } from '../../firebase/firestore'
 import { OutlineButton } from '../button/Button'
 import MovieCard from '../movieCard/MovieCard'
 import './MovieGrid.scss'
+
 
 const MovieGrid = (props) => {
     const [list, setList] = useState([])
     const [page, setPage] = useState(1)
     const [totalPage, setTotalPage] = useState(0)
-
+    let user = JSON.parse(localStorage.getItem("authUser"))
     const { keyword } = useParams()
 
     useEffect(() => {
         setPage(1)
-        const getList = async () => {
+        const getList = async (email) => {
             if (!props.isFavorite) {
                 let response = null;
 
@@ -33,7 +35,7 @@ const MovieGrid = (props) => {
                         query: keyword
                     }
 
-                    const temp = []
+                    const temp =[]
                     response = await tmdbAPI.search(movieCategory.movie, params)
                     temp.push(...response.results)
                     response = await tmdbAPI.search(movieCategory.tv, params)
@@ -42,11 +44,8 @@ const MovieGrid = (props) => {
                 }
                 setTotalPage(response.total_pages)
             } else {
-                const favoList = [
-                    { category: 'movie', id: '1213' },
-                    { category: 'movie', id: '435' },
-                    { category: 'movie', id: '4375' },
-                ]
+                
+                const favoList = await Favourite.getFavourite(email)
 
                 favoList.map(async item => {
                     const response = await tmdbAPI.details(item.category, item.id, { params: {} })
@@ -55,8 +54,8 @@ const MovieGrid = (props) => {
             }
         }
 
-        getList();
-    }, [props.movieCategory, keyword, props.isFavorite])
+        getList(user.user.email);
+    }, [props.movieCategory, keyword, props.isFavorite,user.user.email])
 
     const loadMore = async () => {
         let response = null;

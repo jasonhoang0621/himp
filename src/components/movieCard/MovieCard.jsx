@@ -17,7 +17,7 @@ const MovieCard = (props) => {
     const handleClick =async (id)=>{
         if(auth.currentUser!==null)
         {
-            Favourite.postFavourite(auth.currentUser.email,id)
+            Favourite.postFavourite(auth.currentUser.email,id,props.movieCategory)
         }else{
             
         }
