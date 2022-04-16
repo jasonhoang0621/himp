@@ -87,6 +87,10 @@
                 }
             }
 
+            .loader_wrapper {
+                @include flex(center, center);
+            }
+
             .modal_footer {
                 @include flex(unset, unset);
                 margin-top: 3rem;

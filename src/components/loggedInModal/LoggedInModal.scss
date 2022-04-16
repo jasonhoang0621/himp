@@ -98,6 +98,10 @@
                         }
                     }
                 }
+
+                .loader_wrapper {
+                    @include flex(center, center);
+                }
             }
 
             .logged_modal_error_message {

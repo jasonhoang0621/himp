@@ -13,11 +13,9 @@ const form = {
 
 const Modal = (props) => {
     const [formDisplay, setFormDisplay] = useState(form.login)
-
+    const [isLoading, setIsLoading] = useState(false)
 
     const messageRef = useRef()
-
-
     return (
         <>
             <div className="modal" onClick={() => { props.closeModal(false); }}>
@@ -32,14 +30,21 @@ const Modal = (props) => {
                             </div>}
 
 
-                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} messageRef={messageRef} changeUser={props.changeUser} />}
-                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} messageRef={messageRef} changeUser={props.changeUser} />}
+                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} messageRef={messageRef} changeUser={props.changeUser} isLoading={isLoading} setIsLoading={setIsLoading} />}
+                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} messageRef={messageRef} changeUser={props.changeUser} isLoading={isLoading} setIsLoading={setIsLoading} />}
                         {formDisplay === 3 && <ForgetPasswordModal setFormDisplay={setFormDisplay} messageRef={messageRef} />}
 
 
                         <div ref={messageRef} className="modal_error_message" style={{ display: "none" }}>
                             Incorrect password or email
                         </div>
+
+                        {
+                            isLoading &&
+                            <div className="loader_wrapper">
+                                <div className="loader"></div>
+                            </div>
+                        }
 
                         {(formDisplay === 1 || formDisplay === 2) &&
                             <div className="modal_footer">
@@ -63,6 +68,7 @@ const LoginModal = (props) => {
     const [password, setPassword] = useState('')
     const handleEnter = async (keyCode, email, password) => {
         if (keyCode === 13) {
+            props.setIsLoading(true)
             if (email === "" || password === "") {
                 props.messageRef.current.classList.remove('modal_message')
                 props.messageRef.current.classList.add('modal_error_message')
@@ -113,7 +119,7 @@ const LoginModal = (props) => {
 
                 }
             }
-
+            props.setIsLoading(false)
         }
 
     }
@@ -135,9 +141,9 @@ const LoginModal = (props) => {
                         <FaLock className='modal_form_group_icon' />
                         <input onKeyUp={e => { handleEnter(e.keyCode, email, password) }} type="password" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} />
                     </div>
-                    <div className="modal_form_forget" onClick={() => props.setFormDisplay(3)}>
+                    {!props.isLoading && <div className="modal_form_forget" onClick={() => props.setFormDisplay(3)}>
                         Forget password?
-                    </div>
+                    </div>}
                 </div>
             </div>
         </div>
@@ -152,7 +158,7 @@ const RegisterModal = (props) => {
     const [confirmPass, setConfirm] = useState('')
     const handleEnter = async (keyCode, email, password, name, confirmPass) => {
         if (keyCode === 13) {
-
+            props.setIsLoading(true)
             if (email === "" || password === "") {
                 props.messageRef.current.classList.remove('modal_message')
                 props.messageRef.current.classList.add('modal_error_message')
@@ -194,7 +200,6 @@ const RegisterModal = (props) => {
                             }
                             await User.addUser(info)
                             props.closeModal(false);
-
                         }
                     }
                     else {
@@ -209,8 +214,7 @@ const RegisterModal = (props) => {
 
                 }
             }
-
-
+            props.setIsLoading(false)
         }
 
     }
@@ -315,12 +319,16 @@ LoginModal.propType = {
     closeModal: propType.func,
     warn: propType.func,
     messageRef: propType.object,
-    changeUser: propType.func
+    changeUser: propType.func,
+    isLoading: propType.bool,
+    setIsLoading: propType.func
 }
 RegisterModal.propType = {
     closeModal: propType.func,
     messageRef: propType.object,
-    changeUser: propType.func
+    changeUser: propType.func,
+    isLoading: propType.bool,
+    setIsLoading: propType.func
 }
 ForgetPasswordModal.propType = {
     setFormDisplay: propType.func,
