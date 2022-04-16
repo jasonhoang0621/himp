@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import tmdbAPI, { movieCategory } from '../../api/tmdbApi'
 import Button, { OutlineButton } from '../button/Button'
 import './MovieCard.scss'
-
+import {auth} from "../../firebase/firebase-authentication"
+import {Favourite}from "../../firebase/firestore"
 const MovieCard = (props) => {
     const navigate = useNavigate()
 
@@ -13,7 +14,14 @@ const MovieCard = (props) => {
     const link = `/${movieCategory[props.movieCategory]}/${item.id}`
 
     const poster = tmdbAPI.w5Image(item.poster_path || item.backdrop_path)
-
+    const handleClick =async (id)=>{
+        if(auth.currentUser!==null)
+        {
+            Favourite.postFavourite(auth.currentUser.email,id)
+        }else{
+            
+        }
+    }
     return (
         <div className='movie_card'>
             <div className="movie_card_background" style={{ backgroundImage: `url(${poster})` }}>
@@ -24,7 +32,7 @@ const MovieCard = (props) => {
 
                     {/* only when signed up */}
                     <OutlineButton>
-                        <FaHeart className='movie_card_icon' />
+                        <FaHeart className='movie_card_icon' onClick={()=>handleClick(item.id)}/>
                     </OutlineButton>
                 </div>
             </div>

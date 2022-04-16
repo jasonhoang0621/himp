@@ -1,35 +1,65 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import Button, { OutlineButton } from '../button/Button'
-
+import {User} from '../../firebase/firestore'
 import './UserList.scss'
+import { async } from '@firebase/util'
 
 const tab = {
     active: 1,
     prohibited: 2,
 }
-
+let userList =1 
+let result=[]
 const UserList = (props) => {
-    const [userList, setUserList] = useState(tab.active)
+    const [data,setData] = useState([])
+    let tmp = null
+    const handle = async()=>{
+        tmp = await User.getListUser()
 
-    const data = [
-        {
-            name: 'John Doe',
-            email: 'abc@gmai.com',
-        },
-        {
-            name: 'Alice',
-            email: 'abc@gmai.com',
-        },
-        {
-            name: 'Bob',
-            email: 'abc@gmai.com',
-        },
-        {
-            name: 'Gina',
-            email: 'abc@gmai.com',
-        },
-    ]
+        if(result.length!==0)
+            result=[]
+        if(userList===1){
+            for(let i =0;i<tmp.length;i++){
+                if(tmp[i].state===true){
+                    result.push(tmp[i])
+                }
+            }
+        }else{
+            for(let i =0;i<tmp.length;i++){
+                if(tmp[i].state!==true){
+                    result.push(tmp[i])
+                }
+            }
+        }
+        setData(result)
+    }
+    const blockUser=async(email)=>{
+        await User.blockUser(email)
+        for (let i =0;i<result.length;i++){
+            if(result[i].email===email){
+                result[i].state=false
+                result.splice(i,1)
+            }
+        }
+        const temp = [...result]
+        setData(temp)
+    }
+    const unblockUser = async(email)=>{
+        await User.unblockUser(email)
+        for (let i =0;i<result.length;i++){
+            if(result[i].email===email){
+                result[i].state=true
+                result.splice(i,1)
+            }
+        }
+        const temp = [...result]
+        setData(temp)
+    }
+    useEffect(()=>{
+        return handle()
+        
+    },[userList]);
 
     return (
         <>
@@ -57,7 +87,7 @@ const UserList = (props) => {
                                                     <td>{item.name}</td>
                                                     <td>{item.email}</td>
                                                     <td>
-                                                        <Button>BLock</Button>
+                                                        <Button onClick={()=>blockUser(item.email)}>BLock</Button>
                                                     </td>
                                                 </tr>
                                             ))
@@ -67,7 +97,7 @@ const UserList = (props) => {
                                                     <td>{item.name}</td>
                                                     <td>{item.email}</td>
                                                     <td>
-                                                        <OutlineButton>Unblock</OutlineButton>
+                                                        <OutlineButton onClick={()=>unblockUser(item.email)}>Unblock</OutlineButton>
                                                     </td>
                                                 </tr>
                                             ))
@@ -75,14 +105,19 @@ const UserList = (props) => {
                                 </tbody>
                             </table>
                         </div>
-
-
                         {(userList === 1 || userList === 2) &&
                             <div className="modal_footer">
-                                <div className="modal_footer_section modal_footer_active" onClick={() => setUserList(tab.active)} >
+                                <div className="modal_footer_section modal_footer_active" onClick={() => {
+                                   userList=tab.active
+                                   handle()
+                                    }
+                                 } >
                                     <div className="">Active</div>
                                 </div>
-                                <div className="modal_footer_section modal_footer_prohibited" onClick={() => setUserList(tab.prohibited)}>
+                                <div className="modal_footer_section modal_footer_prohibited" onClick={() => {
+                                    userList=tab.prohibited
+                                    handle()
+                                }}>
                                     <div className="">Prohibited</div>
                                 </div>
                             </div>}

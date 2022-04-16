@@ -6,6 +6,7 @@ import { OutlineButton } from '../button/Button'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
 import Modal from '../modal/Modal'
 import UserList from '../userList/UserList'
+
 import './Header.scss'
 const headerNavItem = [
     {
@@ -30,6 +31,7 @@ const Header = () => {
     const [formStatus, setFormStatus] = useState(1)
     const [user, setUserState] = useState(localStorage.getItem("authUser"))
     let role = localStorage.getItem("role")
+
     const changeUser = (data) => {
         setUserState(data)
         role = localStorage.getItem("role")
@@ -41,7 +43,6 @@ const Header = () => {
         localStorage.removeItem("role")
         setUserState(null)
     }
-    console.log(role)
 
     const active = headerNavItem.findIndex(item => item.path === pathname)
     useEffect(() => {
@@ -52,7 +53,6 @@ const Header = () => {
                 headerRef.current.classList.remove('shrink')
             }
         }
-
         window.addEventListener('scroll', shrinkHeader)
         return () => {
             window.removeEventListener('scroll', shrinkHeader)
@@ -84,7 +84,7 @@ const Header = () => {
                                 <li className="header_logged_in_item" onClick={() => { setFormStatus(1); setIsLoggedInModal(true) }}>Information</li>
                                 <li className="header_logged_in_item" onClick={() => { setFormStatus(2); setIsLoggedInModal(true) }}>Password</li>
                                 <li className="header_logged_in_item">Favorite list</li>
-                                {role !== false &&
+                                {role !== "false" &&
                                     <li className="header_logged_in_item" onClick={() => { setIsUserListModal(true) }}>User list</li>}
                                 <li className="header_logged_in_item" onClick={handleSignOut}>Log out</li>
                             </ul>
