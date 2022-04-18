@@ -72,19 +72,12 @@ const CommentList = (props) => {
                         return (
                             <div className="root_comment" key={index}>
                                 <Comment userName ={item.name} content={item.content} id = {item.id}/> 
-                                {/* <Comment /> */}
-                                {/* {
-                                    Array.from({ length: 2 }).map((item, index) => (
-                                        <div className="reply_comment" key={index}>
-                                            <Comment />
-                                        </div>
-                                    ))
-                                } */}
+                                
                                 {
                                     item.replies.map((item2,index)=>{
                                         return(
-                                            <div className="reply_comment" key={index} id={item2.id}>
-                                                <Comment userName ={item2.name} content={item2.content}/>
+                                            <div className="reply_comment" key={index} >
+                                                <Comment userName ={item2.name} content={item2.content} id={item2.id}/>
                                             </div>
                                         )
                                         
@@ -108,7 +101,7 @@ const CommentList = (props) => {
 const Comment = (props) => {
     console.log(props.userName)
     return (
-        <div className="comment">
+        <div className="comment" id = {props.id}>
             <div className="comment_item_icon">
                 <FaEllipsisH />
 
@@ -128,7 +121,8 @@ const Comment = (props) => {
 }
 Comment.propType={
     userName:propType.string,
-    content: propType.string
+    content: propType.string,
+    id:propType.string
 }
 
 export default CommentList
