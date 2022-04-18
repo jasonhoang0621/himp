@@ -11,13 +11,16 @@ const CommentList = (props) => {
     const [isModal, setIsModal] = useState(false)
     const [commentArray,setCommentArray] = useState([])
     let user =localStorage.getItem("authUser")
-    
-    setTimeout(()=>{
-        commentArray.map((item, index) =>{
-            console.log("commentArray")
-            console.log(item)
-        })
-    },2000)
+    // console.log("TEST 1 ")
+    // console.log(commentArray)
+    // console.log(commentArray.length)
+    // setTimeout(()=>{
+    //     commentArray.map((item, index) =>{
+    //         console.log("TEST 2 ")
+    //         console.log(commentArray)
+    //         console.log(commentArray.length)
+    //     })
+    // },2000)
     
 
     const handleClick = async () => {
@@ -29,14 +32,14 @@ const CommentList = (props) => {
    
         }
     }
-    useEffect( ()=>{
+    useEffect( async()=>{
         const getCommentList = async () => {
             let array=[]
             array=await Comments.getAllComments(props.id)
 
             setCommentArray(array)
         }
-        getCommentList()
+        await getCommentList()
 
     },[])
     
@@ -68,14 +71,24 @@ const CommentList = (props) => {
                     commentArray.map((item, index) => {
                         return (
                             <div className="root_comment" key={index}>
-                                <Comment userName ={item.name} content={item.content}/> 
+                                <Comment userName ={item.name} content={item.content} id = {item.id}/> 
                                 {/* <Comment /> */}
-                                {
+                                {/* {
                                     Array.from({ length: 2 }).map((item, index) => (
                                         <div className="reply_comment" key={index}>
                                             <Comment />
                                         </div>
                                     ))
+                                } */}
+                                {
+                                    item.replies.map((item2,index)=>{
+                                        return(
+                                            <div className="reply_comment" key={index} id={item2.id}>
+                                                <Comment userName ={item2.name} content={item2.content}/>
+                                            </div>
+                                        )
+                                        
+                                    })
                                 }
                             </div>
                         )

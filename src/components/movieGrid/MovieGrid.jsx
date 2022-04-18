@@ -45,6 +45,8 @@ const MovieGrid = (props) => {
                 setTotalPage(response.total_pages)
             } else {
                 let user = JSON.parse(localStorage.getItem("authUser"))
+                if(!user)
+                    return
                 const favoList = await Favourite.getFavourite(user.user.email)
 
                 favoList.map(async item => {
