@@ -9,37 +9,28 @@ import propType from 'prop-types'
 const CommentList = (props) => {
 
     const [isModal, setIsModal] = useState(false)
-    const [commentArray,setCommentArray] = useState([])
-    let user =localStorage.getItem("authUser")
-    
-    setTimeout(()=>{
-        commentArray.map((item, index) =>{
-            console.log("commentArray")
-            console.log(item)
-        })
-    },2000)
-    
+    const [commentArray, setCommentArray] = useState([])
+    let user = localStorage.getItem("authUser")
 
     const handleClick = async () => {
-        user=localStorage.getItem("authUser")
+        user = localStorage.getItem("authUser")
 
         if (user === null) {
             setIsModal(true)
         } else {
-   
+
         }
     }
-    useEffect( ()=>{
+    useEffect(() => {
         const getCommentList = async () => {
-            let array=[]
-            array=await Comments.getAllComments(props.id)
-
+            const array = await Comments.getAllComments(props.id)
+            console.log(array.length)
             setCommentArray(array)
         }
-        getCommentList()
 
-    },[])
-    
+        getCommentList()
+    }, [props.id])
+
     return (
         <div className="comment_list">
             <div className="comment_list_container">
@@ -49,10 +40,10 @@ const CommentList = (props) => {
                         <OutlineButton onClick={() => handleClick()}>POST COMMENT</OutlineButton>
                     </div>
                 </div>
-               
+
                 {
                     // Array.from({ length: commentArray.length }).map((item, index) => (
-                        
+
                     //     <div className="root_comment" key={index}>
                     //         <Comment userName ={commentArray[index].name} content={commentArray[index].content}/> 
                     //          {/* <Comment /> */}
@@ -68,7 +59,7 @@ const CommentList = (props) => {
                     commentArray.map((item, index) => {
                         return (
                             <div className="root_comment" key={index}>
-                                <Comment userName ={item.name} content={item.content}/> 
+                                <Comment userName={item.name} content={item.content} />
                                 {/* <Comment /> */}
                                 {
                                     Array.from({ length: 2 }).map((item, index) => (
@@ -81,19 +72,18 @@ const CommentList = (props) => {
                         )
                     })
                 }
-                
+
             </div>
 
             <div className="comment_load_more">
                 <OutlineButton>Load more</OutlineButton>
             </div>
-            {isModal && <Notification closeModal={setIsModal}/>}
+            {isModal && <Notification closeModal={setIsModal} />}
         </div>
     )
 }
 
 const Comment = (props) => {
-    console.log(props.userName)
     return (
         <div className="comment">
             <div className="comment_item_icon">
@@ -113,8 +103,8 @@ const Comment = (props) => {
         </div>
     )
 }
-Comment.propType={
-    userName:propType.string,
+Comment.propType = {
+    userName: propType.string,
     content: propType.string
 }
 

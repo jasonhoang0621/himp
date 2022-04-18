@@ -1,5 +1,5 @@
 
-import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where,getDoc} from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where, getDoc } from "firebase/firestore";
 import { app } from "./firebase-config";
 
 const db = getFirestore(app);
@@ -123,35 +123,35 @@ export const User = {
             console.log(error)
         }
     },
-    getUserById:async(documentId)=>{
-        try{
-            const user = await (getDoc(doc(db,"users",documentId)))
+    getUserById: async (documentId) => {
+        try {
+            const user = await (getDoc(doc(db, "users", documentId)))
             return user.data()
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     }
 }
 export const Favourite = {
-    getFavourite:async(email)=>{
-        try{
-            const userID =await User.getUser(email)
-            console.log("123 "+userID)
+    getFavourite: async (email) => {
+        try {
+            const userID = await User.getUser(email)
+            console.log("123 " + userID)
             const q = query(collection(db, "favourite"), where("idNguoiDung", "==", userID))
             const querySnapshot = await getDocs(q)
             let result = []
-            querySnapshot.forEach(doc=>{
-                result=doc.data().movies
+            querySnapshot.forEach(doc => {
+                result = doc.data().movies
             })
-            console.log("RESULT "+result)
+            console.log("RESULT " + result)
             return result
 
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
-        
+
     },
-    postFavourite: async (email, id,category) => {
+    postFavourite: async (email, id, category) => {
         try {
 
             const userID = await User.getUser(email)
@@ -165,17 +165,16 @@ export const Favourite = {
                 listID = doc.id
             });
             const phim = {
-                id:id,
-                category:category
+                id: id,
+                category: category
             }
-            let check = false 
-            for (let i=0;i<result.length;i++){
-                if(result[i].id==phim.id)
-                {
-                    check=true
+            let check = false
+            for (let i = 0; i < result.length; i++) {
+                if (result[i].id === phim.id) {
+                    check = true
                 }
             }
-            if (check===true) {
+            if (check === true) {
                 return
             }
             else {
@@ -194,47 +193,48 @@ export const Favourite = {
 }
 
 export const Comments = {
-    getOneComment:async(commentID)=>{
+    getOneComment: async (commentID) => {
         const docRef = doc(db, "comments", commentID);
         const docSnap = await getDoc(docRef);
         const tmp = await User.getUserById(docSnap.data().idNguoiDung)
         const result = {
-            id:commentID,
+            id: commentID,
             email: tmp.email,
             name: tmp.name,
             content: docSnap.data().content
         }
         return result
     },
-    getAllComments:async(id)=>{
-        try{
-            const q = query(collection(db, "comments"), where("idPhim", "==", id))
-            const querySnapshot = await getDocs(q)
-            let result = []
+    getAllComments: async (id) => {
+        const q = query(collection(db, "comments"), where("idPhim", "==", id))
+        const querySnapshot = await getDocs(q)
+        const result = []
 
-        
-            querySnapshot.forEach(async(doc)=>{
-                const user = await User.getUserById(doc.data().idNguoiDung)
-                let comment = {
-                    id:doc.id,
+        try {
+            querySnapshot.forEach((doc) => {
+                console.log('doc ne', doc)
+                const user = User.getUserById(doc.data().idNguoiDung)
+                const comment = {
+                    id: doc.id,
                     userID: doc.data().idNguoiDung,
                     content: doc.data().content,
-                    email:user.email,
-                    name:user.name,
-                    replies:[]
+                    email: user.email,
+                    name: user.name,
+                    replies: []
                 }
-                for(let i =0;i<doc.data().Reply.length;i++){
-                    const reply=  await Comments.getOneComment(doc.data().Reply[i])
+                for (let i = 0; i < doc.data().Reply.length; i++) {
+                    const reply = Comments.getOneComment(doc.data().Reply[i])
                     console.log(reply)
-                    comment.replies.push(reply)                
+                    comment.replies.push(reply)
                 }
                 result.push(comment)
-            }) 
-            return result
+            })
 
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
+        console.log('result', result)
+        return result
     }
 }
 export default db

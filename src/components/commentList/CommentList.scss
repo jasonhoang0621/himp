@@ -19,10 +19,11 @@
                 box-shadow: 0 0 20px 0 $body_background;
                 overflow: hidden;
             }
+
             .outline_btn {
                 color: black;
                 border-color: black;
-    
+
                 &:hover {
                     background-color: black;
                     color: white;
