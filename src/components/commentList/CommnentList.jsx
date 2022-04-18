@@ -5,14 +5,20 @@ import './CommentList.scss'
 import Notification from '../notifications/Notification'
 import { Comments } from '../../firebase/firestore'
 import propType from 'prop-types'
-let array =[]   
+
 const CommentList = (props) => {
-    const [isLoading, setIsLoading] = useState(true)
+
     const [isModal, setIsModal] = useState(false)
     const [commentArray,setCommentArray] = useState([])
     let user =localStorage.getItem("authUser")
-    console.log("commentArray")
-    setTimeout(()=>{    console.log(commentArray.length)},2000)
+    
+    setTimeout(()=>{
+        commentArray.map((item, index) =>{
+            console.log("commentArray")
+            console.log(item)
+        })
+    },2000)
+    
 
     const handleClick = async () => {
         user=localStorage.getItem("authUser")
@@ -23,20 +29,17 @@ const CommentList = (props) => {
    
         }
     }
-    useEffect(async ()=>{
+    useEffect( ()=>{
         const getCommentList = async () => {
-
+            let array=[]
             array=await Comments.getAllComments(props.id)
-            console.log("ARRAY ")
-            console.log(array)
-            setTimeout(setCommentArray(array),2000)
-            
+
+            setCommentArray(array)
         }
-        await getCommentList()
+        getCommentList()
 
-    },[props.id])
-
-
+    },[])
+    
     return (
         <div className="comment_list">
             <div className="comment_list_container">
@@ -46,27 +49,37 @@ const CommentList = (props) => {
                         <OutlineButton onClick={() => handleClick()}>POST COMMENT</OutlineButton>
                     </div>
                 </div>
+               
                 {
-                    isLoading &&
-                    <div className="loader_wrapper">
-                        <div className="loader"></div>
-                    </div>
-                }
-                {
-                    Array.from({ length: commentArray.length }).map((item, index) => (
+                    // Array.from({ length: commentArray.length }).map((item, index) => (
                         
-                        <div className="root_comment" key={index}>
-                            <Comment userName ={commentArray[index].name} content={commentArray[index].content}/> 
-                             {/* <Comment /> */}
-                            {
-                                Array.from({ length: 2 }).map((item, index) => (
-                                    <div className="reply_comment" key={index}>
-                                        <Comment />
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    ))
+                    //     <div className="root_comment" key={index}>
+                    //         <Comment userName ={commentArray[index].name} content={commentArray[index].content}/> 
+                    //          {/* <Comment /> */}
+                    //         {
+                    //             Array.from({ length: 2 }).map((item, index) => (
+                    //                 <div className="reply_comment" key={index}>
+                    //                     <Comment />
+                    //                 </div>
+                    //             ))
+                    //         }
+                    //     </div>
+                    // ))
+                    commentArray.map((item, index) => {
+                        return (
+                            <div className="root_comment" key={index}>
+                                <Comment userName ={item.name} content={item.content}/> 
+                                {/* <Comment /> */}
+                                {
+                                    Array.from({ length: 2 }).map((item, index) => (
+                                        <div className="reply_comment" key={index}>
+                                            <Comment />
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        )
+                    })
                 }
                 
             </div>
