@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { FaEllipsisH } from 'react-icons/fa'
-import { OutlineButton } from '../button/Button'
-import './CommentList.scss'
-import Notification from '../notifications/Notification'
-import { Comments } from '../../firebase/firestore'
 import propType from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import { FaEllipsisH, FaTimes } from 'react-icons/fa'
+import { Comments } from '../../firebase/firestore'
+import { OutlineButton } from '../button/Button'
+import Notification from '../notifications/Notification'
+import './CommentList.scss'
 
 const CommentList = (props) => {
 
@@ -24,10 +24,8 @@ const CommentList = (props) => {
     useEffect(() => {
         const getCommentList = async () => {
             const array = await Comments.getAllComments(props.id)
-            console.log(array.length)
             setCommentArray(array)
         }
-
         getCommentList()
     }, [props.id])
 
@@ -37,36 +35,25 @@ const CommentList = (props) => {
                 <div className="comment_input">
                     <textarea type="text" placeholder='write a comment' />
                     <div className='button_input'>
-                        <OutlineButton onClick={() => handleClick()}>POST COMMENT</OutlineButton>
+                        <OutlineButton onClick={() => handleClick()}>POST</OutlineButton>
                     </div>
                 </div>
 
                 {
-                    // Array.from({ length: commentArray.length }).map((item, index) => (
-
-                    //     <div className="root_comment" key={index}>
-                    //         <Comment userName ={commentArray[index].name} content={commentArray[index].content}/> 
-                    //          {/* <Comment /> */}
-                    //         {
-                    //             Array.from({ length: 2 }).map((item, index) => (
-                    //                 <div className="reply_comment" key={index}>
-                    //                     <Comment />
-                    //                 </div>
-                    //             ))
-                    //         }
-                    //     </div>
-                    // ))
                     commentArray.map((item, index) => {
                         return (
                             <div className="root_comment" key={index}>
-                                <Comment userName={item.name} content={item.content} />
-                                {/* <Comment /> */}
+                                <Comment userName={item.name} content={item.content} id={item.id} />
+
                                 {
-                                    Array.from({ length: 2 }).map((item, index) => (
-                                        <div className="reply_comment" key={index}>
-                                            <Comment />
-                                        </div>
-                                    ))
+                                    item.replies.map((item2, index) => {
+                                        return (
+                                            <div className="reply_comment" key={index} >
+                                                <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} />
+                                            </div>
+                                        )
+
+                                    })
                                 }
                             </div>
                         )
@@ -83,29 +70,50 @@ const CommentList = (props) => {
     )
 }
 
-const Comment = (props) => {
-    return (
-        <div className="comment">
-            <div className="comment_item_icon">
-                <FaEllipsisH />
 
-                <ul className="comment_item_option_list">
-                    <li className="comment_item_option_item">Reply</li>
-                    <li className="comment_item_option_item">Delete</li>
-                </ul>
+const Comment = (props) => {
+    const [isReply, setIsReply] = useState(false)
+
+    return (
+        <>
+            <div className="comment" id={props.id}>
+                <div className="comment_item_icon">
+                    <FaEllipsisH />
+
+                    <ul className="comment_item_option_list">
+                        {!props.isChild && <li className="comment_item_option_item" onClick={() => setIsReply(true)}>Reply</li>}
+                        <li className="comment_item_option_item">Delete</li>
+                    </ul>
+                </div>
+                <div className="comment_item_name">
+                    <h3>{props.userName}</h3>
+                </div>
+                <div className="comment_item_content">
+                    {props.content}
+                </div>
             </div>
-            <div className="comment_item_name">
-                <h3>{props.userName}</h3>
-            </div>
-            <div className="comment_item_content">
-                {props.content}
-            </div>
-        </div>
+
+            {isReply &&
+                <div className="comment_input">
+                    <div className="comment_input_container">
+                        <textarea type="text" cols={100} placeholder='write a comment' />
+
+                        <div className="comment_input_close">
+                            <FaTimes onClick={() => setIsReply(false)} />
+                        </div>
+                    </div>
+                    <div className='button_input comment_reply_btn'>
+                        <OutlineButton>POST</OutlineButton>
+                    </div>
+                </div>}
+        </>
     )
 }
 Comment.propType = {
     userName: propType.string,
-    content: propType.string
+    content: propType.string,
+    id: propType.string,
+    isChild: propType.bool
 }
 
 export default CommentList

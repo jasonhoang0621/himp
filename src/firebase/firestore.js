@@ -52,7 +52,6 @@ export const User = {
     getUser: async (email) => {
         try {
             const q = query(collection(db, "users"), where("email", "==", email))
-            console.log(email)
             const querySnapshot = await getDocs(q)
             let result = null;
             querySnapshot.forEach((doc) => {
@@ -212,29 +211,33 @@ export const Comments = {
 
         try {
             querySnapshot.forEach((doc) => {
-                console.log('doc ne', doc)
-                const user = User.getUserById(doc.data().idNguoiDung)
-                const comment = {
+                let comment = {
                     id: doc.id,
                     userID: doc.data().idNguoiDung,
                     content: doc.data().content,
-                    email: user.email,
-                    name: user.name,
-                    replies: []
-                }
-                for (let i = 0; i < doc.data().Reply.length; i++) {
-                    const reply = Comments.getOneComment(doc.data().Reply[i])
-                    console.log(reply)
-                    comment.replies.push(reply)
+                    email: "",
+                    name: "",
+                    replies: doc.data().Reply
                 }
                 result.push(comment)
             })
-
+            for (let i = 0; i < result.length; i++) {
+                const user = await User.getUserById(result[i].userID)
+                result[i].email = user.email;
+                result[i].name = user.name;
+                for (let j = 0; j < result[i].replies.length; j++) {
+                    const reply = await Comments.getOneComment(result[i].replies[j])
+                    result[i].replies[i] = reply
+                }
+            }
+            console.log(result)
+            return result
         } catch (error) {
             console.log(error)
         }
         console.log('result', result)
         return result
+
     }
 }
 export default db
