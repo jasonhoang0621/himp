@@ -1,4 +1,5 @@
-import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
+
+import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where,getDoc} from "firebase/firestore";
 import { app } from "./firebase-config";
 
 const db = getFirestore(app);
@@ -121,6 +122,14 @@ export const User = {
         } catch (error) {
             console.log(error)
         }
+    },
+    getUserById:async(documentId)=>{
+        try{
+            const user = await (getDoc(doc(db,"users",documentId)))
+            return user.data()
+        }catch(error){
+            console.log(error)
+        }
     }
 }
 export const Favourite = {
@@ -179,6 +188,51 @@ export const Favourite = {
             }
 
         } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const Comments = {
+    getOneComment:async(commentID)=>{
+        const docRef = doc(db, "comments", commentID);
+        const docSnap = await getDoc(docRef);
+        const tmp = await User.getUserById(docSnap.data().idNguoiDung)
+        const result = {
+            id:commentID,
+            email: tmp.email,
+            name: tmp.name,
+            content: docSnap.data().content
+        }
+        return result
+    },
+    getAllComments:async(id)=>{
+        try{
+            const q = query(collection(db, "comments"), where("idPhim", "==", id))
+            const querySnapshot = await getDocs(q)
+            let result = []
+
+        
+            querySnapshot.forEach(async(doc)=>{
+                const user = await User.getUserById(doc.data().idNguoiDung)
+                let comment = {
+                    id:doc.id,
+                    userID: doc.data().idNguoiDung,
+                    content: doc.data().content,
+                    email:user.email,
+                    name:user.name,
+                    replies:[]
+                }
+                for(let i =0;i<doc.data().Reply.length;i++){
+                    const reply=  await Comments.getOneComment(doc.data().Reply[i])
+                    console.log(reply)
+                    comment.replies.push(reply)                
+                }
+                result.push(comment)
+            }) 
+            return result
+
+        }catch(error){
             console.log(error)
         }
     }

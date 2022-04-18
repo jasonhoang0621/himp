@@ -1,5 +1,6 @@
 import propType from 'prop-types'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef} from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
 import { User } from '../../firebase/firestore'
@@ -63,7 +64,7 @@ const Modal = (props) => {
 }
 
 const LoginModal = (props) => {
-
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const handleEnter = async (keyCode, email, password) => {
@@ -120,6 +121,7 @@ const LoginModal = (props) => {
                 }
             }
             props.setIsLoading(false)
+            navigate(`/`)
         }
 
     }
@@ -152,6 +154,7 @@ const LoginModal = (props) => {
 }
 
 const RegisterModal = (props) => {
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
@@ -215,6 +218,7 @@ const RegisterModal = (props) => {
                 }
             }
             props.setIsLoading(false)
+            navigate(`/`)
         }
 
     }
