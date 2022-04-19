@@ -1,3 +1,4 @@
+import propType from 'prop-types'
 import React from 'react'
 import { FaPlay, FaHeart } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,6 +7,7 @@ import Button, { OutlineButton } from '../button/Button'
 import './MovieCard.scss'
 import {auth} from "../../firebase/firebase-authentication"
 import {Favourite}from "../../firebase/firestore"
+
 const MovieCard = (props) => {
     const navigate = useNavigate()
 
@@ -17,7 +19,19 @@ const MovieCard = (props) => {
     const handleClick =async (id)=>{
         if(auth.currentUser!==null)
         {
-            Favourite.postFavourite(auth.currentUser.email,id,props.movieCategory)
+            const list = await Favourite.postFavourite(auth.currentUser.email,id,props.movieCategory)
+            if (list===true){
+                const favoList = await Favourite.getFavourite(auth.currentUser.email)
+                let list =[]
+                for(let i =0;i<favoList.length;i++){
+                    const response = await tmdbAPI.details(favoList[i].category, favoList[i].id, { params: {} })
+                    list.push(response)
+                }
+                props.changeFavo(list)
+            }
+            else{
+                console.log("true")
+            }
         }else{
             
         }
@@ -39,6 +53,9 @@ const MovieCard = (props) => {
             <Link to={link}><h4>{item.title || item.name}</h4></Link>
         </div>
     )
+}
+MovieCard.propType = {
+    changeFavo:propType.func
 }
 
 export default MovieCard

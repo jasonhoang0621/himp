@@ -44,20 +44,14 @@ const MovieGrid = (props) => {
                 }
                 setTotalPage(response.total_pages)
             } else {
-                let user = JSON.parse(localStorage.getItem("authUser"))
-                if(!user)
-                    return
-                const favoList = await Favourite.getFavourite(user.user.email)
-
-                favoList.map(async item => {
-                    const response = await tmdbAPI.details(item.category, item.id, { params: {} })
-                    setList(list => [...list, response])
-                })
+                console.log("TEMP")
+                console.log(props.favoList)
+                setList(props.favoList)
             }
         }
 
         getList();
-    }, [props.movieCategory, keyword, props.isFavorite])
+    }, [props.movieCategory, keyword, props.isFavorite,props.favoList])
 
     const loadMore = async () => {
         let response = null;
@@ -102,7 +96,8 @@ const MovieGrid = (props) => {
                             movieCategory={props.movieCategory ? props.movieCategory :
                                 item.first_air_date ? movieCategory.tv : movieCategory.movie}
                             item={item}
-                            key={index} />
+                            key={index} 
+                            changeFavo={props.changeFavo}/>
                     ))
                 }
             </div>
@@ -119,6 +114,8 @@ const MovieGrid = (props) => {
 MovieGrid.propType = {
     movieCategory: propType.string,
     isFavorite: propType.bool,
+    favoList: propType.object,
+    changeFavo:propType.func
 }
 
 export default MovieGrid

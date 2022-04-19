@@ -167,22 +167,30 @@ export const Favourite = {
                 id: id,
                 category: category
             }
-            let check = false
+            let check = -1
             for (let i = 0; i < result.length; i++) {
                 if (result[i].id === phim.id) {
-                    check = true
+                    check = i
                 }
             }
-            if (check === true) {
-                return
-            }
-            else {
-                result.push(phim)
+            if (check !== -1) {
+                
+                result.splice(check,1)
                 console.log(result)
                 const favouriteDoc = doc(db, "favourite", listID)
                 await updateDoc(favouriteDoc, {
                     movies: result
                 })
+                return true
+            }
+            else {
+                result.push(phim)
+
+                const favouriteDoc = doc(db, "favourite", listID)
+                await updateDoc(favouriteDoc, {
+                    movies: result
+                })
+                return false
             }
 
         } catch (error) {
@@ -227,7 +235,7 @@ export const Comments = {
                 result[i].name = user.name;
                 for (let j = 0; j < result[i].replies.length; j++) {
                     const reply = await Comments.getOneComment(result[i].replies[j])
-                    result[i].replies[i] = reply
+                    result[i].replies[j] = reply
                 }
             }
             console.log(result)
@@ -238,6 +246,51 @@ export const Comments = {
         console.log('result', result)
         return result
 
+    },
+    postComment:async(email,content,idPhim)=>{
+        try{
+            const user = await User.getUser(email)
+            if(!user)
+                return
+            const comment = {
+                idNguoiDung: user,
+                idPhim:idPhim,
+                content:content,
+                Reply:[]
+            }
+            const docRef = await addDoc(collection(db, "comments"), comment)
+            return docRef
+
+        }catch(error){
+            console.log(error)
+            return null
+        }
+    },
+    postReply:async(email,content,idRoot)=>{
+        try{
+            const user = await User.getUser(email)
+            if(!user)
+                return
+            const comment = {
+                idNguoiDung: user,
+                idPhim:null,
+                content:content,
+                Reply:[]
+            }
+            const docRef = await addDoc(collection(db, "comments"), comment)
+            const rootComment = await (getDoc(doc(db, "comments", idRoot)))
+            let result =[]
+            result = rootComment.data().Reply
+            result.push(docRef.id)
+            const commentDoc = doc(db, "comments", idRoot)
+            await updateDoc(commentDoc, {
+                Reply: result
+            })
+            return result
+        }catch(error){
+            console.log(error)
+            return null
+        }
     }
 }
 export default db
