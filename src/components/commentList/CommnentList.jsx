@@ -40,6 +40,8 @@ const CommentList = (props) => {
                 </div>
 
                 {
+                   
+                    commentArray?
                     commentArray.map((item, index) => {
                         return (
                             <div className="root_comment" key={index}>
@@ -58,6 +60,8 @@ const CommentList = (props) => {
                             </div>
                         )
                     })
+                    :
+                    <></>
                 }
 
             </div>
