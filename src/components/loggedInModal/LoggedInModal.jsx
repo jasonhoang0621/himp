@@ -24,11 +24,14 @@ const LoggedInModal = (props) => {
                         </div>
 
                         {formDisplay === 1 && <InformationModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} username={props.username} isLoading={isLoading} setIsLoading={setIsLoading} />}
-                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} isLoading={isLoading} setIsLoading={setIsLoading} />}
+                        {formDisplay === 2 && <PasswordModal closeModal={props.closeModal} isLoading={isLoading} setIsLoading={setIsLoading} />}
 
-                        <div className="loader_wrapper">
-                            {isLoading && <div className="loader"></div>}
-                        </div>
+                        {
+                            isLoading &&
+                            <div className="loader_wrapper">
+                                <div className="loader"></div>
+                            </div>
+                        }
 
                         {(formDisplay === 1 || formDisplay === 2) &&
                             <div className="logged_modal_footer">
@@ -101,13 +104,13 @@ const InformationModal = (props) => {
     )
 }
 
-const RegisterModal = (props) => {
+const PasswordModal = (props) => {
     const [newPass, setNewPass] = useState("")
     const [confirm, setConfirm] = useState("")
     const messageRef = useRef()
     const updatePassword = async (code, newPass, confirm) => {
         if (code === 13) {
-            props.setIsLoading(false)
+            props.setIsLoading(true)
             if (newPass === "" || confirm === "") {
                 messageRef.current.classList.remove('logged_modal_message')
                 messageRef.current.classList.add('logged_modal_error_message')
@@ -170,13 +173,6 @@ const RegisterModal = (props) => {
                         Incorrect password or email
                     </div>
                 </div >
-                {props.isLoading &&
-                    <div className="loader_wrapper">
-                        <div className="loader"></div>
-                    </div>
-                }
-
-
             </div >
 
         </div >

@@ -1,5 +1,5 @@
 import propType from 'prop-types'
-import React, { useState, useRef} from 'react'
+import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
@@ -36,9 +36,7 @@ const Modal = (props) => {
                         {formDisplay === 3 && <ForgetPasswordModal setFormDisplay={setFormDisplay} messageRef={messageRef} />}
 
 
-                        <div ref={messageRef} className="modal_error_message" style={{ display: "none" }}>
-                            Incorrect password or email
-                        </div>
+                        <div ref={messageRef} className="modal_error_message" style={{ display: "none" }}></div>
 
                         {
                             isLoading &&
@@ -84,7 +82,7 @@ const LoginModal = (props) => {
                 if (password.length < 6) {
                     props.messageRef.current.classList.remove('modal_message')
                     props.messageRef.current.classList.add('modal_error_message')
-                    props.messageRef.current.innerText = "Your password is too short"
+                    props.messageRef.current.innerText = "Incorrect email or password"
                     props.messageRef.current.style.display = "block"
                     setTimeout(() => {
                         props.messageRef.current.style.display = "none"

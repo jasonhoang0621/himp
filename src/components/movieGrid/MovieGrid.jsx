@@ -2,7 +2,6 @@ import propType from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import tmdbAPI, { movieCategory, movieType, tvType } from '../../api/tmdbApi'
-import { Favourite } from '../../firebase/firestore'
 import { OutlineButton } from '../button/Button'
 import MovieCard from '../movieCard/MovieCard'
 import './MovieGrid.scss'
@@ -35,7 +34,7 @@ const MovieGrid = (props) => {
                         query: keyword
                     }
 
-                    const temp =[]
+                    const temp = []
                     response = await tmdbAPI.search(movieCategory.movie, params)
                     temp.push(...response.results)
                     response = await tmdbAPI.search(movieCategory.tv, params)
@@ -51,7 +50,7 @@ const MovieGrid = (props) => {
         }
 
         getList();
-    }, [props.movieCategory, keyword, props.isFavorite,props.favoList])
+    }, [props.movieCategory, keyword, props.isFavorite, props.favoList])
 
     const loadMore = async () => {
         let response = null;
@@ -89,23 +88,29 @@ const MovieGrid = (props) => {
                 <h1>{props.movieCategory === movieCategory.movie ? 'MOVIE' : props.movieCategory === movieCategory.tv ? 'TV SERIES' : props.isFavorite ? 'FAVORITE' : 'RESULTS'}</h1>
             </div>
 
-            <div className="movie_grid_list">
-                {
-                    list.map((item, index) => (
-                        <MovieCard
-                            movieCategory={props.movieCategory ? props.movieCategory :
-                                item.first_air_date ? movieCategory.tv : movieCategory.movie}
-                            item={item}
-                            key={index} 
-                            changeFavo={props.changeFavo}/>
-                    ))
-                }
-            </div>
-            {
-                (page < totalPage) &&
-                <div className="movid_grid_load_more">
-                    <OutlineButton onClick={loadMore}>Load More</OutlineButton>
-                </div>
+            {((props.isFavorite && list.length !== 0) || !props.isFavorite) ?
+                <>
+                    <div className="movie_grid_list">
+                        {
+                            list.map((item, index) => (
+                                <MovieCard
+                                    movieCategory={props.movieCategory ? props.movieCategory :
+                                        item.first_air_date ? movieCategory.tv : movieCategory.movie}
+                                    item={item}
+                                    key={index}
+                                    changeFavo={props.changeFavo} />
+                            ))
+                        }
+                    </div>
+                    {
+                        (page < totalPage) &&
+                        <div className="movid_grid_load_more">
+                            <OutlineButton onClick={loadMore}>Load More</OutlineButton>
+                        </div>
+                    }
+                </>
+                :
+                <div className="movie_grid_empty">GO AND ADD YOUR FAVORITE MOVIES</div>
             }
         </div>
     )
@@ -115,7 +120,7 @@ MovieGrid.propType = {
     movieCategory: propType.string,
     isFavorite: propType.bool,
     favoList: propType.object,
-    changeFavo:propType.func
+    changeFavo: propType.func
 }
 
 export default MovieGrid
