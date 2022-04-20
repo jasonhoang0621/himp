@@ -1,4 +1,3 @@
-
 import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where, getDoc } from "firebase/firestore";
 import { app } from "./firebase-config";
 
@@ -135,10 +134,10 @@ export const Favourite = {
     createFavorite: async(email)=>{
         const id = await User.getUser(email)
         const favorite = {
-            id: id,
+            idNguoiDung: id,
             movies:[]
         }
-        const docRef = await addDoc(collection(db, "favourite"), favorite)
+        await addDoc(collection(db, "favourite"), favorite)
     },
     getFavourite: async (email) => {
         try {
@@ -161,7 +160,7 @@ export const Favourite = {
         try {
 
             const userID = await User.getUser(email)
-
+            console.log(userID)
             const q = query(collection(db, "favourite"), where("idNguoiDung", "==", userID))
             const querySnapshot = await getDocs(q)
             let result = null;
@@ -180,20 +179,22 @@ export const Favourite = {
                     check = i
                 }
             }
+
+            
             if (check !== -1) {
-                
                 result.splice(check,1)
                 console.log(result)
                 const favouriteDoc = doc(db, "favourite", listID)
                 await updateDoc(favouriteDoc, {
-                    movies: result
+                    "movies": result
                 })
                 return true
             }
             else {
                 result.push(phim)
-
+                console.log(listID)
                 const favouriteDoc = doc(db, "favourite", listID)
+                console.log(result)
                 await updateDoc(favouriteDoc, {
                     movies: result
                 })

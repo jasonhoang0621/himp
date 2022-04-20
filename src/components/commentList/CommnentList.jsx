@@ -31,7 +31,7 @@ const CommentList = (props) => {
                 const tmp = JSON.parse(user)
                 console.log(tmp)
                 await Comments.postComment(tmp.user.email,content,props.id)
-                document.getElementById("textInput").innerText=""
+                // document.getElementById("textInput").innerText=""
                 getCommentList()
             }
             
@@ -117,6 +117,9 @@ const Comment = (props) => {
             
         }
     }
+    const Delete = async ()=>{
+
+    }
     return (
         <>
             <div className="comment" id={props.id}>
@@ -125,7 +128,7 @@ const Comment = (props) => {
 
                     <ul className="comment_item_option_list">
                         {!props.isChild && <li className="comment_item_option_item" onClick={() => setIsReply(true)}>Reply</li>}
-                        <li className="comment_item_option_item">Delete</li>
+                        <li className="comment_item_option_item" onClick={()=>Delete()}>Delete</li>
                     </ul>
                 </div>
                 <div className="comment_item_name">
