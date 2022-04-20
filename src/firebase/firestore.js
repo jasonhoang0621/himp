@@ -132,6 +132,14 @@ export const User = {
     }
 }
 export const Favourite = {
+    createFavorite: async(email)=>{
+        const id = await User.getUser(email)
+        const favorite = {
+            id: id,
+            movies:[]
+        }
+        const docRef = await addDoc(collection(db, "favourite"), favorite)
+    },
     getFavourite: async (email) => {
         try {
             const userID = await User.getUser(email)
@@ -142,7 +150,6 @@ export const Favourite = {
             querySnapshot.forEach(doc => {
                 result = doc.data().movies
             })
-            console.log("RESULT " + result)
             return result
 
         } catch (error) {

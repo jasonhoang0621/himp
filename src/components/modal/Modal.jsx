@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
-import { User } from '../../firebase/firestore'
+import { User,Favourite } from '../../firebase/firestore'
 import './Modal.scss'
 
 const form = {
@@ -200,6 +200,7 @@ const RegisterModal = (props) => {
                                 state: true
                             }
                             await User.addUser(info)
+                            await Favourite.createFavorite(email)
                             props.closeModal(false);
                         }
                     }

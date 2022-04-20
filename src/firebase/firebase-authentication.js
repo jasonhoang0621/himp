@@ -7,6 +7,8 @@ import {
     setPersistence,
     browserSessionPersistence,
 } from "firebase/auth";
+import { addDoc, collection} from "firebase/firestore";
+import db, { Favourite, User } from './firestore';
 
 
 export const auth = getAuth(app)
@@ -39,6 +41,8 @@ export const SignUp = async (email, password,name) => {
         await createUserWithEmailAndPassword(auth, email, password)
         await UpdateProfile(name);
         const user=auth.currentUser
+
+
     
         return user
     } catch (error) {
