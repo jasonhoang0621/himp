@@ -8,12 +8,21 @@ import './Detail.scss'
 import TrailerList from './TrailerList'
 import { FaStar } from 'react-icons/fa'
 import MovieList from '../../components/movieList/MovieList'
+import {auth} from "../../firebase/firebase-authentication"
+import {Favourite}from "../../firebase/firestore"
 
 const Detail = () => {
     const navigation = useNavigate()
     const { category, id } = useParams()
     const [movie, setMovie] = useState(null)
-
+    const handleClick =async ()=>{
+        if(auth.currentUser!==null)
+        {
+            await Favourite.postFavourite(auth.currentUser.email,id,category)
+        }else{
+            
+        }
+    }
     useEffect(() => {
         const getDetail = async () => {
             const response = await tmdbAPI.details(category, id, { params: {} })
@@ -37,7 +46,7 @@ const Detail = () => {
 
                         <div className="detail_content_info">
                             <div className="detail_btn">
-                                <OutlineButton>Favorite</OutlineButton>
+                                <OutlineButton  onClick={()=>handleClick(id)}>Favorite</OutlineButton>
                                 <Button className='detail_btn_watch' onClick={() => navigation(`/stream/${category}/${movie.id}`)}>Watch</Button>
                             </div>
 

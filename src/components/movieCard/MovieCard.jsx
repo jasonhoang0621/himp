@@ -17,7 +17,6 @@ const MovieCard = (props) => {
 
     const poster = tmdbAPI.w5Image(item.poster_path || item.backdrop_path)
     const handleClick =async (id)=>{
-        console.log(auth.currentUser)
         if(auth.currentUser!==null)
         {
             const list = await Favourite.postFavourite(auth.currentUser.email,id,props.movieCategory)
