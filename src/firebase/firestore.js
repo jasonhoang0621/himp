@@ -131,11 +131,11 @@ export const User = {
     }
 }
 export const Favourite = {
-    createFavorite: async(email)=>{
+    createFavorite: async (email) => {
         const id = await User.getUser(email)
         const favorite = {
             idNguoiDung: id,
-            movies:[]
+            movies: []
         }
         await addDoc(collection(db, "favourite"), favorite)
     },
@@ -180,9 +180,9 @@ export const Favourite = {
                 }
             }
 
-            
+
             if (check !== -1) {
-                result.splice(check,1)
+                result.splice(check, 1)
                 console.log(result)
                 const favouriteDoc = doc(db, "favourite", listID)
                 await updateDoc(favouriteDoc, {
@@ -246,48 +246,47 @@ export const Comments = {
                     result[i].replies[j] = reply
                 }
             }
-            console.log(result)
-            return result
         } catch (error) {
             console.log(error)
         }
-        console.log('result', result)
-        return result
+
+
+        return result.reverse()
 
     },
-    postComment:async(email,content,idPhim)=>{
-        try{
+    postComment: async (email, content, idPhim) => {
+        try {
             const user = await User.getUser(email)
-            if(!user)
+            if (!user)
                 return
             const comment = {
                 idNguoiDung: user,
-                idPhim:idPhim,
-                content:content,
-                Reply:[]
+                idPhim: idPhim,
+                content: content,
+                Reply: []
             }
             const docRef = await addDoc(collection(db, "comments"), comment)
             return docRef
 
-        }catch(error){
+        } catch (error) {
             console.log(error)
             return null
         }
     },
-    postReply:async(email,content,idRoot)=>{
-        try{
+    postReply: async (email, content, idRoot) => {
+        try {
             const user = await User.getUser(email)
-            if(!user)
+            if (!user)
                 return
             const comment = {
                 idNguoiDung: user,
-                idPhim:null,
-                content:content,
-                Reply:[]
+                idPhim: null,
+                content: content,
+                Reply: []
             }
             const docRef = await addDoc(collection(db, "comments"), comment)
             const rootComment = await (getDoc(doc(db, "comments", idRoot)))
-            let result =[]
+            let result = []
             result = rootComment.data().Reply
             result.push(docRef.id)
             const commentDoc = doc(db, "comments", idRoot)
@@ -295,7 +294,7 @@ export const Comments = {
                 Reply: result
             })
             return result
-        }catch(error){
+        } catch (error) {
             console.log(error)
             return null
         }

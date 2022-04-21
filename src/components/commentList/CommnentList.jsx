@@ -10,7 +10,8 @@ const CommentList = (props) => {
 
     const [isModal, setIsModal] = useState(false)
     const [commentArray, setCommentArray] = useState([])
-    const [content,setContent] = useState("")
+    const [content, setContent] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     let user = localStorage.getItem("authUser")
 
     const getCommentList = async () => {
@@ -18,23 +19,24 @@ const CommentList = (props) => {
         setCommentArray(array)
     }
 
-    const handleClick = async (content) => {
+    const handleClick = async () => {
         user = localStorage.getItem("authUser")
 
         if (user === null) {
             setIsModal(true)
         } else {
-            if(!content){
+            if (!content) {
 
             }
-            else{
+            else {
+                setIsLoading(true)
                 const tmp = JSON.parse(user)
                 console.log(tmp)
-                await Comments.postComment(tmp.user.email,content,props.id)
-                // document.getElementById("textInput").innerText=""
+                await Comments.postComment(tmp.user.email, content, props.id)
+                setContent("")
                 getCommentList()
+                setIsLoading(false)
             }
-            
         }
     }
     useEffect(() => {
@@ -49,35 +51,37 @@ const CommentList = (props) => {
         <div className="comment_list">
             <div className="comment_list_container">
                 <div className="comment_input">
-                    <textarea id="textInput" type="text" placeholder='write a comment' value ={content} onChange={(e)=>setContent(e.target.value)}/>
+                    <textarea disabled={isLoading} id="textInput" type="text" placeholder='write a comment' value={content} onChange={(e) => setContent(e.target.value)} />
                     <div className='button_input'>
-                        <OutlineButton onClick={() => handleClick(content)}>POST</OutlineButton>
+                        <OutlineButton onClick={handleClick}>
+                            {isLoading ? <div className="loader comment_loader"></div> : "POST"}
+                        </OutlineButton>
                     </div>
                 </div>
 
                 {
-                   
-                    commentArray?
-                    commentArray.map((item, index) => {
-                        return (
-                            <div className="root_comment" key={index}>
-                                <Comment userName={item.name} content={item.content} id={item.id} commentChange={getCommentList} />
 
-                                {
-                                    item.replies.map((item2, index) => {
-                                        return (
-                                            <div className="reply_comment" key={index} >
-                                                <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} />
-                                            </div>
-                                        )
+                    commentArray ?
+                        commentArray.map((item, index) => {
+                            return (
+                                <div className="root_comment" key={index}>
+                                    <Comment userName={item.name} content={item.content} id={item.id} commentChange={getCommentList} />
 
-                                    })
-                                }
-                            </div>
-                        )
-                    })
-                    :
-                    <></>
+                                    {
+                                        item.replies.map((item2, index) => {
+                                            return (
+                                                <div className="reply_comment" key={index} >
+                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} />
+                                                </div>
+                                            )
+
+                                        })
+                                    }
+                                </div>
+                            )
+                        })
+                        :
+                        <></>
                 }
 
             </div>
@@ -94,7 +98,8 @@ const CommentList = (props) => {
 const Comment = (props) => {
     const [isReply, setIsReply] = useState(false)
     const [isModal, setIsModal] = useState(false)
-    const [content,setContent] = useState("")
+    const [content, setContent] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     let user = localStorage.getItem("authUser")
 
 
@@ -104,20 +109,22 @@ const Comment = (props) => {
         if (user === null) {
             setIsModal(true)
         } else {
-            if(!content){
+            if (!content) {
 
             }
-            else{
+            else {
+                setIsLoading(true)
                 const tmp = JSON.parse(user)
                 console.log(tmp)
-                await Comments.postReply(tmp.user.email,content,props.id)
-                document.getElementById("textInput").innerText=""
+                await Comments.postReply(tmp.user.email, content, props.id)
+                setContent("")
                 props.commentChange()
+                setIsReply(false)
+                setIsLoading(false)
             }
-            
         }
     }
-    const Delete = async ()=>{
+    const Delete = async () => {
 
     }
     return (
@@ -128,7 +135,7 @@ const Comment = (props) => {
 
                     <ul className="comment_item_option_list">
                         {!props.isChild && <li className="comment_item_option_item" onClick={() => setIsReply(true)}>Reply</li>}
-                        <li className="comment_item_option_item" onClick={()=>Delete()}>Delete</li>
+                        <li className="comment_item_option_item" onClick={() => Delete()}>Delete</li>
                     </ul>
                 </div>
                 <div className="comment_item_name">
@@ -142,17 +149,19 @@ const Comment = (props) => {
             {isReply &&
                 <div className="comment_input">
                     <div className="comment_input_container">
-                        <textarea type="text" cols={100} placeholder='write a comment' value={content} onChange={(e)=>setContent(e.target.value)}/>
+                        <textarea type="text" disabled={isLoading} cols={100} placeholder='write a comment' value={content} onChange={(e) => setContent(e.target.value)} />
 
                         <div className="comment_input_close">
                             <FaTimes onClick={() => setIsReply(false)} />
                         </div>
                     </div>
                     <div className='button_input comment_reply_btn'>
-                        <OutlineButton onClick={()=>handleClick()}>POST</OutlineButton>
+                        <OutlineButton onClick={handleClick}>
+                            {isLoading ? <div className="loader comment_loader"></div> : "POST"}
+                        </OutlineButton>
                     </div>
                 </div>}
-                {isModal && <Notification closeModal={setIsModal} />}
+            {isModal && <Notification closeModal={setIsModal} />}
         </>
     )
 }
@@ -161,7 +170,7 @@ Comment.propType = {
     content: propType.string,
     id: propType.string,
     isChild: propType.bool,
-    commentChange:propType.func
+    commentChange: propType.func
 }
 
 export default CommentList

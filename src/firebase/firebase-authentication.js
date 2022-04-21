@@ -7,17 +7,16 @@ import {
     setPersistence,
     browserSessionPersistence,
 } from "firebase/auth";
-import { addDoc, collection} from "firebase/firestore";
-import db, { Favourite, User } from './firestore';
+
 
 
 export const auth = getAuth(app)
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-      user? localStorage.setItem('authUser', JSON.stringify({user})): localStorage.removeItem('authUser')
+        user ? localStorage.setItem('authUser', JSON.stringify({ user })) : localStorage.removeItem('authUser')
     } else {
-      localStorage.removeItem('authUser')
+        localStorage.removeItem('authUser')
     }
 });
 
@@ -29,21 +28,21 @@ export const Login = async (email, password) => {
         const user = userCredential.user
         return user
     } catch (error) {
-        
+
         return null
     }
 
 }
 
-export const SignUp = async (email, password,name) => {
+export const SignUp = async (email, password, name) => {
     try {
 
         await createUserWithEmailAndPassword(auth, email, password)
         await UpdateProfile(name);
-        const user=auth.currentUser
+        const user = auth.currentUser
 
 
-    
+
         return user
     } catch (error) {
 
@@ -92,13 +91,13 @@ export const Forgot = async (email) => {
     }
 }
 
-export const UpdatePassword= async (newPassword)=>{
-    try{
+export const UpdatePassword = async (newPassword) => {
+    try {
         const user = await updatePassword(auth.currentUser, newPassword)
         return user;
-    }catch(error){
+    } catch (error) {
         console.log(error);
         return null
     }
-    
+
 }
