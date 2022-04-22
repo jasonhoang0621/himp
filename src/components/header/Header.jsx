@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FaUser } from 'react-icons/fa'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { logOut } from '../../app/userSlice'
 import { auth, SignOut } from '../../firebase/firebase-authentication'
 import { OutlineButton } from '../button/Button'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
 import Modal from '../modal/Modal'
 import UserList from '../userList/UserList'
-
 import './Header.scss'
+
 const headerNavItem = [
     {
         display: 'Home',
@@ -29,11 +31,14 @@ const Header = () => {
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
     const [isUserListModal, setIsUserListModal] = useState(false)
     const [formStatus, setFormStatus] = useState(1)
-    const [user, setUserState] = useState(localStorage.getItem("authUser"))
     let role = localStorage.getItem("role")
 
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
+    console.log(user)
+
     const changeUser = (data) => {
-        setUserState(data)
+        // setUserState(data)
         role = localStorage.getItem("role")
     }
 
@@ -41,7 +46,7 @@ const Header = () => {
         await SignOut();
         role = null
         localStorage.removeItem("role")
-        setUserState(null)
+        dispatch(logOut())
     }
 
     const active = headerNavItem.findIndex(item => item.path === pathname)

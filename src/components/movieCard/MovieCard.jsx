@@ -1,5 +1,5 @@
 import propType from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FaPlay, FaHeart, FaHeartBroken } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import tmdbAPI, { movieCategory } from '../../api/tmdbApi'
@@ -12,7 +12,6 @@ import Notification from '../notifications/Notification'
 const MovieCard = (props) => {
     const [isModal, setIsModal] = useState(false)
     const navigate = useNavigate()
-    const [isFavorite, setIsFavorite] = useState(false)
 
     const item = props.item
 
@@ -39,25 +38,6 @@ const MovieCard = (props) => {
         }
     }
 
-    useEffect(() => {
-        const getFavoList = async () => {
-            const favoList = await Favourite.getFavourite(JSON.parse(localStorage.getItem('authUser')).user.email)
-            let list = []
-            for (let i = 0; i < favoList.length; i++) {
-                const response = await tmdbAPI.details(favoList[i].category, favoList[i].id, { params: {} })
-                list.push(response)
-            }
-
-            const temp = list.filter(item => item.id === props.item.id)
-            if (temp.length > 0) {
-                setIsFavorite(true)
-            }
-
-        }
-
-        getFavoList()
-    }, [props.item.id])
-
     return (
         <>
             <div className='movie_card'>
@@ -68,8 +48,8 @@ const MovieCard = (props) => {
                         </Button>
 
                         {/* only when signed up */}
-                        <OutlineButton onClick={() => handleClick(item.id)} className={isFavorite ? 'movie_card_icon-broken' : 'movie_card_icon'}>
-                            {isFavorite ? <FaHeartBroken /> : <FaHeart />}
+                        <OutlineButton onClick={() => handleClick(item.id)} className={true ? 'movie_card_icon-broken' : 'movie_card_icon'}>
+                            {true ? <FaHeartBroken /> : <FaHeart />}
                         </OutlineButton>
                     </div>
                 </div>

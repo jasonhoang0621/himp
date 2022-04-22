@@ -1,9 +1,11 @@
 import propType from 'prop-types'
-import React, { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useRef, useState } from 'react'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { storeUser } from '../../app/userSlice'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
-import { User,Favourite } from '../../firebase/firestore'
+import { Favourite, User } from '../../firebase/firestore'
 import './Modal.scss'
 
 const form = {
@@ -65,6 +67,9 @@ const LoginModal = (props) => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const dispatch = useDispatch()
+
     const handleEnter = async (keyCode, email, password) => {
         if (keyCode === 13) {
             props.setIsLoading(true)
@@ -103,7 +108,8 @@ const LoginModal = (props) => {
 
                         } else {
                             localStorage.setItem("role", check.role)
-                            props.changeUser(localStorage.getItem("authUser"))
+                            const user = JSON.parse(localStorage.getItem("authUser"))
+                            dispatch(storeUser(user))
                             props.closeModal(false);
                         }
                     } else {
