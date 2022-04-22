@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FaEllipsisH, FaTimes } from 'react-icons/fa'
 import { Comments } from '../../firebase/firestore'
 import { OutlineButton } from '../button/Button'
-import Notification from '../notifications/Notification'
+import Modal from '../modal/Modal'
 import './CommentList.scss'
 
 const CommentList = (props) => {
@@ -85,7 +85,7 @@ const CommentList = (props) => {
                 }
 
             </div>
-            {isModal && <Notification closeModal={setIsModal} />}
+            {isModal && <Modal closeModal={setIsModal} />}
         </div>
     )
 }
@@ -168,7 +168,7 @@ const Comment = (props) => {
                         </OutlineButton>
                     </div>
                 </div>}
-            {isModal && <Notification closeModal={setIsModal} />}
+            {isModal && <Modal closeModal={setIsModal} />}
         </>
     )
 }

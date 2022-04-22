@@ -11,7 +11,6 @@ const MovieGrid = (props) => {
     const [list, setList] = useState([])
     const [page, setPage] = useState(1)
     const [totalPage, setTotalPage] = useState(0)
-
     const { keyword } = useParams()
 
     useEffect(() => {
@@ -43,14 +42,11 @@ const MovieGrid = (props) => {
                 }
                 setTotalPage(response.total_pages)
             } else {
-                console.log("TEMP")
-                console.log(props.favoList)
                 setList(props.favoList)
             }
         }
-
         getList();
-    }, [props.movieCategory, keyword, props.isFavorite, props.favoList])
+    }, [props.movieCategory, keyword, props.isFavorite,props.favoList])
 
     const loadMore = async () => {
         let response = null;
@@ -97,8 +93,7 @@ const MovieGrid = (props) => {
                                     movieCategory={props.movieCategory ? props.movieCategory :
                                         item.first_air_date ? movieCategory.tv : movieCategory.movie}
                                     item={item}
-                                    key={index}
-                                    changeFavo={props.changeFavo} />
+                                    key={index}/>
                             ))
                         }
                     </div>
@@ -120,7 +115,6 @@ MovieGrid.propType = {
     movieCategory: propType.string,
     isFavorite: propType.bool,
     favoList: propType.object,
-    changeFavo: propType.func
 }
 
 export default MovieGrid

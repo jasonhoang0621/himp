@@ -2,8 +2,7 @@ import propType from 'prop-types'
 import React, { useRef, useState } from 'react'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { storeUser } from '../../app/userSlice'
+import { storeUser,storeFavoList } from '../../app/userSlice'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
 import { Favourite, User } from '../../firebase/firestore'
 import './Modal.scss'
@@ -33,8 +32,8 @@ const Modal = (props) => {
                             </div>}
 
 
-                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} messageRef={messageRef} changeUser={props.changeUser} isLoading={isLoading} setIsLoading={setIsLoading} />}
-                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} messageRef={messageRef} changeUser={props.changeUser} isLoading={isLoading} setIsLoading={setIsLoading} />}
+                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} messageRef={messageRef} isLoading={isLoading} setIsLoading={setIsLoading} />}
+                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} messageRef={messageRef} isLoading={isLoading} setIsLoading={setIsLoading} />}
                         {formDisplay === 3 && <ForgetPasswordModal setFormDisplay={setFormDisplay} messageRef={messageRef} />}
 
 
@@ -64,7 +63,6 @@ const Modal = (props) => {
 }
 
 const LoginModal = (props) => {
-    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -109,7 +107,10 @@ const LoginModal = (props) => {
                         } else {
                             localStorage.setItem("role", check.role)
                             const user = JSON.parse(localStorage.getItem("authUser"))
+                            const favoList = await Favourite.getFavourite(user.user.email)
+                            localStorage.setItem("favo",JSON.stringify(favoList))
                             dispatch(storeUser(user))
+                            dispatch(storeFavoList(favoList))
                             props.closeModal(false);
                         }
                     } else {
@@ -125,7 +126,7 @@ const LoginModal = (props) => {
                 }
             }
             props.setIsLoading(false)
-            navigate(`/`)
+
         }
 
     }
@@ -158,7 +159,7 @@ const LoginModal = (props) => {
 }
 
 const RegisterModal = (props) => {
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
@@ -198,7 +199,7 @@ const RegisterModal = (props) => {
                                 props.messageRef.current.style.display = "none"
                             }, 1500)
                         } else {
-                            props.changeUser(localStorage.getItem("authUser"))
+                            const user_ = JSON.parse(localStorage.getItem("authUser"))
                             const info = {
                                 name: user.displayName,
                                 email: email,
@@ -207,6 +208,10 @@ const RegisterModal = (props) => {
                             }
                             await User.addUser(info)
                             await Favourite.createFavorite(email)
+                            const favoList = await Favourite.getFavourite(user_.user.email)
+                            localStorage.setItem("favo",JSON.stringify(favoList))
+                            dispatch(storeUser(user_))
+                            dispatch(storeFavoList(favoList))
                             props.closeModal(false);
                         }
                     }
@@ -223,7 +228,6 @@ const RegisterModal = (props) => {
                 }
             }
             props.setIsLoading(false)
-            navigate(`/`)
         }
 
     }
@@ -320,7 +324,6 @@ const ForgetPasswordModal = (props) => {
 
 Modal.propType = {
     closeModal: propType.func,
-    changeUser: propType.func
 }
 
 LoginModal.propType = {
@@ -328,14 +331,12 @@ LoginModal.propType = {
     closeModal: propType.func,
     warn: propType.func,
     messageRef: propType.object,
-    changeUser: propType.func,
     isLoading: propType.bool,
     setIsLoading: propType.func
 }
 RegisterModal.propType = {
     closeModal: propType.func,
     messageRef: propType.object,
-    changeUser: propType.func,
     isLoading: propType.bool,
     setIsLoading: propType.func
 }

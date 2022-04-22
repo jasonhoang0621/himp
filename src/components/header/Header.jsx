@@ -35,7 +35,7 @@ const Header = () => {
 
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
-    console.log(user)
+
 
     const changeUser = (data) => {
         // setUserState(data)
@@ -46,6 +46,7 @@ const Header = () => {
         await SignOut();
         role = null
         localStorage.removeItem("role")
+        localStorage.removeItem("favo")
         dispatch(logOut())
     }
 

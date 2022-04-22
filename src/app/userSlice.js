@@ -4,7 +4,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: localStorage.getItem('authUser') ? JSON.parse(localStorage.getItem('authUser')) : null,
-    favorite: [],
+    favorite: localStorage.getItem('favo') ? JSON.parse(localStorage.getItem('favo')) : [],
   },
   reducers: {
     storeUser(state, action) {
@@ -13,12 +13,22 @@ const userSlice = createSlice({
     },
     logOut(state, action) {
       state.user = null
-      localStorage.removeItem('authUser')
+    },
+    storeFavoList(state,action){
+      state.favorite =action.payload
+    },
+    addFavoList(state,action){
+      state.favorite=[...state.favorite,action.payload]
+      localStorage.setItem("favo",JSON.stringify(state.favorite))
+    },
+    deleteFavoList(state,action){
+      state.favorite=action.payload
+      localStorage.setItem("favo",JSON.stringify(state.favorite))
     }
   },
 })
 
-export const { storeUser, logOut } = userSlice.actions
+export const { storeUser, logOut,storeFavoList,addFavoList,deleteFavoList } = userSlice.actions
 
 const { reducer } = userSlice
 

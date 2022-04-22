@@ -7,31 +7,42 @@ import Button, { OutlineButton } from '../button/Button'
 import './MovieCard.scss'
 import { auth } from "../../firebase/firebase-authentication"
 import { Favourite } from "../../firebase/firestore"
-import Notification from '../notifications/Notification'
+import Modal from '../modal/Modal'
+import { useDispatch } from 'react-redux'
+import { addFavoList,deleteFavoList } from '../../app/userSlice'
 
 const MovieCard = (props) => {
     const [isModal, setIsModal] = useState(false)
     const navigate = useNavigate()
-
+    const dispatch = useDispatch()
     const item = props.item
-
     const link = `/${movieCategory[props.movieCategory]}/${item.id}`
 
     const poster = tmdbAPI.w5Image(item.poster_path || item.backdrop_path)
     const handleClick = async (id) => {
         if (auth.currentUser !== null) {
             const list = await Favourite.postFavourite(auth.currentUser.email, id, props.movieCategory)
+           
             if (list === true) {
-                const favoList = await Favourite.getFavourite(auth.currentUser.email)
-                let list = []
-                for (let i = 0; i < favoList.length; i++) {
-                    const response = await tmdbAPI.details(favoList[i].category, favoList[i].id, { params: {} })
-                    list.push(response)
+                let newList = JSON.parse(localStorage.getItem("favo"))
+                for(let i =0;i<newList.length;i++){
+                    
+                    if(newList[i].id===id){
+                        newList.splice(i,1)
+                    }   
                 }
-                props.changeFavo(list)
+                if(newList.length!=0){
+                    dispatch(deleteFavoList(newList))
+                }else{
+                    dispatch(deleteFavoList([]))
+                }
             }
             else {
-                console.log("true")
+                const newFavo = {
+                    id:id,
+                    category: props.movieCategory
+                }
+                dispatch(addFavoList(newFavo))
             }
         } else {
             setIsModal(true)
@@ -56,7 +67,7 @@ const MovieCard = (props) => {
                 <Link to={link}><h4>{item.title || item.name}</h4></Link>
             </div>
 
-            {isModal && <Notification closeModal={setIsModal} />}
+            {isModal && <Modal closeModal={setIsModal} />}
         </>
     )
 }
