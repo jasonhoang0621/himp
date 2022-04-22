@@ -33,7 +33,7 @@ const CommentList = (props) => {
                 const tmp = JSON.parse(user)
                 console.log(tmp)
                 await Comments.postComment(tmp.user.email, content, props.id)
-                setContent("")
+                setContent('')
                 getCommentList()
                 setIsLoading(false)
             }
@@ -71,7 +71,7 @@ const CommentList = (props) => {
                                         item.replies.map((item2, index) => {
                                             return (
                                                 <div className="reply_comment" key={index} >
-                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} />
+                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} rootID={item.id} commentChange={getCommentList} />
                                                 </div>
                                             )
 
@@ -100,7 +100,6 @@ const Comment = (props) => {
 
     const handleClick = async () => {
         user = localStorage.getItem("authUser")
-        console.log(content)
         if (user === null) {
             setIsModal(true)
         } else {
@@ -112,7 +111,6 @@ const Comment = (props) => {
                 const tmp = JSON.parse(user)
                 console.log(tmp)
                 await Comments.postReply(tmp.user.email, content, props.id)
-                setContent("")
                 props.commentChange()
                 setIsReply(false)
                 setIsLoading(false)
@@ -120,7 +118,21 @@ const Comment = (props) => {
         }
     }
     const Delete = async () => {
+        user = localStorage.getItem("role")
+        if (user === null) {
+            setIsModal(true)
+        } else {
+            if (!user) {
 
+            }
+            else {
+
+                console.log(props.id)
+                await Comments.Delete(props.id, props.rootID)
+                props.commentChange()
+            }
+
+        }
     }
     return (
         <>
@@ -165,7 +177,8 @@ Comment.propType = {
     content: propType.string,
     id: propType.string,
     isChild: propType.bool,
-    commentChange: propType.func
+    commentChange: propType.func,
+    rootID: propType.string,
 }
 
 export default CommentList
