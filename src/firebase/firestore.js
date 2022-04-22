@@ -251,7 +251,7 @@ export const Comments = {
         }
 
 
-        return result.reverse()
+        return result
 
     },
     postComment: async (email, content, idPhim) => {

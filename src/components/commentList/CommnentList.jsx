@@ -85,15 +85,10 @@ const CommentList = (props) => {
                 }
 
             </div>
-
-            <div className="comment_load_more">
-                <OutlineButton>Load more</OutlineButton>
-            </div>
             {isModal && <Notification closeModal={setIsModal} />}
         </div>
     )
 }
-
 
 const Comment = (props) => {
     const [isReply, setIsReply] = useState(false)
