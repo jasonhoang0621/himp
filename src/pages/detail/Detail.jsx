@@ -8,19 +8,59 @@ import './Detail.scss'
 import TrailerList from './TrailerList'
 import { FaStar } from 'react-icons/fa'
 import MovieList from '../../components/movieList/MovieList'
-import {auth} from "../../firebase/firebase-authentication"
+import { useDispatch, useSelector } from 'react-redux'
 import {Favourite}from "../../firebase/firestore"
+import Modal from '../../components/modal/Modal'
+import { addFavoList, deleteFavoList } from '../../app/userSlice'
+
+const checkFavoriteList = (id, list) => {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].id === id) {
+            return true
+        }
+    }
+    return false
+}
+
 
 const Detail = () => {
     const navigation = useNavigate()
+    const [isModal, setIsModal] = useState(false)
     const { category, id } = useParams()
     const [movie, setMovie] = useState(null)
-    const handleClick =async ()=>{
-        if(auth.currentUser!==null)
-        {
-            await Favourite.postFavourite(auth.currentUser.email,id,category)
-        }else{
-            
+    const user = useSelector(state=>state.user)
+    const dispatch = useDispatch()
+
+    const favoriteList = useSelector(state => state.favorite)
+    const isFavorite = checkFavoriteList(id, favoriteList)
+
+    const handleClick = async () => {
+        if (user !== null) {
+            const list = await Favourite.postFavourite(user.user.email, parseInt(id), category)
+
+            if (list === true) {
+                let newList = JSON.parse(localStorage.getItem("favo"))
+                for (let i = 0; i < newList.length; i++) {
+
+                    if (newList[i].id === id) {
+                        newList.splice(i, 1)
+                    }
+                }
+                if (newList.length !== 0) {
+                    dispatch(deleteFavoList(newList))
+                } else {
+                    dispatch(deleteFavoList([]))
+                }
+            }
+            else {
+                const newFavo = {
+                    id: id,
+                    category: category
+                }
+                dispatch(addFavoList(newFavo))
+            }
+        } else {
+            setIsModal(true)
         }
     }
     useEffect(() => {
@@ -46,7 +86,7 @@ const Detail = () => {
 
                         <div className="detail_content_info">
                             <div className="detail_btn">
-                                <OutlineButton  onClick={()=>handleClick(id)}>Favorite</OutlineButton>
+                                <OutlineButton  onClick={()=>handleClick(id)} className={isFavorite ? 'unfavo_button' : 'favo_button'}>Favorite</OutlineButton>
                                 <Button className='detail_btn_watch' onClick={() => navigation(`/stream/${category}/${movie.id}`)}>Watch</Button>
                             </div>
 
@@ -108,6 +148,7 @@ const Detail = () => {
                     </div>
                 </div>
             }
+            {isModal && <Modal closeModal={setIsModal} />}
         </>
     )
 }

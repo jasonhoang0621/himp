@@ -13,7 +13,6 @@ import './MovieCard.scss'
 
 const checkFavoriteList = (id, list) => {
     for (let i = 0; i < list.length; i++) {
-        console.log(list[i].id, id)
         if (list[i].id === id) {
             return true
         }
@@ -37,7 +36,6 @@ const MovieCard = (props) => {
     const handleClick = async (id) => {
         if (auth.currentUser !== null) {
             const list = await Favourite.postFavourite(auth.currentUser.email, id, props.movieCategory)
-
             if (list === true) {
                 let newList = JSON.parse(localStorage.getItem("favo"))
                 for (let i = 0; i < newList.length; i++) {

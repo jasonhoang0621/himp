@@ -158,9 +158,7 @@ export const Favourite = {
     },
     postFavourite: async (email, id, category) => {
         try {
-
             const userID = await User.getUser(email)
-            console.log(userID)
             const q = query(collection(db, "favourite"), where("idNguoiDung", "==", userID))
             const querySnapshot = await getDocs(q)
             let result = null;
@@ -175,6 +173,7 @@ export const Favourite = {
             }
             let check = -1
             for (let i = 0; i < result.length; i++) {
+                
                 if (result[i].id === phim.id) {
                     check = i
                 }
@@ -183,7 +182,6 @@ export const Favourite = {
 
             if (check !== -1) {
                 result.splice(check, 1)
-                console.log(result)
                 const favouriteDoc = doc(db, "favourite", listID)
                 await updateDoc(favouriteDoc, {
                     "movies": result
@@ -192,9 +190,7 @@ export const Favourite = {
             }
             else {
                 result.push(phim)
-                console.log(listID)
                 const favouriteDoc = doc(db, "favourite", listID)
-                console.log(result)
                 await updateDoc(favouriteDoc, {
                     movies: result
                 })
