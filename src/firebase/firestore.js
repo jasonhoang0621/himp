@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, getFirestore, query, updateDoc, where, getDoc,deleteDoc } from "firebase/firestore";
 import { app } from "./firebase-config";
 
 const db = getFirestore(app);
@@ -212,7 +212,8 @@ export const Comments = {
             id: commentID,
             email: tmp.email,
             name: tmp.name,
-            content: docSnap.data().content
+            content: docSnap.data().content,
+            date:docSnap.data().date,
         }
         return result
     },
@@ -229,7 +230,8 @@ export const Comments = {
                     content: doc.data().content,
                     email: "",
                     name: "",
-                    replies: doc.data().Reply
+                    replies: doc.data().Reply,
+                    date:doc.data().date
                 }
                 result.push(comment)
             })
@@ -242,6 +244,16 @@ export const Comments = {
                     result[i].replies[j] = reply
                 }
             }
+            for (let i = 0; i < result.length-1; i++) {
+                for(let k =i+1;k<result.length;k++){
+                    if(result[i].date<result[k].date){
+                        let tmp = result[i]
+                        result[i] = result[k]
+                        result[k]=tmp
+                    }
+                }
+            }
+            return result
         } catch (error) {
             console.log(error)
         }
@@ -259,7 +271,8 @@ export const Comments = {
                 idNguoiDung: user,
                 idPhim: idPhim,
                 content: content,
-                Reply: []
+                Reply: [],
+                date: new Date()
             }
             const docRef = await addDoc(collection(db, "comments"), comment)
             return docRef
@@ -278,7 +291,8 @@ export const Comments = {
                 idNguoiDung: user,
                 idPhim: null,
                 content: content,
-                Reply: []
+                Reply: [],
+                date: Date()
             }
             const docRef = await addDoc(collection(db, "comments"), comment)
             const rootComment = await (getDoc(doc(db, "comments", idRoot)))
@@ -291,6 +305,42 @@ export const Comments = {
             })
             return result
         } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+    Delete:async (id,idRoot)=>{
+        try{
+            const Comment = await (getDoc(doc(db, "comments", id)))
+            let result = Comment.data()
+            console.log(result)
+            if(result.idPhim===null)
+            {
+                await deleteDoc(doc(db, "comments", id));
+                console.log(idRoot)
+                const rootComment = await (getDoc(doc(db, "comments", idRoot)))
+                let newReply = []
+                let tmp = rootComment.data().Reply
+                console.log(tmp)
+                for(let i = 0;i < tmp.length;i++){
+                    if(tmp[i]!==id){
+                        newReply.push(tmp[i])
+                    }
+                }
+                console.log(newReply)
+                const commentDoc = doc(db, "comments", idRoot)
+                await updateDoc(commentDoc, {
+                    Reply: newReply
+                })
+                return 
+            }
+            else{
+                for(let i = 0;i < result.Reply.length;i++){
+                    await deleteDoc(doc(db, "comments", result.Reply[i]));
+                }
+                await deleteDoc(doc(db, "comments", id));
+            }
+        }catch(error){
             console.log(error)
             return null
         }

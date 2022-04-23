@@ -210,6 +210,7 @@ const RegisterModal = (props) => {
                             await User.addUser(info)
                             await Favourite.createFavorite(email)
                             const favoList = await Favourite.getFavourite(user_.user.email)
+                            localStorage.setItem("role", "false")
                             localStorage.setItem("favo", JSON.stringify(favoList))
                             dispatch(storeUser(user_))
                             dispatch(storeFavoList(favoList))

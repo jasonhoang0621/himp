@@ -67,13 +67,13 @@ const CommentList = (props) => {
                         commentArray.map((item, index) => {
                             return (
                                 <div className="root_comment" key={index}>
-                                    <Comment userName={item.name} content={item.content} id={item.id} commentChange={getCommentList} />
+                                    <Comment userName={item.name} content={item.content} id={item.id} commentChange={getCommentList} userEmail={item.email}/>
 
                                     {
                                         item.replies.map((item2, index) => {
                                             return (
                                                 <div className="reply_comment" key={index} >
-                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} rootID={item.id} commentChange={getCommentList} />
+                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} rootID={item.id} commentChange={getCommentList} userEmail={item2.email}/>
                                                 </div>
                                             )
 
@@ -96,7 +96,7 @@ const Comment = (props) => {
     const [content, setContent] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     let user = localStorage.getItem("authUser")
-
+    const userRole = localStorage.getItem("role")
     const dispatch = useDispatch()
 
     const handleClick = async () => {
@@ -119,16 +119,20 @@ const Comment = (props) => {
         }
     }
     const Delete = async () => {
-        user = localStorage.getItem("role")
-        if (user === null) {
+
+        if (userRole === null) {
             dispatch(toggleModal(true))
         } else {
-            if (!user) {
+            if (userRole==="false") {
+                if(JSON.parse(user).user.email === props.userEmail){
+                    await Comments.Delete(props.id, props.rootID)
+                    props.commentChange()
+                }
+                else{//xoa comment nguoi khac
 
+                }
             }
             else {
-
-                console.log(props.id)
                 await Comments.Delete(props.id, props.rootID)
                 props.commentChange()
             }
@@ -179,6 +183,7 @@ Comment.propType = {
     isChild: propType.bool,
     commentChange: propType.func,
     rootID: propType.string,
+    userEmail: propType.string,
 }
 
 export default CommentList
