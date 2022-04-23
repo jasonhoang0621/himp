@@ -63,17 +63,17 @@ const CommentList = (props) => {
 
                 {
 
-                    commentArray ?
+                    commentArray.length > 0 ?
                         commentArray.map((item, index) => {
                             return (
                                 <div className="root_comment" key={index}>
-                                    <Comment userName={item.name} content={item.content} id={item.id} commentChange={getCommentList} userEmail={item.email}/>
+                                    <Comment userName={item.name} content={item.content} id={item.id} commentChange={getCommentList} userEmail={item.email} />
 
                                     {
                                         item.replies.map((item2, index) => {
                                             return (
                                                 <div className="reply_comment" key={index} >
-                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} rootID={item.id} commentChange={getCommentList} userEmail={item2.email}/>
+                                                    <Comment userName={item2.name} content={item2.content} id={item2.id} isChild={true} rootID={item.id} commentChange={getCommentList} userEmail={item2.email} />
                                                 </div>
                                             )
 
@@ -83,7 +83,9 @@ const CommentList = (props) => {
                             )
                         })
                         :
-                        <></>
+                        <div>
+                            <div className='comment_list_no_comment'>No comment yet</div>
+                        </div>
                 }
 
             </div>
@@ -123,12 +125,12 @@ const Comment = (props) => {
         if (userRole === null) {
             dispatch(toggleModal(true))
         } else {
-            if (userRole==="false") {
-                if(JSON.parse(user).user.email === props.userEmail){
+            if (userRole === "false") {
+                if (JSON.parse(user).user.email === props.userEmail) {
                     await Comments.Delete(props.id, props.rootID)
                     props.commentChange()
                 }
-                else{//xoa comment nguoi khac
+                else {//xoa comment nguoi khac
 
                 }
             }

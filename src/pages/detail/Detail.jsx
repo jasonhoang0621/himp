@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { FaStar } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import tmdbAPI from '../../api/tmdbApi'
+import { addFavoList, deleteFavoList, toggleModal } from '../../app/userSlice'
 import Button, { OutlineButton } from '../../components/button/Button'
 import CommentList from '../../components/commentList/CommnentList'
+import MovieList from '../../components/movieList/MovieList'
+import { Favourite } from "../../firebase/firestore"
 import CastList from './CastList'
 import './Detail.scss'
 import TrailerList from './TrailerList'
-import { FaStar } from 'react-icons/fa'
-import MovieList from '../../components/movieList/MovieList'
-import { useDispatch, useSelector } from 'react-redux'
-import {Favourite}from "../../firebase/firestore"
-import Modal from '../../components/modal/Modal'
-import { addFavoList, deleteFavoList } from '../../app/userSlice'
 
 const checkFavoriteList = (id, list) => {
     for (let i = 0; i < list.length; i++) {
@@ -22,13 +21,11 @@ const checkFavoriteList = (id, list) => {
     return false
 }
 
-
 const Detail = () => {
     const navigation = useNavigate()
-    const [isModal, setIsModal] = useState(false)
     const { category, id } = useParams()
     const [movie, setMovie] = useState(null)
-    const user = useSelector(state=>state.user)
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     const favoriteList = useSelector(state => state.favorite)
@@ -60,7 +57,7 @@ const Detail = () => {
                 dispatch(addFavoList(newFavo))
             }
         } else {
-            setIsModal(true)
+            dispatch(toggleModal(true))
         }
     }
     useEffect(() => {
@@ -86,7 +83,7 @@ const Detail = () => {
 
                         <div className="detail_content_info">
                             <div className="detail_btn">
-                                <OutlineButton  onClick={()=>handleClick(id)} className={isFavorite ? 'unfavo_button' : 'favo_button'}>Favorite</OutlineButton>
+                                <OutlineButton onClick={() => handleClick(id)} className={!isFavorite ? 'detail_btn_favorite' : 'detail_btn_favorite detail_btn_favorite-active'}>Favorite</OutlineButton>
                                 <Button className='detail_btn_watch' onClick={() => navigation(`/stream/${category}/${movie.id}`)}>Watch</Button>
                             </div>
 
@@ -148,7 +145,6 @@ const Detail = () => {
                     </div>
                 </div>
             }
-            {isModal && <Modal closeModal={setIsModal} />}
         </>
     )
 }

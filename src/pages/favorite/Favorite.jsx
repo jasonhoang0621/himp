@@ -9,11 +9,10 @@ const Favorite = () => {
     const params = useParams()
     const movieCategory = params.category
     const [favorite, setFavorite] = useState([])
-    const user = useSelector(state => state.user)
     const favoriteList = useSelector(state => state.favorite)
+
     useEffect(() => {
         const getList = async () => {
-            if (!user) return
             const temp = []
 
             for (let i = 0; i < favoriteList.length; i++) {
@@ -24,7 +23,7 @@ const Favorite = () => {
             setFavorite(temp)
         }
         getList()
-    }, [user, favoriteList])
+    }, [favoriteList])
 
     return (
         <div className='category container section'>
