@@ -12,7 +12,7 @@ import './MovieCard.scss'
 
 const checkFavoriteList = (id, list) => {
     for (let i = 0; i < list.length; i++) {
-        if (list[i].id === id) {
+        if (parseInt(list[i].id) === id) {
             return true
         }
     }
@@ -38,7 +38,7 @@ const MovieCard = (props) => {
                 let newList = JSON.parse(localStorage.getItem("favo"))
                 for (let i = 0; i < newList.length; i++) {
 
-                    if (newList[i].id === id) {
+                    if (parseInt(newList[i].id) === id) {
                         newList.splice(i, 1)
                     }
                 }
