@@ -14,7 +14,8 @@ import TrailerList from './TrailerList'
 
 const checkFavoriteList = (id, list) => {
     for (let i = 0; i < list.length; i++) {
-        if (list[i].id === id) {
+        console.log(id, list[i].id)
+        if (list[i].id.toString() === id) {
             return true
         }
     }

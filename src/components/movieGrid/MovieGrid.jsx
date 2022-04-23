@@ -46,7 +46,7 @@ const MovieGrid = (props) => {
             }
         }
         getList();
-    }, [props.movieCategory, keyword, props.isFavorite,props.favoList])
+    }, [props.movieCategory, keyword, props.isFavorite, props.favoList])
 
     const loadMore = async () => {
         let response = null;
@@ -84,28 +84,31 @@ const MovieGrid = (props) => {
                 <h1>{props.movieCategory === movieCategory.movie ? 'MOVIE' : props.movieCategory === movieCategory.tv ? 'TV SERIES' : props.isFavorite ? 'FAVORITE' : 'RESULTS'}</h1>
             </div>
 
-            {((props.isFavorite && list.length !== 0) || !props.isFavorite) ?
-                <>
-                    <div className="movie_grid_list">
-                        {
-                            list.map((item, index) => (
-                                <MovieCard
-                                    movieCategory={props.movieCategory ? props.movieCategory :
-                                        item.first_air_date ? movieCategory.tv : movieCategory.movie}
-                                    item={item}
-                                    key={index}/>
-                            ))
-                        }
-                    </div>
-                    {
-                        (page < totalPage) &&
-                        <div className="movid_grid_load_more">
-                            <OutlineButton onClick={loadMore}>Load More</OutlineButton>
+            {
+                props.isEmptyFavo ?
+                    <>
+                        <div className="movie_grid_list">
+                            {
+                                list.map((item, index) => (
+                                    <MovieCard
+                                        movieCategory={props.movieCategory ? props.movieCategory :
+                                            item.first_air_date ? movieCategory.tv : movieCategory.movie}
+                                        item={item}
+                                        key={index} />
+                                ))
+                            }
                         </div>
-                    }
-                </>
-                :
-                <div className="movie_grid_empty">GO AND ADD YOUR FAVORITE MOVIES</div>
+                        {
+                            (page < totalPage) &&
+                            <div className="movid_grid_load_more">
+                                <OutlineButton onClick={loadMore}>Load More</OutlineButton>
+                            </div>
+                        }
+                    </>
+                    :
+                    <div className="movie_grid_empty">
+                        GO AND ADD SOME FAVORITE MOVIES
+                    </div>
             }
         </div>
     )
@@ -115,6 +118,7 @@ MovieGrid.propType = {
     movieCategory: propType.string,
     isFavorite: propType.bool,
     favoList: propType.object,
+    isEmptyFavo: propType.bool,
 }
 
 export default MovieGrid
