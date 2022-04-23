@@ -5,6 +5,7 @@ const userSlice = createSlice({
   initialState: {
     user: localStorage.getItem('authUser') ? JSON.parse(localStorage.getItem('authUser')) : null,
     favorite: localStorage.getItem('favo') ? JSON.parse(localStorage.getItem('favo')) : [],
+    isModal: false,
   },
   reducers: {
     storeUser(state, action) {
@@ -14,21 +15,24 @@ const userSlice = createSlice({
     logOut(state, action) {
       state.user = null
     },
-    storeFavoList(state,action){
-      state.favorite =action.payload
+    storeFavoList(state, action) {
+      state.favorite = action.payload
     },
-    addFavoList(state,action){
-      state.favorite=[...state.favorite,action.payload]
-      localStorage.setItem("favo",JSON.stringify(state.favorite))
+    addFavoList(state, action) {
+      state.favorite = [...state.favorite, action.payload]
+      localStorage.setItem("favo", JSON.stringify(state.favorite))
     },
-    deleteFavoList(state,action){
-      state.favorite=action.payload
-      localStorage.setItem("favo",JSON.stringify(state.favorite))
-    }
+    deleteFavoList(state, action) {
+      state.favorite = action.payload
+      localStorage.setItem("favo", JSON.stringify(state.favorite))
+    },
+    toggleModal(state, action) {
+      state.isModal = action.payload
+    },
   },
 })
 
-export const { storeUser, logOut,storeFavoList,addFavoList,deleteFavoList } = userSlice.actions
+export const { storeUser, logOut, storeFavoList, addFavoList, deleteFavoList, toggleModal } = userSlice.actions
 
 const { reducer } = userSlice
 

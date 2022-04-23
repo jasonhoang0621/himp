@@ -3,16 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { FaEllipsisH, FaTimes } from 'react-icons/fa'
 import { Comments } from '../../firebase/firestore'
 import { OutlineButton } from '../button/Button'
-import Modal from '../modal/Modal'
 import './CommentList.scss'
+import { useDispatch } from 'react-redux'
+import { toggleModal } from '../../app/userSlice'
+
 
 const CommentList = (props) => {
-
-    const [isModal, setIsModal] = useState(false)
     const [commentArray, setCommentArray] = useState([])
     const [content, setContent] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     let user = localStorage.getItem("authUser")
+
+    const dispatch = useDispatch()
 
     const getCommentList = async () => {
         const array = await Comments.getAllComments(props.id)
@@ -23,7 +25,7 @@ const CommentList = (props) => {
         user = localStorage.getItem("authUser")
 
         if (user === null) {
-            setIsModal(true)
+            dispatch(toggleModal(true))
         } else {
             if (!content) {
 
@@ -85,23 +87,22 @@ const CommentList = (props) => {
                 }
 
             </div>
-            {isModal && <Modal closeModal={setIsModal} />}
         </div>
     )
 }
 
 const Comment = (props) => {
     const [isReply, setIsReply] = useState(false)
-    const [isModal, setIsModal] = useState(false)
     const [content, setContent] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     let user = localStorage.getItem("authUser")
 
+    const dispatch = useDispatch()
 
     const handleClick = async () => {
         user = localStorage.getItem("authUser")
         if (user === null) {
-            setIsModal(true)
+            dispatch(toggleModal(true))
         } else {
             if (!content) {
 
@@ -120,7 +121,7 @@ const Comment = (props) => {
     const Delete = async () => {
         user = localStorage.getItem("role")
         if (user === null) {
-            setIsModal(true)
+            dispatch(toggleModal(true))
         } else {
             if (!user) {
 
@@ -168,7 +169,6 @@ const Comment = (props) => {
                         </OutlineButton>
                     </div>
                 </div>}
-            {isModal && <Modal closeModal={setIsModal} />}
         </>
     )
 }

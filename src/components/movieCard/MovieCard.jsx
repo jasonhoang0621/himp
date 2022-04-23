@@ -1,14 +1,13 @@
 import propType from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import { FaHeart, FaPlay } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import tmdbAPI, { movieCategory } from '../../api/tmdbApi'
-import { addFavoList, deleteFavoList } from '../../app/userSlice'
+import { addFavoList, deleteFavoList, toggleModal } from '../../app/userSlice'
 import { auth } from "../../firebase/firebase-authentication"
 import { Favourite } from "../../firebase/firestore"
 import Button, { OutlineButton } from '../button/Button'
-import Modal from '../modal/Modal'
 import './MovieCard.scss'
 
 const checkFavoriteList = (id, list) => {
@@ -22,7 +21,6 @@ const checkFavoriteList = (id, list) => {
 
 
 const MovieCard = (props) => {
-    const [isModal, setIsModal] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -58,7 +56,7 @@ const MovieCard = (props) => {
                 dispatch(addFavoList(newFavo))
             }
         } else {
-            setIsModal(true)
+            dispatch(toggleModal(true))
         }
     }
 
@@ -79,8 +77,6 @@ const MovieCard = (props) => {
                 </div>
                 <Link to={link}><h4>{item.title || item.name}</h4></Link>
             </div>
-
-            {isModal && <Modal closeModal={setIsModal} />}
         </>
     )
 }

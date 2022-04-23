@@ -2,7 +2,7 @@ import propType from 'prop-types'
 import React, { useRef, useState } from 'react'
 import { FaAngleLeft, FaEnvelope, FaLock, FaTimes, FaUser } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
-import { storeUser,storeFavoList } from '../../app/userSlice'
+import { storeUser, storeFavoList, toggleModal } from '../../app/userSlice'
 import { Forgot, Login, SignUp } from '../../firebase/firebase-authentication'
 import { Favourite, User } from '../../firebase/firestore'
 import './Modal.scss'
@@ -17,13 +17,14 @@ const Modal = (props) => {
     const [formDisplay, setFormDisplay] = useState(form.login)
     const [isLoading, setIsLoading] = useState(false)
 
+    const dispatch = useDispatch()
     const messageRef = useRef()
     return (
         <>
-            <div className="modal" onClick={() => { props.closeModal(false); }}>
+            <div className="modal" onClick={() => dispatch(toggleModal(false))}>
                 <div className="modal_container">
                     <div className="modal_wrapper" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal_close" onClick={() => { props.closeModal(false); }}>
+                        <div className="modal_close" onClick={() => dispatch(toggleModal(false))}>
                             <FaTimes />
                         </div>
                         {formDisplay === 3 &&
@@ -32,8 +33,8 @@ const Modal = (props) => {
                             </div>}
 
 
-                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} closeModal={props.closeModal} messageRef={messageRef} isLoading={isLoading} setIsLoading={setIsLoading} />}
-                        {formDisplay === 2 && <RegisterModal closeModal={props.closeModal} messageRef={messageRef} isLoading={isLoading} setIsLoading={setIsLoading} />}
+                        {formDisplay === 1 && <LoginModal setFormDisplay={setFormDisplay} messageRef={messageRef} isLoading={isLoading} setIsLoading={setIsLoading} />}
+                        {formDisplay === 2 && <RegisterModal messageRef={messageRef} isLoading={isLoading} setIsLoading={setIsLoading} />}
                         {formDisplay === 3 && <ForgetPasswordModal setFormDisplay={setFormDisplay} messageRef={messageRef} />}
 
 
@@ -108,10 +109,10 @@ const LoginModal = (props) => {
                             localStorage.setItem("role", check.role)
                             const user = JSON.parse(localStorage.getItem("authUser"))
                             const favoList = await Favourite.getFavourite(user.user.email)
-                            localStorage.setItem("favo",JSON.stringify(favoList))
+                            localStorage.setItem("favo", JSON.stringify(favoList))
                             dispatch(storeUser(user))
                             dispatch(storeFavoList(favoList))
-                            props.closeModal(false);
+                            dispatch(toggleModal(false))
                         }
                     } else {
                         props.messageRef.current.classList.remove('modal_message')
@@ -209,10 +210,10 @@ const RegisterModal = (props) => {
                             await User.addUser(info)
                             await Favourite.createFavorite(email)
                             const favoList = await Favourite.getFavourite(user_.user.email)
-                            localStorage.setItem("favo",JSON.stringify(favoList))
+                            localStorage.setItem("favo", JSON.stringify(favoList))
                             dispatch(storeUser(user_))
                             dispatch(storeFavoList(favoList))
-                            props.closeModal(false);
+                            dispatch(toggleModal(false))
                         }
                     }
                     else {
@@ -322,20 +323,15 @@ const ForgetPasswordModal = (props) => {
     )
 }
 
-Modal.propType = {
-    closeModal: propType.func,
-}
 
 LoginModal.propType = {
     setFormDisplay: propType.func,
-    closeModal: propType.func,
     warn: propType.func,
     messageRef: propType.object,
     isLoading: propType.bool,
     setIsLoading: propType.func
 }
 RegisterModal.propType = {
-    closeModal: propType.func,
     messageRef: propType.object,
     isLoading: propType.bool,
     setIsLoading: propType.func

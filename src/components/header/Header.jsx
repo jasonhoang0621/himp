@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { logOut } from '../../app/userSlice'
+import { logOut, toggleModal } from '../../app/userSlice'
 import { auth, SignOut } from '../../firebase/firebase-authentication'
 import { OutlineButton } from '../button/Button'
 import LoggedInModal from '../loggedInModal/LoggedInModal'
@@ -27,15 +27,14 @@ const headerNavItem = [
 const Header = () => {
     const { pathname } = useLocation()
     const headerRef = useRef()
-    const [isModal, setIsModal] = useState(false)
     const [isLoggedInModal, setIsLoggedInModal] = useState(false)
     const [isUserListModal, setIsUserListModal] = useState(false)
     const [formStatus, setFormStatus] = useState(1)
     let role = localStorage.getItem("role")
 
+    const isModal = useSelector(state => state.isModal)
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
-
 
     const changeUser = (data) => {
         // setUserState(data)
@@ -96,15 +95,15 @@ const Header = () => {
                             </ul>
                         </div>
                         :
-                        <OutlineButton onClick={() => { setIsModal(true) }}>Sign in</OutlineButton>}
+                        <OutlineButton onClick={() => dispatch(toggleModal(true))} > Sign in</OutlineButton>}
 
                 </div>
             </div>
 
-            {isModal && <Modal closeModal={setIsModal} changeUser={changeUser} />}
+            {isModal && <Modal changeUser={changeUser} />}
             {isLoggedInModal && <LoggedInModal closeModal={setIsLoggedInModal} form={formStatus} username={auth.currentUser.displayName} />}
             {isUserListModal && <UserList closeModal={setIsUserListModal} />}
-        </div>
+        </div >
     )
 }
 
