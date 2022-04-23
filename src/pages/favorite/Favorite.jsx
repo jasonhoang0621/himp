@@ -8,25 +8,23 @@ import './Favorite.scss'
 const Favorite = () => {
     const params = useParams()
     const movieCategory = params.category
-    const [favorite,setFavorite] = useState([])
+    const [favorite, setFavorite] = useState([])
     const user = useSelector(state => state.user)
-    const favoList =JSON.parse(localStorage.getItem("favo"))
-    const favo = useSelector(state=>state.favorite)
-    useEffect(()=>{
-        const getList = async () =>{
-            
-            let favo_ = []
-            if(!user)
-                return
-            for (let i =0;i < favoList.length;i++){
-                const response = await tmdbAPI.details(favoList[i].category, favoList[i].id, { params: {} })
-                favo_.push(response)
+    const favoriteList = useSelector(state => state.favorite)
+    useEffect(() => {
+        const getList = async () => {
+            if (!user) return
+            const temp = []
+
+            for (let i = 0; i < favoriteList.length; i++) {
+                const response = await tmdbAPI.details(favoriteList[i].category, favoriteList[i].id, { params: {} })
+                temp.push(response)
             }
-            console.log(favo_)
-            setFavorite(favo_)
+
+            setFavorite(temp)
         }
         getList()
-    },[user,favo])
+    }, [user, favoriteList])
 
     return (
         <div className='category container section'>
