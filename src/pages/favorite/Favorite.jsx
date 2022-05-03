@@ -28,7 +28,7 @@ const Favorite = () => {
     return (
         <div className='category container section'>
             {
-                <MovieGrid movieCategory={movieCategory} isFavorite={true} favoList={favorite} isEmptyFavo={favoriteList.length > 0} />
+                <MovieGrid movieCategory={movieCategory} isFavorite={true} favoList={favorite} isEmptyFavo={favoriteList.length === 0} />
             }
         </div>
     )

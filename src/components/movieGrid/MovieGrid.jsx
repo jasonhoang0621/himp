@@ -85,7 +85,7 @@ const MovieGrid = (props) => {
             </div>
 
             {
-                props.isEmptyFavo ?
+                (props.isFavorite && !props.isEmptyFavo) || !props.isFavorite ?
                     <>
                         <div className="movie_grid_list">
                             {
@@ -109,6 +109,7 @@ const MovieGrid = (props) => {
                     <div className="movie_grid_empty">
                         GO AND ADD SOME FAVORITE MOVIES
                     </div>
+              
             }
         </div>
     )
