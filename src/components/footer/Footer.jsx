@@ -8,14 +8,18 @@ const Footer = () => {
         <div className="footer" style={{ backgroundImage: `url(./asset/image/footer.jpg)` }}>
             <div className="footer_wrapper section">
                 <ul className="footer_col">
-                    <li><Link to='/'>Home</Link></li>
-                    <li><Link to='/about'>About us</Link></li>
+                    <li>Copyright:</li>
+                    <li>Hoàng Thiện Nhân - 19127489 </li>
+                    <li>Lê Thành Khôi - 19127186 </li>
                 </ul>
 
                 <ul className="footer_col">
-                    <li><Link to='/movie'>You must watch</Link></li>
-                    <li><Link to='/movie'>Recent release</Link></li>
-                    <li><Link to='/movie'>Top rated</Link></li>
+                    <li><Link to='/'>Home</Link></li>
+                </ul>
+
+                <ul className="footer_col">
+                    <li><Link to='/movie'>Movie you must watch</Link></li>
+                    <li><Link to='/tv'>TV series you may missed</Link></li>
                 </ul>
             </div>
         </div>
